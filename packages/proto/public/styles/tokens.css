@@ -1,0 +1,32 @@
+:root {
+    --size-icon-normal-width: 2rem;
+    --size-icon-normal-height: 1.6rem;
+    --size-icon-tiny-width: 1.5rem;
+    --size-icon-tiny-height: 1.2rem;
+    --size-icon-large: 4rem;
+
+    --size-type-large-heading: 1.5rem;
+    --size-type-medium-heading: 1.2rem;
+    --size-type-small-heading: 1.1rem;
+    --size-type-normal-body: 0.9rem;
+    --size-type-small-body: 0.9rem;
+    --size-type-smallest-body: 0.8rem;
+
+    --color-accent: rgb(26, 87, 64);
+    --color-accent-light: rgb(37, 91, 70);
+    --color-background-header: var(--color-accent);
+    --color-background-page:rgb(228, 227, 211);
+    --color-link: var(--color-accent);
+    --color-text: var(--color-accent);
+    --color-text-heading: rgb(233, 217, 165);
+    --color-light-background-accent: rgb(243, 242, 238);
+
+    --font-weight-normal: 500;
+    --font-weight-light: 300;
+    --font-weight-light-bold: 550;
+    --font-weight-extra-bold: 600;
+    --font-weight-extreme-bold: 800;
+
+    --font-family-display: "Noto Serif", Roboto, "Trebuchet MS", Poppins, Calibri, Roboto, sans-serif;
+    --font-family-body: "EB Garamond", Cambria, Merriweather, Bitter, serif;    
+}
