@@ -9,6 +9,16 @@
         <link rel="stylesheet" href="/styles/tokens.css" />
         <link rel="stylesheet" href="/styles/reset.css" />
         <link rel="stylesheet" href="/styles/club-info.css" />
+        <script type="module" src="src/drop-down.ts"></script>
+        <script type="module" src="src/club-overview-card.ts"></script>
+        <script type="module" src="src/event-overview-card.ts"></script>
+        <script type="module" src="src/search-container.ts"></script>
+        <script type="module"> 
+            document.addEventListener('DOMContentLoaded', () => {
+                const darkMode = localStorage.getItem('dark-mode')  === "true";
+                document.body.classList.toggle('dark-mode', darkMode);
+            });
+        </script>
     </head>
     <body>
         <header>
@@ -18,53 +28,51 @@
             <h1 class="center-title"> 
                 Cal Poly Clubs
             </h1>
-            <a href="../index.html">
+            <drop-down>
                 <svg class="header">
-                    <use href="/icons/user-interface.svg#icon-homepage" />
+                    <use href="/icons/user-interface.svg#icon-profile" />
                 </svg>
-            </a>
+                <ul slot="menu">
+                    <li>
+                        <a href="../index.html"> Home </a>
+                    </li>
+                    <li> <hr> </li>
+                    <li> 
+                        <a href="../app/profiles/profile-Anmol.html"> My Profile </a> 
+                    </li>
+                    <li> <hr> </li>
+                    <li>
+                        <a> Sign Out </a>
+                    </li>
+                </ul>
+            </drop-down>
         </header>
         <div class="page-content"> 
-            <h2> General Events/Announcements</h2>
+            <h2> General Events/Announcements </h2>
             <div class="event-listing-homepage">
-                <a href="/app/events/event-career-fair.html" class="event-tile">
-                    <div class="role"> Winter Club Fair </div>
-                    <br>
-                    <hr>
-                    <div class="event-info">
-                        <svg class="tiny-icon">
-                            <use href="/icons/user-interface.svg#icon-calendar" />
-                        </svg>
-                        <div> January 20, 2024 </div>
-                        <svg class="tiny-icon">
-                            <use href="/icons/user-interface.svg#icon-clock" />
-                        </svg>
-                        <div> 12:00 PM  - 3:00 PM PST </div>
-                        <svg class="tiny-icon">
-                            <use href="/icons/user-interface.svg#icon-location" />
-                        </svg>
-                        <div> H2 Parking Lot </div>
-                    </div>
-                </a>
+                <event-overview-card linkHref="/app/events/event-career-fair.html">
+                    <span slot="name"> Winter Club Fair </span>
+                    <span slot="date"> January 20, 2024 </span>
+                    <span slot="time"> 12:00 PM - 3:00 PM PST </span>
+                    <span slot="location"> H2 Parking Lot </span>
+                </event-overview-card>
             </div>
             <h2> Directory </h2>
-            <a href="/app/clubs/club-archery.html" class="club-overview-box">
-                <div>
-                    <h3> Cal Poly Archery Club </h3>
-                    <div class="tile-description"> 
+            <search-container> 
+                <club-overview-card linkHref="/app/clubs/club-archery.html">
+                    <span slot="club-name"> Cal Poly Archery Club </span>
+                    <span slot="club-description">
                         The Archery Club revolves around focusing skills that improves archery shooting of individuals. The club focuses on
                         recreational archery for both beginners and experts.
-                    </div>
-                </div>
-            </a>
-            <a href="/app/clubs/club-animation.html" class="club-overview-box">
-                <div>
-                    <h3> Cal Poly Animation Club </h3>
-                    <div class="tile-description">
+                    </span>
+                </club-overview-card>
+                <club-overview-card linkHref="/app/clubs/club-animation.html">
+                    <span slot="club-name"> Cal Poly Animation Club </span>
+                    <span slot="club-description"> 
                         The Cal Poly Animation Club is creating animated short films while hosting guest speakers, workshops and tours.
-                    </div>
-                </div>
-            </a>
+                    </span>
+                </club-overview-card>
+            </search-container>
         </div>
     </body>
 </html>

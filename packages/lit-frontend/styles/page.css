@@ -41,6 +41,8 @@ ul {
 a {
     color:var(---color-link);
     font-weight: var(--font-weight-extra-bold);
+    text-decoration: none;
+    font-weight: var(--font-weight-normal)
 }
 
 a:hover {
@@ -57,7 +59,7 @@ svg.icon {
     font-weight: var(--font-weight-extra-bold);
     width: var(--size-icon-normal-width);
     height: var(--size-icon-normal-height);
-    fill: var(--color-accent);;
+    fill: var(--color-accent);
 }
 
 svg.tiny-icon {
@@ -71,13 +73,18 @@ svg.tiny-icon {
 svg.logo {
     width: 2.75rem;
     height: 2.35rem;
+    stroke: red;
+    stroke-width: 2;
+    fill: var(--color-text-heading) !important; 
 }
 
 svg.header {
-    padding-top: 0.4rem;
-    width: 2.9rem;
-    height: 3rem;
-    fill: rgb(236, 211, 127);
+    margin: 0;
+    padding:0;
+    padding-top: 0.6rem;
+    width: 3.5rem;
+    height: 3.2rem;
+    fill: var(--color-text-heading);
 }
 
 .center-title {
@@ -87,7 +94,7 @@ svg.header {
 }
 
 .page-content {
-    margin-top: 5rem;
+    margin-top: 5.5rem;
     /* To account for header not cutting off page content */
     margin-left: 2rem;
     margin-right: 2rem;

@@ -13,12 +13,15 @@
     --size-type-smallest-body: 0.8rem;
 
     --color-accent: rgb(26, 87, 64);
-    --color-accent-light: rgb(37, 91, 70);
+    --color-accent-contrast: rgb(26, 87, 64);
+    --color-accent-light: rgb(103, 142, 127);
+    --color-accent-inverted: rgb(141, 178, 164);
     --color-background-header: var(--color-accent);
-    --color-background-page:rgb(228, 227, 211);
+    --color-checked: white;
+    --color-background-page:rgb(212, 216, 190);
     --color-link: var(--color-accent);
     --color-text: var(--color-accent);
-    --color-text-heading: rgb(233, 217, 165);
+    --color-text-heading:rgb(236, 211, 127);
     --color-light-background-accent: rgb(243, 242, 238);
 
     --font-weight-normal: 500;
@@ -29,4 +32,25 @@
 
     --font-family-display: "Noto Serif", Roboto, "Trebuchet MS", Poppins, Calibri, Roboto, sans-serif;
     --font-family-body: "EB Garamond", Cambria, Merriweather, Bitter, serif;    
+
+    --time-transition-control-normal: .4s;
+}
+
+body.dark-mode {
+    --color-accent: rgb(224, 225, 226);
+    --color-accent-contrast: rgb(52, 66, 60);
+    --color-accent-inverted: rgb(5, 23, 13);
+    --color-accent-light: rgb(215, 222, 219);
+    --color-background-header: rgb(4, 20, 9);
+    --color-background-page: rgb(30, 40, 34);
+    --color-light-background-accent: rgb(52, 66, 60);
+    --color-text: var(--color-accent);
+    --color-text-heading: rgb(236, 211, 127);
+    
+    --font-weight-normal: 520;
+    --font-weight-light: 420;
+
+    --size-type-normal-body: 1.03rem;
+    --size-type-small-body: 0.903rem;
+    --size-type-smallest-body: 0.803rem;
 }

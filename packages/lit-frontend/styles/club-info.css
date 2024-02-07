@@ -1,43 +1,5 @@
-.club-overview-box {
-    font-weight: var(--font-weight-normal);
-    display: block;
-    border-radius: 10px;
-    background-color: var(--color-light-background-accent);
-    display: flex;
-    text-decoration: none;
-    color: var(--color-accent);
-    width: 60%;
-    min-height: 6.6rem;
-    margin: 1rem;
-    padding-left: 1rem;
-}
-
-.club-overview-box:hover, .event-tile:hover {
-    opacity: 0.9;
-    color: var(--color-accent-light);
-    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.45);
-    border-color: var(--color-accent);
-    border-width: 0.5rem;
-}
-.tile-description {
-    margin-top: 0rem;
-    margin-bottom: 0.83rem;
-    padding-right: 0.1rem;
-    font-size: var(--size-type-small-body);
-    overflow: auto;
-}
-
-.club-description {
-    border-radius: 10px;
-    padding: 0.5rem;
-    text-align: justify;
-    text-justify: inter-word;
-    padding-left: 1rem;
-}
-
 .subheading {
     font-family: var(--font-family-display);
-    ;
     font-size: var(--size-type-large-heading);
     font-weight: var(--font-weight-extra-bold);
     padding-bottom: 0.0rem;
@@ -71,21 +33,12 @@
 }
 
 .event-info {
-    display: grid;
-    grid-template-columns: max-content max-content;
-    gap: 0 4rem;
-    row-gap: 1.5rem;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.event-info {
     padding-top: 0.2rem;
     display: grid;
     grid-template-columns: max-content max-content;
-    gap: 0 1rem;
-    row-gap: 0.4rem;
-    padding-bottom: 0.01rem;
+    gap: 1rem 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .meeting-table-subheading {
@@ -95,7 +48,7 @@
 }
 
 .tag {
-    background-color: var(--color-accent);
+    background-color: var(--color-accent-contrast);
     font-weight: var(--font-weight-normal);
     font-size: var(--size-type-smallest-body);
     margin: 0.05rem;
@@ -110,7 +63,7 @@
 
 .officer-card {
     border-radius: 0.8rem;
-    background-color: var(--color-accent);
+    background-color: var(--color-accent-contrast);
     ;
     width: 10rem;
     height: 11rem;
@@ -137,7 +90,7 @@
 .member-card {
     text-decoration: none;
     border-radius: 0.8rem;
-    background-color: var(--color-accent);
+    background-color: var(--color-accent-contrast);
     ;
     overflow: auto;
     margin: 0.5rem;
@@ -192,6 +145,7 @@
     width: 35px;
     height: 30px;
 }
+
 .role {
     font-weight: var(--font-weight-extra-bold);
     margin-top: 1rem;
@@ -263,7 +217,6 @@
     width: 15.5rem;
     height: 15rem;
     color: var(--color-accent);
-    ;
     overflow: auto;
     margin: 0.5rem;
     margin-right: 1rem;
