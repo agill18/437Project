@@ -2,8 +2,9 @@ import { css, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 @customElement("toggle-switch")
-class ToggleSwitchElement extends LitElement {
-  @property({ reflect: true, type: Boolean }) on: boolean = false;
+export class ToggleSwitchElement extends LitElement {
+  @property({ reflect: true, type: Boolean }) 
+  on: boolean = false;
 
   render() {
     const isDarkMode = localStorage.getItem('dark-mode') === 'true';
@@ -22,14 +23,6 @@ class ToggleSwitchElement extends LitElement {
   static styles = css`
     :host {
       display: block;
-    }
-
-    body.dark-mode {
-        /* Dark mode colors */
-        --color-accent: purple;
-        --background-color: #000000;
-        --text-color: #ffffff;
-        /* ... other colors ... */
     }
 
     label {
