@@ -61,7 +61,6 @@ class DropDownElement extends LitElement {
     }
 
     /* CSS for slotted elements and default slot content */
-
     ::slotted(ul[slot="menu"]),
     slot[name="menu"] > ul {
       margin: 0;

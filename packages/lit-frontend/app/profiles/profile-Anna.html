@@ -9,7 +9,8 @@
         <link rel="stylesheet" href="/styles/tokens.css" />
         <link rel="stylesheet" href="/styles/reset.css" />
         <link rel="stylesheet" href="/styles/club-info.css" />
-        <script type="module" src="../../src/drop-down.ts"></script>
+        <script type="module" src="/src/drop-down.ts"></script>
+        <script type="module" src="/src/user-profile.ts"></script>
         <script type="module">
             document.addEventListener('DOMContentLoaded', () => {
                 const darkMode = localStorage.getItem('dark-mode') === "true";
@@ -55,25 +56,7 @@
                 </drop-down>
         </header>
         <div class="page-content">
-            <dl>
-                <dt class="subheading"> Anna Reed </dt>
-                <br>
-                <dt class="small-subheading"> Email </dt>
-                <dd> areed33@calpoly.edu </dd>
-                <br>
-                <dt class="small-subheading"> Pronouns </dt>
-                <dd> She/her/hers </dd>
-                <br>
-                <dt class="small-subheading"> Major </dt>
-                <dd> Civil Engineering </dd>
-                <br>
-                <dt class="small-subheading"> Clubs </dt>
-                <dd>
-                    <a href="../clubs/club-archery.html" class="tag">
-                        Cal Poly Archery Club
-                    </a>
-                </dd>
-            </dl>
+            <user-profile path="/profile/anna"> </user-profile>
         </div>
     </body>
 </html>

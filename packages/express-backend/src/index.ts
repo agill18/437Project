@@ -16,7 +16,7 @@ connect("437Project");
 
 // Get profile
 // Request Params: userId
-app.get("/api/profile/:userid", (req: Request, res: Response) => {
+app.get("/api/profile/:userId", (req: Request, res: Response) => {
   const { userId } = req.params;
 
   profiles
@@ -34,6 +34,19 @@ app.post("/api/profiles", (req: Request, res: Response) => {
     .create(newProfile)
     .then((profile: Profile) => res.status(201).send(profile))
     .catch((err) => res.status(500).send(err));
+});
+
+// Update profile
+// Request Params: userId
+// Body: profile
+app.put("/api/profile/:userId", (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const newProfile = req.body;
+
+  profiles
+    .update(userId, newProfile)
+    .then((profile: Profile) => res.json(profile))
+    .catch((err) => res.status(404).end());
 });
 
 app.listen(port, () => {

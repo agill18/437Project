@@ -23,6 +23,7 @@
     --color-text: var(--color-accent);
     --color-text-heading:rgb(236, 211, 127);
     --color-light-background-accent: rgb(243, 242, 238);
+    --color-modal-background: #bacec4;
 
     --font-weight-normal: 500;
     --font-weight-light: 300;
@@ -46,6 +47,7 @@ body.dark-mode {
     --color-light-background-accent: rgb(52, 66, 60);
     --color-text: var(--color-accent);
     --color-text-heading: rgb(236, 211, 127);
+    --color-modal-background: rgb(56, 63, 55);
     
     --font-weight-normal: 520;
     --font-weight-light: 420;
