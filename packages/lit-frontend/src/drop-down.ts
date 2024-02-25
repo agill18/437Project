@@ -2,7 +2,7 @@ import { css, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 @customElement("drop-down")
-class DropDownElement extends LitElement {
+export class DropDownElement extends LitElement {
   @property({ reflect: true, type: Boolean }) open: boolean = false;
 
   render() {
@@ -82,7 +82,7 @@ class DropDownElement extends LitElement {
   }
 
   _toggleClickAway(open: boolean) {
-    const clickawayHandler = (ev: InputEvent) => {
+    const clickawayHandler = (ev: MouseEvent) => {
       if (!ev.composedPath().includes(this)) {
         this._toggle(false);
       } else {

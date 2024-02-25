@@ -1,4 +1,5 @@
 import { css, html, LitElement } from "lit";
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { customElement, property, state } from "lit/decorators.js";
 import { Profile } from "./models/profile";
 import { serverPath } from "./rest";
@@ -41,7 +42,7 @@ export class UserProfileElement extends LitElement {
             <br>
             <dt class="small-subheading"> Clubs </dt>
             <dd>
-                ${this.profile.clubs.map(renderClub)}
+                ${this.profile.clubs?.map(renderClub)}
             </dd>
         </dl>
     ` : " ";
@@ -100,7 +101,7 @@ export class UserProfileEditElement extends UserProfileElement {
         <label>
           <span> Pronouns </span>
           <select name="pronouns">
-            <option value=${this.profile.pronouns}>${this.profile.pronouns}</option>
+            <option value=${ifDefined(this.profile.pronouns)}>${this.profile.pronouns}</option>
             <option value="She/her/hers">She/her/hers</option>
             <option value="He/him/his">He/him/his</option>
             <option value="They/them">They/them</option>
@@ -110,11 +111,11 @@ export class UserProfileEditElement extends UserProfileElement {
         </label>
         <label>
           <span> Major </span>
-          <input name="major" value=${this.profile.major} />
+          <input name="major" value=${ifDefined(this.profile.major)} />
         </label>
         <label>
           <span> Clubs </span>
-          <input name="clubs" value=${this.profile.clubs} />
+          <input name="clubs" value=${ifDefined(this.profile.clubs?.join(", "))} />
         </label>
       </div>
       <div class="action-button-container">
@@ -130,7 +131,7 @@ export class UserProfileEditElement extends UserProfileElement {
               Cancel
           </button>
       </div>
-    </form>` : "";
+    </form>` : html`<div> </div>`;
   }
 
   static styles = css`
@@ -145,7 +146,6 @@ export class UserProfileEditElement extends UserProfileElement {
       display: contents;
       font-weight: var(--font-weight-light-bold);
       outline: none;
-      b
     }
 
     input, select {

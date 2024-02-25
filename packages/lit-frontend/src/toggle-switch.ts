@@ -15,7 +15,7 @@ export class ToggleSwitchElement extends LitElement {
             <span class="slider">
                 <input type="checkbox"
                 @change=${this._handleChange}
-                .checked=${isDarkMode}/>
+                .checked=${isDarkMode}>
             </span>
         </label>`;
   }

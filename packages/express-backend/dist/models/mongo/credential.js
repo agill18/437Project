@@ -16,22 +16,34 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var profile_exports = {};
-__export(profile_exports, {
-  default: () => profile_default
+var credential_exports = {};
+__export(credential_exports, {
+  default: () => credential_default
 });
-module.exports = __toCommonJS(profile_exports);
+module.exports = __toCommonJS(credential_exports);
 var import_mongoose = require("mongoose");
-const profileSchema = new import_mongoose.Schema(
+var validate = require("mongoose-validator");
+const credentialSchema = new import_mongoose.Schema(
   {
-    userId: { type: String, required: true, trim: true },
-    name: { type: String, required: true, trim: true },
-    email: { type: String, required: true, trim: true, unique: true },
-    pronouns: { type: String, trim: true },
-    major: { type: String, trim: true },
-    clubs: [String]
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      validate: [
+        validate({
+          validator: "matches",
+          arguments: /@calpoly\.edu$/,
+          message: "Provided email is not a Cal Poly email."
+        })
+      ],
+      unique: true
+    },
+    hashedPassword: {
+      type: String,
+      required: true
+    }
   },
-  { collection: "user_profiles" }
+  { collection: "user_credentials" }
 );
-const ProfileModel = (0, import_mongoose.model)("Profile", profileSchema);
-var profile_default = ProfileModel;
+const credentialModel = (0, import_mongoose.model)("Credential ", credentialSchema);
+var credential_default = credentialModel;

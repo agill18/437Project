@@ -24,7 +24,8 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var import_express = __toESM(require("express"));
 var import_cors = __toESM(require("cors"));
 var import_mongoConnect = require("./mongoConnect");
-var import_profiles = __toESM(require("./profiles"));
+var import_profiles = __toESM(require("./services/profiles"));
+var import_auth = require("./auth");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
 app.use((0, import_cors.default)());
@@ -43,6 +44,8 @@ app.put("/api/profile/:userId", (req, res) => {
   const newProfile = req.body;
   import_profiles.default.update(userId, newProfile).then((profile) => res.json(profile)).catch((err) => res.status(404).end());
 });
+app.post("/api/login", import_auth.loginUser);
+app.post("/api/signup", import_auth.registerUser);
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

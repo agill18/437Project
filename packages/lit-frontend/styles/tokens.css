@@ -15,6 +15,7 @@
     --color-accent: rgb(26, 87, 64);
     --color-accent-contrast: rgb(26, 87, 64);
     --color-accent-light: rgb(103, 142, 127);
+    --color-input: rgb(167, 181, 162);
     --color-accent-inverted: rgb(141, 178, 164);
     --color-background-header: var(--color-accent);
     --color-checked: white;
@@ -40,6 +41,7 @@
 body.dark-mode {
     --color-accent: rgb(224, 225, 226);
     --color-accent-contrast: rgb(52, 66, 60);
+    --color-input: rgb(52, 66, 60);
     --color-accent-inverted: rgb(5, 23, 13);
     --color-accent-light: rgb(215, 222, 219);
     --color-background-header: rgb(4, 20, 9);

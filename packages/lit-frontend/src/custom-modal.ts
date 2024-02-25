@@ -19,18 +19,19 @@ export class CustomModal extends LitElement {
         @click=${this.openModal}> 
           <slot name="button-name"> Default Action </slot>
       </button>
-      <div class="overlay" id="${this.customId}-overlay"+>
+      <div class="overlay" id="${this.customId}-overlay">
         <div class="modal-content" id="${this.customId}-modal">
-        <div class="modal-heading"> 
-          <slot name="title"> Default Modal Title </slot>
-          <button
-            @click=${this.closeModal}
-            class="x">
-              x
+          <div class="modal-heading"> 
+            <slot name="title"> Default Modal Title </slot>
+            <button
+              @click=${this.closeModal}
+              class="x">
+                x
             </button>
+          </div>
+          <hr class="divider">
+          <slot name="content"> Default Modal Content </slot>
         </div>
-        <hr class="divider">
-        <slot name="content"> Default Modal Content </slot>
       </div>
     `;
   }
@@ -126,8 +127,8 @@ export class CustomModal extends LitElement {
 
   openModal() {
       console.log("Opening modal:", this.customId);
-      const modal = this.shadowRoot.querySelector(`#${this.customId}-modal`);
-      const overlay = this.shadowRoot.querySelector(`#${this.customId}-overlay`);
+      const modal = this.shadowRoot?.querySelector(`#${this.customId}-modal`) as HTMLElement;
+      const overlay = this.shadowRoot?.querySelector(`#${this.customId}-overlay`) as HTMLElement;
       if (modal && overlay) {
         modal.style.display = 'block';
         overlay.style.display = 'block';
@@ -136,8 +137,8 @@ export class CustomModal extends LitElement {
 
   closeModal() {
     console.log("Closing modal:", this.customId);
-    const modal = this.shadowRoot.querySelector(`#${this.customId}-modal`);
-    const overlay = this.shadowRoot.querySelector(`#${this.customId}-overlay`);
+    const modal = this.shadowRoot?.querySelector(`#${this.customId}-modal`) as HTMLElement;;
+    const overlay = this.shadowRoot?.querySelector(`#${this.customId}-overlay`) as HTMLElement;;
       if (modal && overlay) {
         modal.style.display = 'none';
         overlay.style.display = 'none';

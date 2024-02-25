@@ -2,8 +2,11 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 
 import { connect } from "./mongoConnect";
-import { Profile } from "./models/profile";
-import profiles from "./profiles";
+import { Profile } from "ts-models";
+import profiles from "./services/profiles";
+import credentials from "./services/credentials";
+import { loginUser, registerUser } from "./auth";
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -48,6 +51,17 @@ app.put("/api/profile/:userId", (req: Request, res: Response) => {
     .then((profile: Profile) => res.json(profile))
     .catch((err) => res.status(404).end());
 });
+
+
+// Login to existing account
+// Request Params: N/A
+// Body: Credential
+app.post("/api/login", loginUser);
+
+// Register a new account
+// Request Params: N/A
+// Body: Credential
+app.post("/api/signup", registerUser);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

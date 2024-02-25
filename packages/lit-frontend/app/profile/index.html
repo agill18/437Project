@@ -13,6 +13,7 @@
         <script type="module" src="/src/user-profile.ts"></script>
         <script type="module" src="/src/custom-modal.ts"></script>
         <script type="module" src="/src/toggle-switch.ts"></script>
+        <script type="module" src="/src/auth-container.ts"></script>
         <script type="module">
             document.addEventListener('DOMContentLoaded', () => {
                 const darkMode = localStorage.getItem('dark-mode') === "true";
@@ -21,7 +22,7 @@
         </script>
     </head>
     <body>
-        <header>
+        <!-- <header>
             <svg class="logo">
                 <use href="/icons/user-interface.svg#icon-logo" />
             </svg>
@@ -50,9 +51,12 @@
                     </li>
                 </ul>
             </drop-down>
-        </header>
+        </header> -->
         <div class="page-content">
-            <user-profile path="/profile/anmol"> </user-profile>
+            <auth-container> 
+
+            </auth-container>
+            <!-- <user-profile path="/profile/anmol"> </user-profile>
             <toggle-switch> Dark Mode </toggle-switch>
             <custom-modal customId="edit-user-profile">
                 <span slot="button-name"> Edit Profile </span>
@@ -60,7 +64,8 @@
                 <div slot="content">
                     <user-profile-edit path="/profile/anmol"> </user-profile-edit>
                 </div>
-            </custom-modal>
+            </custom-modal> -->
         </div>
+
     </body>
 </html>

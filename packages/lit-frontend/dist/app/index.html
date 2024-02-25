@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+            rel="stylesheet">
+      <script type="module" crossorigin src="/assets/app-BWF3V1Mk.js"></script>
+      <link rel="stylesheet" crossorigin href="/assets/app-BELYfHrs.css">
+    </head>
+    <body>
+        <header>
+            <svg class="logo">
+                <use href="/assets/user-interface-CXZbkftB.svg#icon-logo" />
+            </svg>
+            <h1 class="center-title"> 
+                Cal Poly Clubs
+            </h1>
+            <drop-down>
+                <svg class="header">
+                    <use href="/assets/user-interface-CXZbkftB.svg#icon-profile" />
+                </svg>
+                <ul slot="menu">
+                    <li>
+                        <a href="/app/index.html"> Home </a>
+                    </li>
+                    <li> <hr> </li>
+                    <li> 
+                        <a href="/app/profiles/profile-Anmol.html"> My Profile </a> 
+                    </li>
+                    <li> <hr> </li>
+                    <li>
+                        <a> Sign Out </a>
+                    </li>
+                </ul>
+            </drop-down>
+        </header>
+        <div class="page-content"> 
+            <h2> General Events/Announcements </h2>
+            <div class="event-listing-homepage">
+                <event-overview-card linkHref="/app/events/event-career-fair.html">
+                    <span slot="name"> Winter Club Fair </span>
+                    <span slot="date"> January 20, 2024 </span>
+                    <span slot="time"> 12:00 PM - 3:00 PM PST </span>
+                    <span slot="location"> H2 Parking Lot </span>
+                </event-overview-card>
+            </div>
+            <h2> Directory </h2>
+            <search-container> 
+                <club-overview-card linkHref="/app/clubs/club-archery.html">
+                    <span slot="club-name"> Cal Poly Archery Club </span>
+                    <span slot="club-description">
+                        The Archery Club revolves around focusing skills that improves archery shooting of individuals. The club focuses on
+                        recreational archery for both beginners and experts.
+                    </span>
+                </club-overview-card>
+                <club-overview-card linkHref="/app/clubs/club-animation.html">
+                    <span slot="club-name"> Cal Poly Animation Club </span>
+                    <span slot="club-description"> 
+                        The Cal Poly Animation Club is creating animated short films while hosting guest speakers, workshops and tours.
+                    </span>
+                </club-overview-card>
+            </search-container>
+        </div>
+    </body>
+</html>

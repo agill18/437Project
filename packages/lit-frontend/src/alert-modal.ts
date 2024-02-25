@@ -1,10 +1,10 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 
 @customElement('alert-modal')
 export class AlertModal extends LitElement {
     @state()
-    alertVisible: Profile = true;
+    alertVisible: boolean = true;
 
     render() {
         return html`
