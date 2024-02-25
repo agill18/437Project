@@ -1,7 +1,7 @@
 import { css, html, LitElement } from "lit";
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { customElement, property, state } from "lit/decorators.js";
-import { Profile } from "./models/profile";
+import { Profile } from "ts-models";
 import { serverPath } from "./rest";
 import  "./toggle-switch";
 import "./custom-modal";

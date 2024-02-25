@@ -5,7 +5,7 @@ import { SearchItemInterface } from './search-item-interface';
 
 @customElement("club-overview-card")
 export class ClubOverviewCard extends LitElement implements SearchItemInterface {
-@property({ type: String }) linkHref: String = '../index.html';
+@property({ type: String }) linkHref: string = '../index.html';
 
   render() {
     return html`

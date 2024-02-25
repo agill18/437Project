@@ -230,7 +230,7 @@
             padding: 0.35rem 0.5rem;
             border: transparent;
             border-radius: 5px;
-            width: 
+            /* width:  */
         }
 
         // input[type="search"]::-webkit-search-cancel-button {
@@ -246,4 +246,4 @@
             border: 2px solid var(--color-accent-light); /* Custom focus style */
             // box-shadow: 0 0 5px rgba(255, 165, 0, 0.5); /* Adding a glow effect */
         }
-    `;$e([q({reflect:!0,type:Boolean})],L.prototype,"searchTerm",2);L=$e([B("search-container")],L);document.addEventListener("DOMContentLoaded",()=>{const i=localStorage.getItem("dark-mode")==="true";document.body.classList.toggle("dark-mode",i)});
+    `;$e([q({reflect:!0,type:String})],L.prototype,"searchTerm",2);L=$e([B("search-container")],L);document.addEventListener("DOMContentLoaded",()=>{const i=localStorage.getItem("dark-mode")==="true";document.body.classList.toggle("dark-mode",i)});

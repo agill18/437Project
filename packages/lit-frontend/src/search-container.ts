@@ -4,7 +4,7 @@ import { SearchItemInterface } from './search-item-interface';
 
 @customElement('search-container')
 export class SearchContainer extends LitElement {
-    @property({ reflect: true, type: Boolean }) searchTerm: string = "";
+    @property({ reflect: true, type: String }) searchTerm: string = "";
 
       render() {
         return html`
@@ -35,7 +35,7 @@ export class SearchContainer extends LitElement {
             padding: 0.35rem 0.5rem;
             border: transparent;
             border-radius: 5px;
-            width: 
+            /* width:  */
         }
 
         // input[type="search"]::-webkit-search-cancel-button {

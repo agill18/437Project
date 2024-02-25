@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 
 @customElement("event-overview-card")
 export class EventOverviewCard extends LitElement {
-@property({ type: String }) linkHref: String = '/index.html';
+@property({ type: String }) linkHref: string = '/index.html';
 
   render() {
     return html`
