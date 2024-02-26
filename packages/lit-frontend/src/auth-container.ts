@@ -226,7 +226,7 @@ export class LoginForm extends LitElement {
     }
 
     login(json: any) {
-        fetch(serverPath('/login'), {
+        fetch('http://localhost:3000/login', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(json)
@@ -361,7 +361,7 @@ export class SignupForm extends LitElement {
     }
 
     signup(json: any) {
-        fetch(serverPath('/signup'), {
+        fetch('http://localhost:3000/signup', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(json)
