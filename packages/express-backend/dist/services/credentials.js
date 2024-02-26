@@ -63,7 +63,7 @@ function verify(email, password) {
         reject("Invalid username or password");
     }).then((credsOnFile) => __async(this, null, function* () {
       if (credsOnFile) {
-        const isValid = import_bcryptjs.default.compare(password, credsOnFile.hashedPassword);
+        const isValid = yield import_bcryptjs.default.compare(password, credsOnFile.hashedPassword);
         if (isValid) {
           console.log("Verified", isValid, credsOnFile.email);
           resolve(credsOnFile.email);

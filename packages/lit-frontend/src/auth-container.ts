@@ -5,7 +5,10 @@ import { serverPath } from "./rest";
 @customElement('auth-container')
 export class AuthContainer extends LitElement {
     @state()
-    currentPage: string = 'signup';
+    currentPage: string = 'login';
+
+    @state()
+    loginStatus: number = 0;
 
     shouldRenderLogin() {
         return this.currentPage === 'login';
@@ -109,10 +112,14 @@ export class AuthContainer extends LitElement {
 
 @customElement('login-form')
 export class LoginForm extends LitElement {
+    @state()
+    errorMessage: string = '';
 
     render() {
         return html`
-            <form id="login" @submit=${this.handleLogin}>
+            <form id="login" 
+                @submit=${this.handleLogin}
+                @change=${() => {this.errorMessage = ''}}>
                 <label class="field-entry">
                     <span class="field-title"> Cal Poly Email </span>
                     <input
@@ -129,7 +136,7 @@ export class LoginForm extends LitElement {
                         name="password"        
                     />
                 </label>
-                <!-- {errorMessage && renderErrorMessage(errorMessage)} -->
+                ${this.errorMessage ? html`<render-error> ${this.errorMessage} </render-error>` : ''}
                 <input
                     class="login-button"
                     id="loginButton"
@@ -191,7 +198,7 @@ export class LoginForm extends LitElement {
         .login-button {
             box-sizing: border-box;
             display: block;
-            bottom: 2.85rem;
+            bottom: 2.7rem;
             position: fixed;
             width: 77.8%;
             padding: 0.6rem;
@@ -220,29 +227,35 @@ export class LoginForm extends LitElement {
 
     login(json: any) {
         fetch(serverPath('/login'), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(json)
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(json)
         })
         .then((response) => {
-            if (response.status === 200) return response.json();
-            else return null;
+            if (response.status === 200) {
+                console.log('Successfully logged in');
+                return response.json();
+            } else if (response.status === 401) {
+                console.log('Failed to login, invalid credentials');
+                this.errorMessage = 'Failed to login. Invalid credentials';
+            } else {
+                console.log('Failed to login. Internal Server Error.');
+                this.errorMessage = 'Failed to login. Internal Server Error'; 
+            }
         })
-        .then((json: unknown) => {
-            console.log('json', json);
-        })
-        .catch((err) =>
-            console.log("Failed to POST form data", err)
-        );
     }
 }
 
 @customElement('signup-form')
 export class SignupForm extends LitElement {
+    @state()
+    errorMessage: string = '';
 
     render() {
         return html`
-            <form id="signup" @submit=${this.handleSignup}>
+            <form id="signup" 
+            @submit=${this.handleSignup}
+            @change=${() => {this.errorMessage = ''}}>
                 <label class="field-entry">
                     <span class="field-title"> Cal Poly Email </span>
                     <input
@@ -259,7 +272,7 @@ export class SignupForm extends LitElement {
                         name="password"        
                     />
                 </label>
-                <!-- {errorMessage && renderErrorMessage(errorMessage)} -->
+                ${this.errorMessage ? html`<render-error> ${this.errorMessage} </render-error>` : ''}
                 <input
                     class="signup-button"
                     id="signupButton"
@@ -321,7 +334,7 @@ export class SignupForm extends LitElement {
         .signup-button {
             box-sizing: border-box;
             display: block;
-            bottom: 2.85rem;
+            bottom: 2.7rem;
             position: fixed;
             width: 77.8%;
             padding: 0.6rem;
@@ -331,7 +344,7 @@ export class SignupForm extends LitElement {
             font-weight: var(--font-weight-extra-bold);
         }
 
-        .login-button:hover {
+        .signup-button:hover {
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
             cursor: pointer;
         }
@@ -343,27 +356,48 @@ export class SignupForm extends LitElement {
         const form = ev.target as HTMLFormElement;
         const data = new FormData(form);
         const json = Object.fromEntries(data);
-        console.log("This is the login info...", json);
 
         this.signup(json);
     }
 
     signup(json: any) {
         fetch(serverPath('/signup'), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(json)
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(json)
         })
-        .then((response) => {
-            if (response.status === 201) return response.json();
-            else return null;
+        .then(async (response) => {
+            if (response.status === 201) {
+                console.log('Successfully registered new account');
+                return response.json();
+            } else {
+                console.log('Failed to create new account.');
+                this.errorMessage = await response.text();
+            }
         })
-        .then((json: unknown) => {
-            console.log('json', json);
-        })
-        .catch((err) =>
-            console.log("Failed to signup", err)
-        );
     }
 }
 
+@customElement('render-error')
+export class RenderError extends LitElement {
+
+    render() {
+        return html`
+            <div class='error-message'> 
+                <slot> Error </slot>
+            </div>
+        `
+    }
+
+    static styles = css`
+        :host {
+            display: block;
+        }
+
+        .error-message {
+            color: red;
+            font-size: var(--size-type-small-body);
+            padding-bottom: 0.6rem;
+        }
+    `;
+}
