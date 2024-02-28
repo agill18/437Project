@@ -1,0 +1,103 @@
+body {
+    font-family: var(--font-family-body);
+    margin: 0px;
+    background-color: var(--color-background-page);
+    font-size: var(--size-type-normal-body);
+    color: var(--color-text)
+}
+
+h2, h3, h4, h5, h6, dt, summary {
+    font-family: var(--font-family-display);
+    color: var(--color-text);
+}
+
+h1 {
+    font-family: var(--font-family-display);
+    margin: 0.2rem;
+    text-align: center;
+    font-size: 3vw;
+    font-size: clamp(100%, 2vw, 200%);
+    color: var(--color-text-heading);
+}
+
+header {
+    margin: 0;
+    z-index: 1000; /* Ensures header will overpower other elements */ 
+    background-color: var(--color-background-header);
+    color: var(--color-text-heading);
+    display: flex;
+    padding: 0.4rem;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
+ul {
+    color:var(--color-text);
+}
+
+a {
+    color:var(---color-link);
+    font-weight: var(--font-weight-extra-bold);
+    text-decoration: none;
+    font-weight: var(--font-weight-normal)
+}
+
+a:hover {
+    color:rgb(177, 91, 48);
+}
+
+h3 {
+    font-size: var(--size-type-medium-heading);
+    margin-bottom: 0.2rem;
+}
+
+svg.icon {
+    padding-top: 0.3rem;
+    font-weight: var(--font-weight-extra-bold);
+    width: var(--size-icon-normal-width);
+    height: var(--size-icon-normal-height);
+    fill: var(--color-accent);
+}
+
+svg.tiny-icon {
+    padding-top: 0.2rem;
+    font-weight: bold;
+    width: var(--size-icon-tiny-width);
+    height: var(--size-icon-tiny-height);
+    fill: var(--color-accent);;
+}
+
+svg.logo {
+    width: 2.75rem;
+    height: 2.35rem;
+    stroke: red;
+    stroke-width: 2;
+    fill: var(--color-text-heading) !important; 
+}
+
+svg.header {
+    margin: 0;
+    padding:0;
+    padding-top: 0.6rem;
+    width: 3.5rem;
+    height: 3.2rem;
+    fill: var(--color-text-heading);
+}
+
+.center-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.page-content {
+    margin-top: 5.5rem;
+    /* To account for header not cutting off page content */
+    margin-left: 2rem;
+    margin-right: 2rem;
+    flex-basis: 100%;
+    overflow: auto;
+}

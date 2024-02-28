@@ -1,6 +1,5 @@
 import { css, html, LitElement } from "lit";
 import { customElement, state } from 'lit/decorators.js';
-import { serverPath } from "./rest";
 
 @customElement('auth-container')
 export class AuthContainer extends LitElement {
