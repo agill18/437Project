@@ -1,5 +1,9 @@
 import { css, html, LitElement } from "lit";
 import { customElement, state } from 'lit/decorators.js';
+import { createContext, provide } from "@lit/context";
+import { APIUser, AuthenticatedUser, JSONRequest } from "../rest";
+
+export let authContext = createContext<APIUser>("auth");
 
 @customElement('auth-container')
 export class AuthContainer extends LitElement {
@@ -8,6 +12,17 @@ export class AuthContainer extends LitElement {
 
     @state()
     loginStatus: number = 0;
+
+    @provide({ context: authContext })
+    @state()
+    user: APIUser =
+        AuthenticatedUser.authenticateFromLocalStorage(() =>
+        this._signOut()
+        );
+
+    isAuthenticated() {
+        return this.user.authenticated;
+    }
 
     shouldRenderLogin() {
         return this.currentPage === 'login';
@@ -107,10 +122,15 @@ export class AuthContainer extends LitElement {
             text-decoration: underline;
         }
     `;
+
+    _signOut() {
+        this.user = APIUser.deauthenticate(this.user);
+        document.location.reload();
+    }
 }
 
 @customElement('login-form')
-export class LoginForm extends LitElement {
+export class LoginForm extends AuthContainer {
     @state()
     errorMessage: string = '';
 
@@ -225,28 +245,37 @@ export class LoginForm extends LitElement {
     }
 
     login(json: any) {
-        fetch('http://localhost:3000/login', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(json)
-        })
-        .then((response) => {
-            if (response.status === 200) {
-                console.log('Successfully logged in');
-                return response.json();
-            } else if (response.status === 401) {
-                console.log('Failed to login, invalid credentials');
-                this.errorMessage = 'Failed to login. Invalid credentials';
-            } else {
-                console.log('Failed to login. Internal Server Error.');
-                this.errorMessage = 'Failed to login. Internal Server Error'; 
-            }
-        })
+        const request = new JSONRequest(json);
+        request
+            .base()
+            .post("/login")
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log('Successfully logged in');
+                    return response.json();
+                } else if (response.status === 401) {
+                    console.log('Failed to login, invalid credentials');
+                    this.errorMessage = 'Failed to login. Invalid credentials';
+                } else {
+                    console.log('Failed to login. Internal Server Error.');
+                    this.errorMessage = 'Failed to login. Internal Server Error'; 
+                }
+            })
+            .then((json) => {
+                if (json) {
+                    console.log("Authentication:", json.token);
+                    this.user = AuthenticatedUser.authenticate(
+                        json.token,
+                        () => this._signOut()
+                    );
+                    this.requestUpdate();
+                }
+            });
     }
 }
 
 @customElement('signup-form')
-export class SignupForm extends LitElement {
+export class SignupForm extends AuthContainer {
     @state()
     errorMessage: string = '';
 
@@ -360,20 +389,22 @@ export class SignupForm extends LitElement {
     }
 
     signup(json: any) {
-        fetch('http://localhost:3000/signup', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(json)
-        })
-        .then(async (response) => {
-            if (response.status === 201) {
-                console.log('Successfully registered new account');
-                return response.json();
-            } else {
-                console.log('Failed to create new account.');
-                this.errorMessage = await response.text();
-            }
-        })
+        const request = new JSONRequest(json);
+        request
+            .base()
+            .post("/signup")
+            .then(async (response) => {
+                if (response.status === 201) {
+                    console.log('Successfully registered new account');
+                    return response.json();
+                } else {
+                    console.log('Failed to create new account.');
+                    this.errorMessage = await response.text();
+                }
+            })
+            .then((json) => {
+                console.log("Registration:", json);
+            });
     }
 }
 

@@ -54,7 +54,6 @@ function generateAccessToken(email) {
 }
 function registerUser(req, res) {
   const { email, password } = req.body;
-  console.log(email, password, "this is it");
   if (!email || !password) {
     res.status(400).send("Bad request: Invalid input data.");
   } else {
