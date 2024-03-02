@@ -21,10 +21,7 @@ export interface App<M, Msg extends TypedMessage> {
   updateFn: Update<M, Msg>;
 }
 
-export class Main<
-  M,
-  Msg extends TypedMessage
-> extends LitElement {
+export class Main<M, Msg extends TypedMessage> extends LitElement {
   updateFn: Update<M, Msg>;
 
   getModel: () => M;

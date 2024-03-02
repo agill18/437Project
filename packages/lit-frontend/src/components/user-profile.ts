@@ -45,7 +45,7 @@ export class UserProfileElement extends LitElement {
                 ${this.profile.clubs?.map(renderClub)}
             </dd>
         </dl>
-    ` : " ";
+    ` : html`<div>No content able to be found </div>`;
   }
 
   static styles = css`
