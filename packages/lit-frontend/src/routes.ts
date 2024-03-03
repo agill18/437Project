@@ -12,12 +12,6 @@ export default [
         console.log('Navigating to /app/profile'); 
     },
   },
-  { path: "/app/home",
-    component: "home-view",
-    action: () => {
-        console.log('Navigating to /app/home');
-    },
-  },
   { path: "/app",
     component: "home-view",
     action: () => {
@@ -27,7 +21,7 @@ export default [
   { path: "/",
     component: "blank-view",
     action: () => {
-        console.log('Navigating to /app');
+        console.log('Navigating to /');
     },
   },
   { path: "(.*)", redirect: "/" }

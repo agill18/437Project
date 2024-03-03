@@ -7,7 +7,7 @@ function generateAccessToken(email: string) {
     const payload = { email: email }
     
     return new Promise((resolve, reject) => {
-        jwt.sign(payload, process.env.TOKEN_SECRET!, { expiresIn: '1d' }, 
+        jwt.sign(payload, process.env.TOKEN_SECRET!, { expiresIn: '2s' }, 
             (error: any, token: any) => {
                 if (error) reject(error);
                 else resolve(token);

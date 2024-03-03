@@ -53,6 +53,10 @@ export class AuthContainer extends LitElement {
     }
 
     renderAuthentication() {
+        // Will block access to any other pages
+        if (!this.isAuthenticated()) {
+            Router.go("/");
+        }
         return html`
             <link rel="stylesheet" href="/styles/club-info.css" />
             <link rel="stylesheet" href="/styles/page.css" />
