@@ -25,6 +25,7 @@ var import_express = __toESM(require("express"));
 var import_cors = __toESM(require("cors"));
 var import_mongoConnect = require("./mongoConnect");
 var import_profiles = __toESM(require("./services/profiles"));
+var import_clubs = __toESM(require("./services/clubs"));
 var import_auth = require("./auth");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
@@ -45,6 +46,17 @@ app.put("/api/profile/:userId", (req, res) => {
   const { userId } = req.params;
   const newProfile = req.body;
   import_profiles.default.update(userId, newProfile).then((profile) => res.json(profile)).catch((err) => res.status(404).end());
+});
+app.post("/api/clubs", (req, res) => {
+  const newClubSummary = req.body;
+  import_clubs.default.create(newClubSummary).then((clubSummary) => res.status(201).send(clubSummary)).catch((err) => res.status(500).send(err));
+});
+app.get("/api/clubs/:name", (req, res) => {
+  const { name } = req.params;
+  import_clubs.default.get(name).then((clubSummary) => res.json(clubSummary)).catch((err) => res.status(404).end());
+});
+app.get("/api/clubs", (req, res) => {
+  import_clubs.default.getAll().then((clubSummaries) => res.status(200).json(clubSummaries)).catch((err) => res.status(404).end());
 });
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

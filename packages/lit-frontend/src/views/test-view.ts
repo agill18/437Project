@@ -2,7 +2,6 @@ import { customElement } from "lit/decorators.js";
 import * as App from "../app";
 import { html, css } from "lit";
 
-
 @customElement("test-view")
 export class TestViewElement extends App.View {
 

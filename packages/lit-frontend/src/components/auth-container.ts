@@ -1,8 +1,9 @@
 import { css, html, LitElement } from "lit";
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, state, property } from 'lit/decorators.js';
 import { createContext, provide } from "@lit/context";
 import { APIUser, AuthenticatedUser, JSONRequest } from "../rest";
 import { Router } from '@vaadin/router';
+import { USER_EMAIL_KEY } from "../rest"
 
 export let authContext = createContext<APIUser>("auth");
 
@@ -16,6 +17,9 @@ export class AuthContainer extends LitElement {
 
     @state()
     errorMessage: string = '';
+
+    @state()
+    isSuccess: boolean = false;
 
     @provide({ context: authContext })
     @state()
@@ -75,7 +79,7 @@ export class AuthContainer extends LitElement {
         return html`
             <form id="login" 
                 @submit=${this.handleLogin}
-                @change=${() => {this.errorMessage = ''}}>
+                @change=${() => {this.errorMessage = ''; this.isSuccess = false;}}>
                 <label class="field-entry">
                     <span class="field-title"> Cal Poly Email </span>
                     <input
@@ -92,7 +96,7 @@ export class AuthContainer extends LitElement {
                         name="password"        
                     />
                 </label>
-                ${this.errorMessage ? html`<render-error> ${this.errorMessage} </render-error>` : ''}
+                ${this.errorMessage ? html`<render-error .success=${false}> ${this.errorMessage} </render-error>` : ''}
                 <input
                     class="login-button"
                     id="loginButton"
@@ -108,7 +112,7 @@ export class AuthContainer extends LitElement {
         return html`
             <form id="signup" 
             @submit=${this.handleSignup}
-            @change=${() => {this.errorMessage = ''}}>
+            @change=${() => {this.errorMessage = ''; this.isSuccess = false;}}>
                 <label class="field-entry">
                     <span class="field-title"> Cal Poly Email </span>
                     <input
@@ -125,7 +129,8 @@ export class AuthContainer extends LitElement {
                         name="password"        
                     />
                 </label>
-                ${this.errorMessage ? html`<render-error> ${this.errorMessage} </render-error>` : ''}
+                ${this.errorMessage ? html`<render-error .isSuccess=${false}> ${this.errorMessage} </render-error>` : ''}
+                ${this.isSuccess ? html`<render-error .isSuccess=${true}> Sucessfully created account. Go to log in. </render-error>` : ''}
                 <input
                     class="signup-button"
                     id="signupButton"
@@ -160,6 +165,14 @@ export class AuthContainer extends LitElement {
             }
         });
         this.dispatchEvent(userLoggedIn);
+        const getClubSummaries = new CustomEvent("mvu:message", {
+            bubbles: true,
+            composed: true,
+            detail: {
+                type: "GetClubSummaries",
+            }
+        });
+        this.dispatchEvent(getClubSummaries);
     }
 
     handleLogin(ev: Event) {
@@ -168,11 +181,10 @@ export class AuthContainer extends LitElement {
         const form = ev.target as HTMLFormElement;
         const data = new FormData(form);
         const json = Object.fromEntries(data);
-
-        this.login(json);
+        this.login(json, json.email);
     }
 
-    login(json: any) {
+    login(json: any, email: any) {
         const request = new JSONRequest(json);
         request
             .base()
@@ -194,7 +206,8 @@ export class AuthContainer extends LitElement {
                     console.log("Authentication:", json.token);
                     const authenticatedUser = AuthenticatedUser.authenticate(json.token, () => this._signOut());
                     this.user = AuthenticatedUser.authenticate(json.token, () => this._signOut());
-                    Router.go('/app/profile')
+                    localStorage.setItem(USER_EMAIL_KEY, email);
+                    Router.go('/app')
                     this._dispatchUserLoggedIn(authenticatedUser);
                     this.requestUpdate();
                 }
@@ -219,6 +232,7 @@ export class AuthContainer extends LitElement {
             .then(async (response) => {
                 if (response.status === 201) {
                     console.log('Successfully registered new account');
+                    this.isSuccess = true;
                     return response.json();
                 } else {
                     console.log('Failed to create new account.');
@@ -352,10 +366,16 @@ export class AuthContainer extends LitElement {
 
 @customElement('render-error')
 export class RenderError extends LitElement {
+    @property({type: Boolean})
+    isSuccess: boolean = false;
+
+    getClassnameForPage() {
+        return !this.isSuccess ? 'error-message' : 'success-message';
+    }
 
     render() {
         return html`
-            <div class='error-message'> 
+            <div class=${this.getClassnameForPage()}> 
                 <slot> Error </slot>
             </div>
         `
@@ -368,6 +388,12 @@ export class RenderError extends LitElement {
 
         .error-message {
             color: red;
+            font-size: var(--size-type-small-body);
+            padding-bottom: 0.6rem;
+        }
+
+        .success-message {
+            color: var(--color-background-header);
             font-size: var(--size-type-small-body);
             padding-bottom: 0.6rem;
         }

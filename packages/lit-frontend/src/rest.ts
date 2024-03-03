@@ -2,6 +2,7 @@ const SERVER_ROOT = "http://localhost:3000";
 const API_PATH = "/api";
 const API_ROOT = "http://localhost:3000/api";
 const TOKEN_KEY = "AUTH_TOKEN";
+export const USER_EMAIL_KEY = "USER_EMAIL_KEY";
 
 export class APIUser {
   authenticated = false;
@@ -16,6 +17,7 @@ export class APIUser {
     console.log("Deauthenticating", user, APIUser._theUser);
     if (user === APIUser._theUser) {
       localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_EMAIL_KEY);
       APIUser._theUser = anon;
     }
 

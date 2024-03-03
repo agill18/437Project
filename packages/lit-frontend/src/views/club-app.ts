@@ -17,9 +17,9 @@ export class ClubAppElement extends App.Main {
 
   render() {
     return html`
-      <auth-primary>
+      <auth-container>
         <vaadin-router .routes=${routes}> </vaadin-router>
-      </auth-primary>
+      </auth-container>
     `;
   }
 

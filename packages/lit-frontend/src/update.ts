@@ -1,6 +1,6 @@
 import { JSONRequest } from "./rest";
 import * as App from "./app";
-import { Profile } from "ts-models";
+import { Profile, ClubSummary } from "ts-models";
 
 const dispatch = App.createDispatch();
 export default dispatch.update;
@@ -19,7 +19,7 @@ dispatch.addMessage("ProfileSaved", (msg: App.Message) => {
     .then((json: unknown) => {
       if (json) {
         console.log("Profile:", json);
-        json as Profile;
+        return json as Profile;
       }
       return undefined;
     })
@@ -30,10 +30,32 @@ dispatch.addMessage("ProfileSaved", (msg: App.Message) => {
 
 dispatch.addMessage("UserLoggedIn", (msg: App.Message, model: App.Model) => {
     const { user } = msg as App.UserLoggedIn;
-    console.log("Dispatched UserLoggedIn user:", user);
-    console.log("Model:", model);
-
+    console.log("Dispatched UserLoggedIn");
 
     return App.updateProps({ user })(model);
   }
 );
+
+dispatch.addMessage("GetClubSummaries", (msg: App.Message) => {
+  const {} = msg as App.GetClubSummaries;
+  console.log("Dispatched GetClubSummaries");
+
+  return new JSONRequest(undefined)
+    .get(`/clubs`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("ClubSummaries:", json);
+        return json as ClubSummary[];
+      }
+      return undefined;
+    })
+    .then((clubSummaries: ClubSummary[] | undefined) => 
+      clubSummaries ? App.updateProps({ clubSummaries }) : App.noUpdate
+    );
+});

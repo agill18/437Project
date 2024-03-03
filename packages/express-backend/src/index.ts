@@ -2,8 +2,9 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 
 import { connect } from "./mongoConnect";
-import { Profile } from "ts-models";
+import { Profile, ClubSummary } from "ts-models";
 import profiles from "./services/profiles";
+import clubs from "./services/clubs";
 import credentials from "./services/credentials";
 import { loginUser, registerUser } from "./auth";
 import apiRouter from "./routes/api";
@@ -63,6 +64,37 @@ app.put("/api/profile/:userId", (req: Request, res: Response) => {
   profiles
     .update(userId, newProfile)
     .then((profile: Profile) => res.json(profile))
+    .catch((err) => res.status(404).end());
+});
+
+// Add club summary
+// Body: clubSummary
+app.post("/api/clubs", (req: Request, res: Response) => {
+  const newClubSummary = req.body;
+
+  clubs
+    .create(newClubSummary)
+    .then((clubSummary: ClubSummary) => res.status(201).send(clubSummary))
+    .catch((err) => res.status(500).send(err));
+});
+
+// Get club summary
+// Request Params: name
+app.get("/api/clubs/:name", (req: Request, res: Response) => {
+  const { name } = req.params;
+
+  clubs
+    .get(name)
+    .then((clubSummary: ClubSummary) => res.json(clubSummary))
+    .catch((err) => res.status(404).end());
+});
+
+// Get all club summaries
+// Request Params: n/a
+app.get("/api/clubs", (req: Request, res: Response) => {
+  clubs
+    .getAll()
+    .then((clubSummaries: ClubSummary[]) => res.status(200).json(clubSummaries))
     .catch((err) => res.status(404).end());
 });
 
