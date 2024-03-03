@@ -107,7 +107,6 @@ export class AuthContainer extends LitElement {
                     type="submit"
                     value="Login"
                 />
-                <a href="/app>"> link </a>
             </form>
         `;
     }
