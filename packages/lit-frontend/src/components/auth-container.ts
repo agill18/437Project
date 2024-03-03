@@ -53,7 +53,7 @@ export class AuthContainer extends LitElement {
     }
 
     renderAuthentication() {
-        // Will block access to any other pages
+        // Will block access to any other pages when user is not authenticated
         if (!this.isAuthenticated()) {
             Router.go("/");
         }

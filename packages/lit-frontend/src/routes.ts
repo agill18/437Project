@@ -7,7 +7,7 @@ import "./views/home-view";
 export default [
   {
     path: "/app/profile",
-    component: "profile-page",
+    component: "test-view",
     action: () => {
         console.log('Navigating to /app/profile'); 
     },

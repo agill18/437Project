@@ -4,6 +4,7 @@ import { customElement, property } from "lit/decorators.js";
 import * as App from "../app";
 import "../components/club-overview-card";
 import "../components/search-container";
+import "../components/app-header";
 
 @customElement("home-view")
 export class HomeViewElement extends App.View {
@@ -26,6 +27,7 @@ export class HomeViewElement extends App.View {
             <link rel="stylesheet" href="/styles/tokens.css" />
             <link rel="stylesheet" href="/styles/reset.css" />
             <link rel="stylesheet" href="/styles/club-info.css" />
+            <app-header> </app-header>
             <div class="page-content">
                 <h2> Directory </h2>
                 <search-container> 

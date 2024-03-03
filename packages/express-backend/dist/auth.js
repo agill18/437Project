@@ -42,7 +42,7 @@ function generateAccessToken(email) {
     import_jsonwebtoken.default.sign(
       payload,
       process.env.TOKEN_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "2s" },
       (error, token) => {
         if (error)
           reject(error);

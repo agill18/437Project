@@ -54,6 +54,7 @@ __export(credentials_exports, {
 module.exports = __toCommonJS(credentials_exports);
 var import_bcryptjs = __toESM(require("bcryptjs"));
 var import_credential = __toESM(require("../models/credential"));
+var import_profile = __toESM(require("../models/profile"));
 function verify(email, password) {
   return new Promise((resolve, reject) => {
     import_credential.default.find({ email }).then((found) => {
@@ -81,6 +82,8 @@ function createCredential(email, password) {
     const hashedPassword = yield import_bcryptjs.default.hash(password, salt);
     const credential = new import_credential.default({ email, hashedPassword });
     console.log("credential", credential);
+    const p = new import_profile.default({ email });
+    yield p.save();
     return yield credential.save();
   });
 }

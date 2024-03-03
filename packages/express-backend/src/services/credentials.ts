@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import { Credential } from "ts-models";
 import credentialModel from "../models/credential";
+import { Profile } from "ts-models";
+import ProfileModel from "../models/profile";
 
 function verify(email: string, password: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
@@ -31,6 +33,10 @@ export async function createCredential(email: string, password: string,): Promis
     const hashedPassword = await bcrypt.hash(password, salt);
     const credential = new credentialModel({ email, hashedPassword });
     console.log("credential", credential)
+    // Create profile for all new users as well
+    const p = new ProfileModel({email});
+    await p.save();
+
     return await credential.save();
 }
 
