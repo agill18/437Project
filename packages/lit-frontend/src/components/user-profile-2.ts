@@ -64,7 +64,11 @@ export class UserProfile2EditElement extends UserProfile2Element {
           <input name="name" value=${this.profile.name} />
         </label>
         <label>
-          <span> Email &#128274; </span>
+          <span class="with-icon"> Email 
+            <svg class="lock-icon">
+                <use href="/icons/user-interface.svg#icon-lock" />
+            </svg>
+          </span>
           <input class='disabled' name="email" disabled value=${this.profile.email} />
         </label>
         <label>
@@ -128,7 +132,21 @@ export class UserProfile2EditElement extends UserProfile2Element {
     }
 
     .disabled {
-      opacity: 0.75;
+      opacity: 0.5;
+    }
+
+    .with-icon {
+      display: block;
+    }
+
+    svg.lock-icon {
+        position: absolute;  
+        display: inline-block;
+        margin-left: 0.35rem;
+        margin-top: 0.1rem;
+        width: 1rem;
+        height: 1.5rem;
+        fill: var(--color-text);
     }
 
     select {
