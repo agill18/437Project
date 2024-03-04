@@ -25,6 +25,9 @@ export class AuthContainer extends LitElement {
     @state()
     user: APIUser = AuthenticatedUser.authenticateFromLocalStorage(() => this._signOut());
 
+    @property({type: Boolean})
+    passwordVisible = false;
+
     isAuthenticated() {
         return this.user.authenticated;
     }
@@ -93,12 +96,17 @@ export class AuthContainer extends LitElement {
                     />
                 </label>
                 <label class="field-entry">
-                    <span class="field-title"> Password </span>
+                    <span class="field-title"> Password 
+                        <svg class="password-icon" @click=${this.togglePassword}>
+                            <use href=${this.getTogglePassIcon()} />
+                        </svg>
+                      </span>
                     <input
                         class="field-input"
-                        type="text"
-                        name="password"        
-                    />
+                        name="password"   
+                        id="id_password"   
+                        type="${this.passwordVisible ? 'text' : 'password'}"
+                    >                
                 </label>
                 ${this.errorMessage ? html`<render-error .success=${false}> ${this.errorMessage} </render-error>` : ''}
                 <input
@@ -125,10 +133,14 @@ export class AuthContainer extends LitElement {
                     />
                 </label>
                 <label class="field-entry">
-                    <span class="field-title"> Password </span>
+                    <span class="field-title"> Password 
+                        <svg class="password-icon" @click=${this.togglePassword}>
+                            <use href=${this.getTogglePassIcon()} />
+                        </svg>
+                    </span>
                     <input
                         class="field-input"
-                        type="text"
+                        type=${this.passwordVisible ? 'text' : 'password'}
                         name="password"        
                     />
                 </label>
@@ -185,6 +197,16 @@ export class AuthContainer extends LitElement {
             }
         });
         this.dispatchEvent(getClubSummaries);
+    }
+
+    getTogglePassIcon() {
+        return this.passwordVisible ? 
+                '/icons/user-interface.svg#password-visble' : 
+                '/icons/user-interface.svg#password-hidden';
+    }
+
+    togglePassword() {
+        this.passwordVisible = !this.passwordVisible;
     }
 
     handleLogin(ev: Event) {
@@ -259,6 +281,16 @@ export class AuthContainer extends LitElement {
     static styles = css`
         :host {
             display: block;
+        }
+
+        svg.password-icon {
+            right: 3rem;
+            font-weight: var(--font-weight-extra-bold);
+            width: 2rem;
+            height: 1.5rem;
+            fill: var(--color-accent);
+            position: absolute;
+            margin-top: 2.2rem;
         }
 
         .authentication-container {

@@ -57,7 +57,6 @@ render() {
 export class UserProfile2EditElement extends UserProfile2Element {
 
   render() {
-    // Router.go('/app/profile/${localStorage.getItem(USER_EMAIL_KEY)?edit');
     return this.profile? html`<form @submit=${this._handleSubmit}>
       <div class="table-format">
         <label>

@@ -24,5 +24,5 @@ export default [
         console.log('Navigating to /');
     },
   },
-  { path: "(.*)", redirect: "/app" }
+  { path: "(.*)", redirect: "/" }
 ];
