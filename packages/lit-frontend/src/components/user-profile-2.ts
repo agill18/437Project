@@ -65,8 +65,8 @@ export class UserProfile2EditElement extends UserProfile2Element {
           <input name="name" value=${this.profile.name} />
         </label>
         <label>
-          <span> Email </span>
-          <input name="email" value=${this.profile.email} />
+          <span> Email &#128274; </span>
+          <input class='disabled' name="email" disabled value=${this.profile.email} />
         </label>
         <label>
           <span> Pronouns </span>
@@ -126,6 +126,10 @@ export class UserProfile2EditElement extends UserProfile2Element {
       border: 1.3px solid var(--color-accent);
       border-radius: 0.2rem;
       padding: 0.3rem;
+    }
+
+    .disabled {
+      opacity: 0.75;
     }
 
     select {
