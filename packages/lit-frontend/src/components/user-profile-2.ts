@@ -2,7 +2,6 @@ import { css, html } from "lit";
 import {customElement, property } from "lit/decorators.js";
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Profile } from "ts-models";
-import { Router } from '@vaadin/router';
 import * as App from "../app";
 
 const renderClub = (club: string) =>

@@ -1,6 +1,7 @@
 import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Profile } from "ts-models";
+import { USER_EMAIL_KEY } from "../rest"
 import * as App from "../app";
 // import "../components/user-profile";
 import "../components/user-profile-2";
@@ -34,7 +35,7 @@ export class ProfileViewElement extends App.View {
 
   @property()
   get profile() {
-    return this.getFromModel("profile");
+    return this.getFromModel("profile") as Profile;
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -48,6 +49,25 @@ export class ProfileViewElement extends App.View {
     super.attributeChangedCallback(name, oldValue, newValue);
   }
 
+  shouldRenderEditProfile() {
+    if (this.profile && this.profile.email && localStorage.getItem(USER_EMAIL_KEY) === this.profile.email) {
+      return true;
+    }
+    return false;
+  }
+
+  renderPersonalProfileView() {
+    return html`
+      <toggle-switch> Dark Mode </toggle-switch>
+        <custom-modal customId="edit-user-profile">
+            <span slot="button-name"> Edit Profile </span>
+            <div slot="title"> Edit Profile </div>
+            <div slot="content">
+                <user-profile2-edit .using=${this.profile as Profile}> </user-profile2-edit>
+            </div>
+        </custom-modal>
+    `;
+  }
   render() {
     console.log('value of edit value', this.edit);
     return html`
@@ -58,14 +78,7 @@ export class ProfileViewElement extends App.View {
       <app-header> </app-header>
       <div class="page-content">
         <user-profile-2 .using=${this.profile as Profile}> </user-profile-2>
-        <toggle-switch> Dark Mode </toggle-switch>
-        <custom-modal customId="edit-user-profile">
-            <span slot="button-name"> Edit Profile </span>
-            <div slot="title"> Edit Profile </div>
-            <div slot="content">
-                <user-profile2-edit .using=${this.profile as Profile}> </user-profile2-edit>
-            </div>
-        </custom-modal>
+        ${this.shouldRenderEditProfile() ? this.renderPersonalProfileView() : ''}
       </div>
     `;
   }
