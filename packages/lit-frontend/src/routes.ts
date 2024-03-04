@@ -1,15 +1,15 @@
 import "/src/components/user-profile";
 import "./views/blank-view";
-import "./views/test-view";
+import "./views/profile-view";
 import "./views/club-app";
 import "./views/home-view";
 
 export default [
   {
-    path: "/app/profile",
-    component: "test-view",
+    path: "/app/profile/:email",
+    component: "profile-view",
     action: () => {
-        console.log('Navigating to /app/profile'); 
+        console.log('Navigating to /app/profile/:email'); 
     },
   },
   { path: "/app",
@@ -24,5 +24,5 @@ export default [
         console.log('Navigating to /');
     },
   },
-  { path: "(.*)", redirect: "/" }
+  { path: "(.*)", redirect: "/app" }
 ];

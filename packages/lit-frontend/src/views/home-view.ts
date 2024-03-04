@@ -1,5 +1,5 @@
 import { css, html } from "lit";
-import { ClubSummaries, ClubSummary } from "ts-models";
+import { ClubSummaries } from "ts-models";
 import { customElement, property } from "lit/decorators.js";
 import * as App from "../app";
 import "../components/club-overview-card";
@@ -62,11 +62,9 @@ export class HomeViewElement extends App.View {
         this.requestUpdate();
     }
 
-    static styles = 
-        css`
-            :host {
-                display: contents
-            }
-        `;
-    
+    static styles = css`
+        :host {
+            display: contents
+        }
+    `;
 }

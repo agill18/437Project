@@ -39,7 +39,7 @@ app.get("/api/profile/:userId", (req: Request, res: Response) => {
 
   profiles
     .get(userId)
-    .then((profile: Profile) => res.json(profile))
+    .then((profile: Profile) => res.status(200).json(profile))
     .catch((err) => res.status(404).end());
 });
 
@@ -55,14 +55,14 @@ app.post("/api/profiles", (req: Request, res: Response) => {
 });
 
 // Update profile
-// Request Params: userId
+// Request Params: email
 // Body: profile
-app.put("/api/profile/:userId", (req: Request, res: Response) => {
-  const { userId } = req.params;
+app.put("/api/profile/:email", (req: Request, res: Response) => {
+  const { email } = req.params;
   const newProfile = req.body;
 
   profiles
-    .update(userId, newProfile)
+    .update(email, newProfile)
     .then((profile: Profile) => res.json(profile))
     .catch((err) => res.status(404).end());
 });

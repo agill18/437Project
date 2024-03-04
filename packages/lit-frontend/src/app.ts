@@ -15,11 +15,14 @@ export const context = createContext<Model>("ClubModel");
 
 export const init: Model = {
   user: new APIUser(),
-  // clubSummaries: { clubs: [] }
 };
 
 export interface UserLoggedIn extends MsgType<"UserLoggedIn"> {
   user: AuthenticatedUser;
+}
+
+export interface ProfileSelected extends MsgType<"ProfileSelected"> {
+  email: string;
 }
 
 export interface ProfileSaved extends MsgType<"ProfileSaved"> {
@@ -33,6 +36,7 @@ export interface GetClubSummaries extends MsgType<"GetClubSummaries"> {
 export type Message =
   | UserLoggedIn
   | ProfileSaved
+  | ProfileSelected
   | GetClubSummaries;
 
 export class Main extends MVU.Main<Model, Message> implements MVU.App<Model, Message> {

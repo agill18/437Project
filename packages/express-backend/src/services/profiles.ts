@@ -5,11 +5,11 @@ function index(): Promise<Profile[]> {
   return ProfileModel.find();
 }
 
-function get(userId: String): Promise<Profile> {
-  return ProfileModel.find({ userId })
+function get(email: String): Promise<Profile> {
+  return ProfileModel.find({ email })
     .then((list) => list[0])
     .catch((err) => {
-      throw `${userId} Not Found`;
+      throw `${email} Not Found`;
     });
 }
 
@@ -18,9 +18,9 @@ function create(profile: Profile): Promise<Profile> {
   return p.save();
 }
 
-function update(userId: String, profile: Profile): Promise<Profile> {
+function update(email: String, profile: Profile): Promise<Profile> {
   return new Promise((resolve, reject) => {
-    ProfileModel.findOneAndUpdate({ userId }, profile, {
+    ProfileModel.findOneAndUpdate({ email }, profile, {
       new: true,
     }).then((profile) => {
       if (profile) resolve(profile);

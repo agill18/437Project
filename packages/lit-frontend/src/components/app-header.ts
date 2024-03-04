@@ -1,7 +1,7 @@
 import { css, html, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { consume } from "@lit/context";
-import { APIUser, APIRequest } from "../rest";
+import { APIUser, USER_EMAIL_KEY } from "../rest";
 import { authContext } from "./auth-container";
 import { Profile } from "ts-models";
 import "./drop-down";
@@ -40,7 +40,7 @@ export class AppHeaderElement extends LitElement {
                     </li>
                     <li> <hr> </li>
                     <li> 
-                        <a href="/app/profile"> My Profile </a> 
+                        <a href="/app/profile/${localStorage.getItem(USER_EMAIL_KEY)}"> My Profile </a> 
                     </li>
                     <li> <hr> </li>
                     <li>
@@ -57,37 +57,6 @@ export class AppHeaderElement extends LitElement {
         cursor: pointer;
       }
     `;
-
-
-  updated(changedProperties: Map<string, unknown>) {
-    console.log(
-      "Profile Data has been updated",
-      changedProperties
-    );
-    if (changedProperties.has("user")) {
-      console.log("New user", this.user);
-      const { username } = this.user;
-      this._getData(`/profiles/${username}`);
-    }
-    return true;
-  }
-
-  _getData(path: string) {
-    const request = new APIRequest();
-
-    request
-      .get(path)
-      .then((response: Response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        return null;
-      })
-      .then((json: unknown) => {
-        console.log("Profile:", json);
-        this.profile = json as Profile;
-      });
-  }
 
   _signOut() {
     console.log("Signing out");

@@ -36,16 +36,16 @@ app.post("/login", import_auth.loginUser);
 app.post("/signup", import_auth.registerUser);
 app.get("/api/profile/:userId", (req, res) => {
   const { userId } = req.params;
-  import_profiles.default.get(userId).then((profile) => res.json(profile)).catch((err) => res.status(404).end());
+  import_profiles.default.get(userId).then((profile) => res.status(200).json(profile)).catch((err) => res.status(404).end());
 });
 app.post("/api/profiles", (req, res) => {
   const newProfile = req.body;
   import_profiles.default.create(newProfile).then((profile) => res.status(201).send(profile)).catch((err) => res.status(500).send(err));
 });
-app.put("/api/profile/:userId", (req, res) => {
-  const { userId } = req.params;
+app.put("/api/profile/:email", (req, res) => {
+  const { email } = req.params;
   const newProfile = req.body;
-  import_profiles.default.update(userId, newProfile).then((profile) => res.json(profile)).catch((err) => res.status(404).end());
+  import_profiles.default.update(email, newProfile).then((profile) => res.json(profile)).catch((err) => res.status(404).end());
 });
 app.post("/api/clubs", (req, res) => {
   const newClubSummary = req.body;

@@ -1,4 +1,4 @@
-import { JSONRequest } from "./rest";
+import { JSONRequest, APIRequest } from "./rest";
 import * as App from "./app";
 import { Profile, ClubSummary } from "ts-models";
 
@@ -35,6 +35,28 @@ dispatch.addMessage("UserLoggedIn", (msg: App.Message, model: App.Model) => {
     return App.updateProps({ user })(model);
   }
 );
+
+dispatch.addMessage("ProfileSelected", (msg: App.Message) => {
+  const { email } = msg as App.ProfileSelected;
+
+  return new APIRequest()
+    .get(`/profile/${email}`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Profile:", json);
+        return json as Profile;
+      }
+    })
+    .then((profile: Profile | undefined) =>
+      profile ? App.updateProps({ profile }) : App.noUpdate
+    );
+});
 
 dispatch.addMessage("GetClubSummaries", (msg: App.Message) => {
   const {} = msg as App.GetClubSummaries;

@@ -133,7 +133,16 @@ export class AuthContainer extends LitElement {
                     />
                 </label>
                 ${this.errorMessage ? html`<render-error .isSuccess=${false}> ${this.errorMessage} </render-error>` : ''}
-                ${this.isSuccess ? html`<render-error .isSuccess=${true}> Sucessfully created account. Go to log in. </render-error>` : ''}
+                ${this.isSuccess ? html`
+                    <render-error .isSuccess=${true}> 
+                        Sucessfully created account. Go to 
+                            <a 
+                                class='active'
+                                @click=${this.handleChange('login')}
+                            > 
+                                log in 
+                            </a>
+                    </render-error>` : ''}
                 <input
                     class="signup-button"
                     id="signupButton"
@@ -296,6 +305,12 @@ export class AuthContainer extends LitElement {
         .page.active {
             font-weight: var(--font-weight-extreme-bold);
             text-decoration: underline;
+        }
+
+        .active {
+            font-weight: var(--font-weight-extreme-bold);
+            text-decoration: underline;
+            cursor: pointer;
         }
 
         #login, #signup {

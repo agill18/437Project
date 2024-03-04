@@ -35,18 +35,18 @@ var import_profile = __toESM(require("../models/profile"));
 function index() {
   return import_profile.default.find();
 }
-function get(userId) {
-  return import_profile.default.find({ userId }).then((list) => list[0]).catch((err) => {
-    throw `${userId} Not Found`;
+function get(email) {
+  return import_profile.default.find({ email }).then((list) => list[0]).catch((err) => {
+    throw `${email} Not Found`;
   });
 }
 function create(profile) {
   const p = new import_profile.default(profile);
   return p.save();
 }
-function update(userId, profile) {
+function update(email, profile) {
   return new Promise((resolve, reject) => {
-    import_profile.default.findOneAndUpdate({ userId }, profile, {
+    import_profile.default.findOneAndUpdate({ email }, profile, {
       new: true
     }).then((profile2) => {
       if (profile2)
