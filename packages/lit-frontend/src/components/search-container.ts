@@ -35,7 +35,7 @@ export class SearchContainer extends LitElement {
             padding: 0.35rem 0.5rem;
             border: transparent;
             border-radius: 5px;
-            /* width:  */
+            color-scheme: var(--color-scheme);
         }
 
         // input[type="search"]::-webkit-search-cancel-button {
@@ -48,8 +48,8 @@ export class SearchContainer extends LitElement {
 
         input:focus {
             outline: none;
-            border: 2px solid var(--color-accent-light); /* Custom focus style */
-            // box-shadow: 0 0 5px rgba(255, 165, 0, 0.5); /* Adding a glow effect */
+            border: 2px solid var(--color-accent-light); 
+            // box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
         }
     `;
 

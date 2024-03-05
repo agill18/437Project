@@ -1,10 +1,12 @@
 import { css, html } from "lit";
-import { ClubSummaries } from "ts-models";
+import { ClubSummaries, Events, EventDetail } from "ts-models";
 import { customElement, property } from "lit/decorators.js";
 import * as App from "../app";
 import "../components/club-overview-card";
+import "../components/event-overview-card";
 import "../components/search-container";
 import "../components/app-header";
+import { renderAllClubs, renderAllEvents } from "./util.ts";
 
 @customElement("home-view")
 export class HomeViewElement extends App.View {
@@ -14,12 +16,10 @@ export class HomeViewElement extends App.View {
         return this.getFromModel<ClubSummaries>("clubSummaries")
     }
 
-    // attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    //     this.dispatchMessage({
-    //         type: "GetClubSummaries",
-    //     })
-    //     super.attributeChangedCallback(name, oldValue, newValue);
-    // }
+    @property()
+    get events() {
+        return this.getFromModel<Events>("events") as Events;
+    }
 
     render() {
         return html`
@@ -29,37 +29,27 @@ export class HomeViewElement extends App.View {
             <link rel="stylesheet" href="/styles/club-info.css" />
             <app-header> </app-header>
             <div class="page-content">
+                <h2> General Events/Announcements </h2>
+                <div class="event-listing-homepage">
+                    ${renderAllEvents(this.events)}
+                </div>
                 <h2> Directory </h2>
                 <search-container> 
-                    ${this.renderAllClubs(this.clubSummaries)}
+                    ${renderAllClubs(this.clubSummaries)}
                 </search-container>
             </div>
         `;
     }
 
-
-    renderAllClubs(clubs: any) {
-        if (clubs && Array.isArray(clubs)) {
-            return clubs.map((club) => {
-                return this.renderClub(club.name, club.description)
-            });
-        }
-    }
-
-    renderClub(name: string, description: string) {
-        return html`
-            <club-overview-card linkHref="/app/clubs/club-archery.html">
-                <span slot="club-name"> ${name} </span>
-                <span slot="club-description"> ${description} </span>
-            </club-overview-card>
-        `;
-    }   
-
     firstUpdated() {
+        // Get all general clubs and events
         this.dispatchMessage({
             type: "GetClubSummaries",
-        })
-        this.requestUpdate();
+        });
+        this.dispatchMessage({
+            type: "GetEvents",
+            host: "general"
+        });;
     }
 
     static styles = css`

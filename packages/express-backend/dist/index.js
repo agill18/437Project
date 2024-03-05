@@ -26,6 +26,7 @@ var import_cors = __toESM(require("cors"));
 var import_mongoConnect = require("./mongoConnect");
 var import_profiles = __toESM(require("./services/profiles"));
 var import_clubs = __toESM(require("./services/clubs"));
+var import_events = __toESM(require("./services/events"));
 var import_auth = require("./auth");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
@@ -57,6 +58,18 @@ app.get("/api/clubs/:name", (req, res) => {
 });
 app.get("/api/clubs", (req, res) => {
   import_clubs.default.getAll().then((clubSummaries) => res.status(200).json(clubSummaries)).catch((err) => res.status(404).end());
+});
+app.post("/api/events", (req, res) => {
+  const newEvent = req.body;
+  import_events.default.create(newEvent).then((event) => res.status(201).send(event)).catch((err) => res.status(500).send(err));
+});
+app.get("/api/events/:host/:name", (req, res) => {
+  const { host, name } = req.params;
+  import_events.default.get(host, name).then((event) => res.json(event)).catch((err) => res.status(404).end());
+});
+app.get("/api/events/:host", (req, res) => {
+  const { host } = req.params;
+  import_events.default.getAll(host).then((events2) => res.status(200).json(events2)).catch((err) => res.status(404).end());
 });
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

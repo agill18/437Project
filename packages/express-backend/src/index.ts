@@ -2,9 +2,10 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 
 import { connect } from "./mongoConnect";
-import { Profile, ClubSummary } from "ts-models";
+import { Profile, ClubSummary, EventDetail } from "ts-models";
 import profiles from "./services/profiles";
 import clubs from "./services/clubs";
+import events from "./services/events";
 import credentials from "./services/credentials";
 import { loginUser, registerUser } from "./auth";
 import apiRouter from "./routes/api";
@@ -95,6 +96,39 @@ app.get("/api/clubs", (req: Request, res: Response) => {
   clubs
     .getAll()
     .then((clubSummaries: ClubSummary[]) => res.status(200).json(clubSummaries))
+    .catch((err) => res.status(404).end());
+});
+
+// Add event
+// Body: event
+app.post("/api/events", (req: Request, res: Response) => {
+  const newEvent = req.body;
+
+  events
+    .create(newEvent)
+    .then((event: EventDetail) => res.status(201).send(event))
+    .catch((err) => res.status(500).send(err));
+});
+
+// Get specific event
+// Request Params: name
+app.get("/api/events/:host/:name", (req: Request, res: Response) => {
+  const { host, name } = req.params;
+
+  events
+    .get(host, name)
+    .then((event: EventDetail) => res.json(event))
+    .catch((err) => res.status(404).end());
+});
+
+// Get all events
+// Request Params: n/a
+app.get("/api/events/:host", (req: Request, res: Response) => {
+  const { host } = req.params;
+
+  events
+    .getAll(host)
+    .then((events: EventDetail[]) => res.status(200).json(events))
     .catch((err) => res.status(404).end());
 });
 

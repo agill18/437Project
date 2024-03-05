@@ -1,6 +1,6 @@
 import { JSONRequest, APIRequest } from "./rest";
 import * as App from "./app";
-import { Profile, ClubSummary } from "ts-models";
+import { Profile, ClubSummary, EventDetail } from "ts-models";
 
 const dispatch = App.createDispatch();
 export default dispatch.update;
@@ -79,5 +79,30 @@ dispatch.addMessage("GetClubSummaries", (msg: App.Message) => {
     })
     .then((clubSummaries: ClubSummary[] | undefined) => 
       clubSummaries ? App.updateProps({ clubSummaries }) : App.noUpdate
+    );
+});
+
+
+dispatch.addMessage("GetEvents", (msg: App.Message) => {
+  const { host } = msg as App.GetEvents;
+  console.log("Dispatched GetEvents");
+
+  return new JSONRequest(undefined)
+    .get(`/events/${host}`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Events:", json);
+        return json as EventDetail[];
+      }
+      return undefined;
+    })
+    .then((events: EventDetail[] | undefined) => 
+      events ? App.updateProps({ events }) : App.noUpdate
     );
 });
