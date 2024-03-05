@@ -1,7 +1,7 @@
 const SERVER_ROOT = "http://localhost:3000";
 const API_PATH = "/api";
 const API_ROOT = "http://localhost:3000/api";
-const TOKEN_KEY = "AUTH_TOKEN";
+export const TOKEN_KEY = "AUTH_TOKEN";
 export const USER_EMAIL_KEY = "USER_EMAIL_KEY";
 
 export class APIUser {

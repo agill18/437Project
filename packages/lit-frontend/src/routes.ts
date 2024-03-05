@@ -3,6 +3,7 @@ import "./views/blank-view";
 import "./views/profile-view";
 import "./views/club-app";
 import "./views/home-view";
+import { TOKEN_KEY } from './rest';
 
 export default [
   {
@@ -14,8 +15,14 @@ export default [
   },
   { path: "/app",
     component: "home-view",
-    action: () => {
-        console.log('Navigating to /app');
+    action: (context: any, commands: any) => {
+      // Conditional routing if we have a token or not
+      console.log('Navigating to /app');
+      if (localStorage.getItem(TOKEN_KEY)) {
+          return 'home-view';
+      } else {
+        return commands.redirect('/');
+      }
     },
   },
   { path: "/",
@@ -24,5 +31,5 @@ export default [
         console.log('Navigating to /');
     },
   },
-  { path: "(.*)", redirect: "/" }
+  { path: "(.*)", redirect: "/app" }
 ];
