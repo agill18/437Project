@@ -3,12 +3,13 @@ import { property, state } from "lit/decorators.js";
 import * as MVU from "./mvu";
 import { MsgType } from "./mvu";
 import { AuthenticatedUser, APIUser } from "./rest";
-import { Profile, ClubSummary } from "ts-models";
+import { Profile, ClubSummary, EventDetail } from "ts-models";
 
 export interface Model {
   user: APIUser;
   profile?: Profile;
   clubSummaries?: ClubSummary[];
+  events?: EventDetail[];
 }
 
 export const context = createContext<Model>("ClubModel");
@@ -33,11 +34,21 @@ export interface ProfileSaved extends MsgType<"ProfileSaved"> {
 export interface GetClubSummaries extends MsgType<"GetClubSummaries"> {
 }
 
+export interface GetEvents extends MsgType<"GetEvents"> {
+  host: string;
+}
+
+export interface SetEvent extends MsgType<"SetEvent"> {
+  event: EventDetail;
+}
+
 export type Message =
   | UserLoggedIn
   | ProfileSaved
   | ProfileSelected
-  | GetClubSummaries;
+  | GetClubSummaries
+  | GetEvents
+  | SetEvent;
 
 export class Main extends MVU.Main<Model, Message> implements MVU.App<Model, Message> {
   @provide({ context })

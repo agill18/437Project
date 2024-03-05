@@ -13,7 +13,7 @@
         <script type="module" src="/src/components/user-profile.ts"></script>
         <script type="module" src="/src/components/custom-modal.ts"></script>
         <script type="module" src="/src/components/toggle-switch.ts"></script>
-        <script type="module" src="/src/components/auth-container.ts"></script>
+        <script type="module" src="/src/components/event-form.ts"></script>
         <script type="module">
             document.addEventListener('DOMContentLoaded', () => {
                 const darkMode = localStorage.getItem('dark-mode') === "true";
@@ -22,38 +22,14 @@
         </script>
     </head>
     <body>
-        <!-- <header>
-            <svg class="logo">
-                <use href="/icons/user-interface.svg#icon-logo" />
-            </svg>
-            <h1 class="center-title">
-                Cal Poly Clubs
-            </h1>
-            <drop-down>
-                <svg class="header">
-                    <use href="/icons/user-interface.svg#icon-profile" />
-                </svg>
-                <ul slot="menu">
-                    <li>
-                        <a href="../index.html"> Home </a>
-                    </li>
-                    <li>
-                        <hr>
-                    </li>
-                    <li>
-                        <a href="../app/profiles/profile-Anmol.html"> My Profile </a>
-                    </li>
-                    <li>
-                        <hr>
-                    </li>
-                    <li>
-                        <a> Sign Out </a>
-                    </li>
-                </ul>
-            </drop-down>
-        </header> -->
         <div class="page-content">
-            <auth-container>  </auth-container>
+            <custom-modal customId="edit-user-profile">
+                <span slot="button-name"> Edit Profile </span>
+                <div slot="title"> Add event </div>
+                <div slot="content">
+                    <event-form> </event-form>
+                </div>
+            </custom-modal>
         </div>
 
     </body>

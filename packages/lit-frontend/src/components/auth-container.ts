@@ -91,7 +91,7 @@ export class AuthContainer extends LitElement {
                     <span class="field-title"> Cal Poly Email </span>
                     <input
                         class="field-input"
-                        type="text"
+                        type="email"
                         name="email"
                     />
                 </label>
@@ -128,7 +128,7 @@ export class AuthContainer extends LitElement {
                     <span class="field-title"> Cal Poly Email </span>
                     <input
                         class="field-input"
-                        type="text"
+                        type="email"
                         name="email"
                     />
                 </label>

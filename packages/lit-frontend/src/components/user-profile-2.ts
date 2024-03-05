@@ -88,7 +88,7 @@ export class UserProfile2EditElement extends UserProfile2Element {
         </label>
         <label>
           <span> Clubs </span>
-          <input name="clubs" value=${ifDefined(this.profile.clubs?.join(", "))} />
+            <textarea name="clubs" rows="3" cols="44" type="text">${ifDefined(this.profile.clubs?.join(", "))}</textarea>
         </label>
       </div>
       <div class="action-button-container">
@@ -121,7 +121,9 @@ export class UserProfile2EditElement extends UserProfile2Element {
       outline: none;
     }
 
-    input, select {
+    input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
       width: 100%;
       background-color: var(--color-background-page);
       color: var(--color-text);
@@ -150,7 +152,7 @@ export class UserProfile2EditElement extends UserProfile2Element {
     }
 
     select {
-        width: 104%;
+        width: 103%;
     }
 
     input:focus {
