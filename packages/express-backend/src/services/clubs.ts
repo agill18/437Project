@@ -10,7 +10,7 @@ function get(name: String): Promise<ClubSummary> {
 }
 
 function getAll(): Promise<ClubSummary[]> {
-  return ClubSummaryModel.find({ })
+  return ClubSummaryModel.find({ }).sort({ name: 1 })
     .then((list) => list)
     .catch((err) => {
       throw `Unable to get club summaries`;

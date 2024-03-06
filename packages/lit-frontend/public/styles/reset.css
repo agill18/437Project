@@ -9,3 +9,8 @@ body {
 img {
     max-width: 100%;
 }
+
+::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: var(--color-text);
+}

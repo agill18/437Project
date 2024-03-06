@@ -10,7 +10,7 @@ function get(host: string, _id: String): Promise<EventDetail> {
 }
 
 function getAll(host: String): Promise<EventDetail[]> {
-  return EventModel.find({ })
+  return EventModel.find({ }).sort({ date: 1 })
     .then((list) => list)
     .catch(() => { throw `Unable to get events for ${host}`; });
 }

@@ -29,15 +29,21 @@ export class HomeViewElement extends App.View {
             <link rel="stylesheet" href="/styles/club-info.css" />
             <app-header> </app-header>
             <div class="page-content">
-                <h2> General Events/Announcements </h2>
-                <div class="event-listing-homepage">
-                    ${renderAllEvents(this.events, 'general')}
+                <!-- <div class="split"> -->
+                    <div> 
+                        <h2> General Events/Announcements </h2>
+                        <div class="event-listing-homepage">
+                            ${renderAllEvents(this.events, 'general')}
+                        </div>
+                    </div>
+                    <div>
+                        <h2> Directory </h2>
+                        <search-container> 
+                            ${renderAllClubs(this.clubSummaries)}
+                        </search-container>
+                    </div>
                 </div>
-                <h2> Directory </h2>
-                <search-container> 
-                    ${renderAllClubs(this.clubSummaries)}
-                </search-container>
-            </div>
+            <!-- </div> -->
         `;
     }
 
@@ -55,6 +61,32 @@ export class HomeViewElement extends App.View {
     static styles = css`
         :host {
             display: contents
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 0.75fr;
+            flex-direction: row;
+        }
+
+        .event-listing-homepage {
+            /* display: flex;
+            flex-wrap: wrap; */
+            padding-left: 1rem;
+            display: flex;
+            overflow-x: scroll;
+            white-space: nowrap;
+        }
+
+        ::-webkit-scrollbar {
+            -webkit-appearance: none;
+            height: 0.4rem;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            cursor: pointer;
+            border-radius: 1rem;
+            background-color: var(--color-text);
         }
     `;
 }

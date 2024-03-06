@@ -38,7 +38,7 @@ function get(name) {
   });
 }
 function getAll() {
-  return import_clubSummary.default.find({}).then((list) => list).catch((err) => {
+  return import_clubSummary.default.find({}).sort({ name: 1 }).then((list) => list).catch((err) => {
     throw `Unable to get club summaries`;
   });
 }
