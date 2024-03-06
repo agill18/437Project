@@ -3,6 +3,7 @@ import "./views/blank-view";
 import "./views/profile-view";
 import "./views/club-app";
 import "./views/home-view";
+import "./views/event-view";
 import { TOKEN_KEY } from './rest';
 
 export default [
@@ -11,6 +12,13 @@ export default [
     component: "profile-view",
     action: () => {
         console.log('Navigating to /app/profile/:email'); 
+    },
+  },
+  {
+    path: "/app/event/:host/:_id",
+    component: "event-view",
+    action: () => {
+        console.log('Navigating to /app/event/:host/:_id'); 
     },
   },
   { path: "/app",

@@ -32,9 +32,9 @@ __export(events_exports, {
 });
 module.exports = __toCommonJS(events_exports);
 var import_event = __toESM(require("../models/event"));
-function get(host, name) {
-  return import_event.default.find({ host, name }).then((list) => list[0]).catch((err) => {
-    throw `${name} Not Found for ${host}`;
+function get(host, _id) {
+  return import_event.default.find({ host, _id }).then((list) => list[0]).catch((err) => {
+    throw `${_id} Not Found for ${host}`;
   });
 }
 function getAll(host) {

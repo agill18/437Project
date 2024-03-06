@@ -1,4 +1,5 @@
 export interface EventDetail {
+  _id: string;
   name: string;
   date: string;
   start_time: string;

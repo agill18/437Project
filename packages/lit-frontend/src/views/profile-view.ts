@@ -5,9 +5,6 @@ import { USER_EMAIL_KEY } from "../rest"
 import * as App from "../app";
 // import "../components/user-profile";
 import "../components/user-profile-2";
-import "../components/toggle-switch";
-import "../components/custom-modal";
-import "../components/search-container";
 import "../components/app-header";
 
 type ProfileLocation = Location & {
@@ -68,8 +65,8 @@ export class ProfileViewElement extends App.View {
         </custom-modal>
     `;
   }
+
   render() {
-    console.log('value of edit value', this.edit);
     return html`
       <link rel="stylesheet" href="/styles/club-info.css" />
       <link rel="stylesheet" href="/styles/page.css" />

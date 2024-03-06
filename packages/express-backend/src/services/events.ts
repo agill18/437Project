@@ -1,11 +1,11 @@
 import { EventDetail } from "ts-models";
 import EventModel from "../models/event";
 
-function get(host: String, name: String): Promise<EventDetail> {
-  return EventModel.find({ host, name })
+function get(host: string, _id: String): Promise<EventDetail> {
+  return EventModel.find({ host, _id })
     .then((list) => list[0])
     .catch((err) => {
-      throw `${name} Not Found for ${host}`;
+      throw `${_id} Not Found for ${host}`;
     });
 }
 

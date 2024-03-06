@@ -63,9 +63,9 @@ app.post("/api/events", (req, res) => {
   const newEvent = req.body;
   import_events.default.create(newEvent).then((event) => res.status(201).send(event)).catch((err) => res.status(500).send(err));
 });
-app.get("/api/events/:host/:name", (req, res) => {
-  const { host, name } = req.params;
-  import_events.default.get(host, name).then((event) => res.json(event)).catch((err) => res.status(404).end());
+app.get("/api/events/:host/:_id", (req, res) => {
+  const { host, _id } = req.params;
+  import_events.default.get(host, _id).then((event) => res.status(200).json(event)).catch((err) => res.status(404).end());
 });
 app.get("/api/events/:host", (req, res) => {
   const { host } = req.params;

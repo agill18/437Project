@@ -1,8 +1,11 @@
 import { css, html } from "lit";
 import {customElement, property } from "lit/decorators.js";
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { isNotEmpty } from "../views/util.ts"
 import { Profile } from "ts-models";
 import * as App from "../app";
+import "./no-content";
+
 
 const renderClub = (club: string) =>
   html`
@@ -21,7 +24,7 @@ export class UserProfile2Element extends App.View {
   }
 
 render() {
-    return this.profile? html`
+    return this.profile && isNotEmpty(this.profile) ? html`
         <link rel="stylesheet" href="/styles/club-info.css" />
         <link rel="stylesheet" href="/styles/page.css" />
         <link rel="stylesheet" href="/styles/tokens.css" />
@@ -43,7 +46,7 @@ render() {
                 ${this.profile.clubs?.map(renderClub)}
             </dd>
         </dl>
-    ` : html`<div> No content able to be found </div>`;
+    ` : html`<no-content> </no-content>`;
   }
 
   static styles = css`

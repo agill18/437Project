@@ -1,5 +1,5 @@
 import { css, html } from "lit";
-import { ClubSummaries, Events, EventDetail } from "ts-models";
+import { ClubSummaries, Events } from "ts-models";
 import { customElement, property } from "lit/decorators.js";
 import * as App from "../app";
 import "../components/club-overview-card";
@@ -31,7 +31,7 @@ export class HomeViewElement extends App.View {
             <div class="page-content">
                 <h2> General Events/Announcements </h2>
                 <div class="event-listing-homepage">
-                    ${renderAllEvents(this.events)}
+                    ${renderAllEvents(this.events, 'general')}
                 </div>
                 <h2> Directory </h2>
                 <search-container> 

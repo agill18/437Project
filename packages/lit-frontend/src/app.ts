@@ -10,6 +10,7 @@ export interface Model {
   profile?: Profile;
   clubSummaries?: ClubSummary[];
   events?: EventDetail[];
+  event?: EventDetail;
 }
 
 export const context = createContext<Model>("ClubModel");
@@ -42,13 +43,19 @@ export interface SetEvent extends MsgType<"SetEvent"> {
   event: EventDetail;
 }
 
+export interface EventSelected extends MsgType<"EventSelected"> {
+  _id: string;
+  host: string;
+}
+
 export type Message =
   | UserLoggedIn
   | ProfileSaved
   | ProfileSelected
   | GetClubSummaries
   | GetEvents
-  | SetEvent;
+  | SetEvent 
+  | EventSelected;
 
 export class Main extends MVU.Main<Model, Message> implements MVU.App<Model, Message> {
   @provide({ context })

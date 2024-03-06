@@ -82,7 +82,6 @@ dispatch.addMessage("GetClubSummaries", (msg: App.Message) => {
     );
 });
 
-
 dispatch.addMessage("GetEvents", (msg: App.Message) => {
   const { host } = msg as App.GetEvents;
   console.log("Dispatched GetEvents");
@@ -104,5 +103,27 @@ dispatch.addMessage("GetEvents", (msg: App.Message) => {
     })
     .then((events: EventDetail[] | undefined) => 
       events ? App.updateProps({ events }) : App.noUpdate
+    );
+});
+
+dispatch.addMessage("EventSelected", (msg: App.Message) => {
+  const { _id, host } = msg as App.EventSelected;
+
+  return new APIRequest()
+    .get(`/events/${host}/${_id}`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Event:", json);
+        return json as EventDetail;
+      }
+    })
+    .then((event: EventDetail | undefined) =>
+      event ? App.updateProps({ event }) : App.noUpdate
     );
 });

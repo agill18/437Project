@@ -18,17 +18,18 @@ export function renderClub(name: string, description: string) {
     `;
 }   
 
-export function renderAllEvents(events: Events) {
+export function renderAllEvents(events: Events, host: string) {
     if (events && Array.isArray(events)) {
         return events.map((event) => {
-            return renderEvent(event)
+            return renderEvent(event, host)
         });
     }
 }
 
-export function renderEvent(event: EventDetail) {
+export function renderEvent(event: EventDetail, host: string) {
+    const href: string = '/app/event/' + host + '/' + event._id;
     return html`
-        <event-overview-card linkHref="/app/events/event-career-fair.html">
+        <event-overview-card linkHref=${href}>
             <span slot="name"> ${event.name} </span>
             <span slot="date"> ${formatDate(event.date)} </span>
             <span slot="time"> ${event.start_time} - ${event.end_time} </span>
@@ -42,3 +43,7 @@ export function formatDate(dateString: string) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', options);
 }
+
+export function isNotEmpty(obj: any) {
+    return Object.keys(obj).length !== 0;
+  }

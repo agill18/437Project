@@ -111,18 +111,18 @@ app.post("/api/events", (req: Request, res: Response) => {
 });
 
 // Get specific event
-// Request Params: name
-app.get("/api/events/:host/:name", (req: Request, res: Response) => {
-  const { host, name } = req.params;
+// Request Params: host, id
+app.get("/api/events/:host/:_id", (req: Request, res: Response) => {
+  const { host, _id } = req.params;
 
   events
-    .get(host, name)
-    .then((event: EventDetail) => res.json(event))
+    .get(host, _id)
+    .then((event: EventDetail) => res.status(200).json(event))
     .catch((err) => res.status(404).end());
 });
 
 // Get all events
-// Request Params: n/a
+// Request Params: host
 app.get("/api/events/:host", (req: Request, res: Response) => {
   const { host } = req.params;
 
