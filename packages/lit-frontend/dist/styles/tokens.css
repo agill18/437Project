@@ -36,6 +36,8 @@
     --font-family-body: "EB Garamond", Cambria, Merriweather, Bitter, serif;    
 
     --time-transition-control-normal: .4s;
+
+    --color-scheme: light;
 }
 
 body.dark-mode {
@@ -57,4 +59,6 @@ body.dark-mode {
     --size-type-normal-body: 1.03rem;
     --size-type-small-body: 0.903rem;
     --size-type-smallest-body: 0.803rem;
+
+    --color-scheme: dark;
 }

@@ -157,11 +157,6 @@
     flex-wrap: wrap;
 }
 
-.event-listing-homepage {
-    display: flex;
-    flex-wrap: wrap;
-    padding-left: 1rem;
-}
 
 .event-listing {
     display: flex;

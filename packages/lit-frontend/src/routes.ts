@@ -23,7 +23,7 @@ export default [
   },
   { path: "/app",
     component: "home-view",
-    action: (context: any, commands: any) => {
+    action: (commands: any) => {
       // Conditional routing if we have a token or not
       console.log('Navigating to /app');
       if (localStorage.getItem(TOKEN_KEY)) {
