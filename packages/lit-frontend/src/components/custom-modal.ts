@@ -67,7 +67,7 @@ export class CustomModal extends LitElement {
       font-weight: var(--font-weight-light-bold);
       border: 0.1rem solid var(--color-accent);
       font-size: var(--size-type-small-heading);
-      padding: 0.6rem;
+      padding: 0.5rem;
       background-color: var(--color-background-page);
       cursor: pointer;
     }

@@ -31,10 +31,12 @@ const eventSchema = new import_mongoose.Schema(
     location: { type: String, required: true, trim: true },
     event_contact: { type: String, required: true, trim: true },
     host: { type: String, required: true, trim: true },
-    description: { type: String, required: true, trim: true }
+    description: { type: String, required: true, trim: true },
+    expireAt: { type: Date, required: true, trim: true }
   },
   { collection: "club_events" }
 );
+eventSchema.index({ "expireAt": 1 }, { expireAfterSeconds: 0 });
 eventSchema.index({ name: 1, host: 1 }, { unique: true });
 const EventModel = (0, import_mongoose.model)("Event", eventSchema);
 var event_default = EventModel;

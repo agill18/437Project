@@ -43,6 +43,9 @@ function getAll(host) {
   });
 }
 function create(event) {
+  const isoDateString = event.date + "T" + event.end_time + "-08:00";
+  const bsonDate = new Date(isoDateString);
+  event.expireAt = bsonDate;
   const newEvent = new import_event.default(event);
   return newEvent.save();
 }

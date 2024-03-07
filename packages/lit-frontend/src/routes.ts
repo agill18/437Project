@@ -3,10 +3,18 @@ import "./views/blank-view";
 import "./views/profile-view";
 import "./views/club-app";
 import "./views/home-view";
+import "./views/club-view";
 import "./views/event-view";
 import { TOKEN_KEY } from './rest';
 
 export default [
+  {
+    path: "/app/club/:name",
+    component: "club-view",
+    action: () => {
+        console.log('Navigating to /app/club/:name'); 
+    },
+  },
   {
     path: "/app/profile/:email",
     component: "profile-view",

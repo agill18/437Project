@@ -11,10 +11,13 @@ const eventSchema = new Schema<EventDetail>(
     event_contact: { type: String, required: true, trim: true },
     host: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },
+    expireAt: { type: Date, required: true, trim: true }
   },
   { collection: "club_events" }
 );
 
+// Automatically deletes documents whose end time have passed
+eventSchema.index({ "expireAt": 1 }, { expireAfterSeconds: 0 });
 eventSchema.index({ name: 1, host: 1 }, { unique: true });
 
 const EventModel = model<EventDetail>("Event", eventSchema);

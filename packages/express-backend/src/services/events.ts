@@ -16,6 +16,9 @@ function getAll(host: String): Promise<EventDetail[]> {
 }
 
 function create(event: EventDetail): Promise<EventDetail> {
+  const isoDateString: string = event.date + 'T' + event.end_time + '-08:00'; // PST is UTC-8
+  const bsonDate = new Date(isoDateString);
+  event.expireAt = bsonDate;
   const newEvent = new EventModel(event);
   return newEvent.save();
 }

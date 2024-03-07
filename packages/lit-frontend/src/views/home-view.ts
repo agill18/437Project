@@ -5,7 +5,10 @@ import * as App from "../app";
 import "../components/club-overview-card";
 import "../components/event-overview-card";
 import "../components/search-container";
+import "../components/event-form";
+import "../components/event-items";
 import "../components/app-header";
+import "../components/custom-modal";
 import { renderAllClubs, renderAllEvents } from "./util.ts";
 
 @customElement("home-view")
@@ -29,21 +32,43 @@ export class HomeViewElement extends App.View {
             <link rel="stylesheet" href="/styles/club-info.css" />
             <app-header> </app-header>
             <div class="page-content">
-                <!-- <div class="split"> -->
-                    <div> 
+                <div> 
+                    <div class="flex-container">
                         <h2> General Events/Announcements </h2>
-                        <div class="event-listing-homepage">
-                            ${renderAllEvents(this.events, 'general')}
+                        <div> 
+                            <custom-modal customId="add-event">
+                                <span slot="button-name"> Add Event + </span>
+                                <div slot="title"> Create Event </div>
+                                <div slot="content">
+                                    <event-form hostClub='General'> </event-form>
+                                </div>
+                            </custom-modal>
+                        </div>
+                    </div>
+                    <div class="event-listing-homepage">
+                        ${renderAllEvents(this.events, 'General')}
+                    </div>
+                </div>
+                <div>
+                    <div class="flex-container">
+                        <h2> Directory </h2>
+                        <div> 
+                            <custom-modal customId="add-club">
+                                <span slot="button-name"> Add Club + </span>
+                                <div slot="title"> Create Event </div>
+                                <div slot="content">
+                                    <event-form hostClub='General'> </event-form>
+                                </div>
+                            </custom-modal>
                         </div>
                     </div>
                     <div>
-                        <h2> Directory </h2>
                         <search-container> 
                             ${renderAllClubs(this.clubSummaries)}
                         </search-container>
                     </div>
                 </div>
-            <!-- </div> -->
+            </div>
         `;
     }
 
@@ -54,8 +79,20 @@ export class HomeViewElement extends App.View {
         });
         this.dispatchMessage({
             type: "GetEvents",
-            host: "general"
-        });;
+            host: "General"
+        });
+    }
+
+    attributeChangedCallback(name: string, oldValue: string,newValue: string) {
+        console.log("attribute changed")
+        if (name === "events" && oldValue !== newValue &&newValue) {
+            console.log("attribute events changed")
+            this.dispatchMessage({
+                    type: "GetEvents",
+                    host: "General"
+                });
+        }
+        super.attributeChangedCallback(name, oldValue, newValue);
     }
 
     static styles = css`
@@ -87,6 +124,11 @@ export class HomeViewElement extends App.View {
             cursor: pointer;
             border-radius: 1rem;
             background-color: var(--color-text);
+        }
+
+        .flex-container {
+            justify-content: space-between;
+            display: flex;
         }
     `;
 }

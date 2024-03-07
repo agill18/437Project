@@ -11,7 +11,7 @@ export class EventItemElement extends App.View {
   using?: EventDetail;
 
   get event() {
-    return this.using || ({} as EventDetail);
+    return this.using as EventDetail;
   }
 
 render() {

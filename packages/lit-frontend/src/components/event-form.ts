@@ -1,8 +1,12 @@
-import { css, html, LitElement } from "lit";
-import {customElement } from "lit/decorators.js";
+import { css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { EventDetail } from "ts-models";
+import * as App from "../app";
 
 @customElement("event-form")
-export class EventFormElement extends LitElement{
+export class EventFormElement extends App.View {
+  @property( {attribute: true} )
+  hostClub: string = "";
 
   render() {
     return html`
@@ -38,6 +42,10 @@ export class EventFormElement extends LitElement{
             <label>
                 <span> Event Contact </span>
                 <input name="event_contact" type="email" required>
+            </label>
+            <label>
+                <span> Host Organization </span>
+                <input name="host" type="text" disabled value=${this.hostClub}>
             </label>
         </div>
         <div class="action-button-container">
@@ -159,22 +167,24 @@ export class EventFormElement extends LitElement{
     }
     `;
 
-  _handleSubmit(ev: Event) {
+   _handleSubmit(ev: Event) {
     ev.preventDefault(); // prevent browser from submitting form data itself
 
     const target = ev.target as HTMLFormElement;
     const formdata = new FormData(target);
+    // Since diabled fields don't automatically can't included 
+    formdata.append('host', this.hostClub);
     const entries = Array.from(formdata.entries())
     const json = Object.fromEntries(entries);
 
     console.log("Submitting Form", json);
 
-//     this.dispatchMessage({
-//         type: "ProfileSaved",
-//         email: this.profile?.email,
-//         profile: json as Profile
-//     })
-
+    this.dispatchMessage({
+        type: "CreateEvent",
+        event: json as unknown as EventDetail,
+        host: this.hostClub
+    });
+    
     // Close the modal after dispatching the save action and clear all previous form data
     target.reset();
     this.closeModal();

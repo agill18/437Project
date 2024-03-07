@@ -3,7 +3,7 @@ import { property, state } from "lit/decorators.js";
 import * as MVU from "./mvu";
 import { MsgType } from "./mvu";
 import { AuthenticatedUser, APIUser } from "./rest";
-import { Profile, ClubSummary, EventDetail } from "ts-models";
+import { Profile, ClubSummary, EventDetail, Club } from "ts-models";
 
 export interface Model {
   user: APIUser;
@@ -11,6 +11,7 @@ export interface Model {
   clubSummaries?: ClubSummary[];
   events?: EventDetail[];
   event?: EventDetail;
+  club?: Club;
 }
 
 export const context = createContext<Model>("ClubModel");
@@ -39,13 +40,18 @@ export interface GetEvents extends MsgType<"GetEvents"> {
   host: string;
 }
 
-export interface SetEvent extends MsgType<"SetEvent"> {
+export interface CreateEvent extends MsgType<"CreateEvent"> {
   event: EventDetail;
+  host: string;
 }
 
 export interface EventSelected extends MsgType<"EventSelected"> {
   _id: string;
   host: string;
+}
+
+export interface ClubSelected extends MsgType<"ClubSelected"> {
+  name: string;
 }
 
 export type Message =
@@ -54,8 +60,9 @@ export type Message =
   | ProfileSelected
   | GetClubSummaries
   | GetEvents
-  | SetEvent 
-  | EventSelected;
+  | CreateEvent 
+  | EventSelected 
+  | ClubSelected;
 
 export class Main extends MVU.Main<Model, Message> implements MVU.App<Model, Message> {
   @provide({ context })

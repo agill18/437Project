@@ -127,3 +127,46 @@ dispatch.addMessage("EventSelected", (msg: App.Message) => {
       event ? App.updateProps({ event }) : App.noUpdate
     );
 });
+
+dispatch.addMessage("CreateEvent", (msg: App.Message) => {
+  console.log("Dispatched CreateEvent");
+
+  const { event, host } = msg as App.CreateEvent;
+
+  return new JSONRequest(event)
+    .post(`/events`)
+    .then((response: Response) => {
+      if (response.status === 201) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Event:", json);
+        return json as EventDetail;
+      }
+    })
+    .then(() => {
+      // Refetch all events so information stays up to date 
+      return new JSONRequest(undefined)
+        .get(`/events/${host}`)
+        .then((response: Response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          return undefined;
+        })
+        .then((json: unknown) => {
+          if (json) {
+            console.log("Events:", json);
+            return json as EventDetail[];
+          }
+          return undefined;
+        })
+        .then((events: EventDetail[] | undefined) => 
+          events ? App.updateProps({ events }) : App.noUpdate
+        );
+    }    
+    )
+});

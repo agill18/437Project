@@ -8,6 +8,7 @@ export interface EventDetail {
   event_contact: string;
   host: string;
   description: string;
+  expireAt: Date;
 }
 
 export interface Events {

@@ -5,7 +5,6 @@ import * as App from "../app";
 import "../components/app-header";
 import "../components/event-item";
 
-
 type EventLocation = Location & {
   params: { _id: string, host: string };
 };
@@ -17,19 +16,17 @@ export class EventViewElement extends App.View {
 
   @property({ reflect: true })
   get _id() {
-    console.log("thiss the _id", this.location?.params._id);
     return this.location?.params._id || '';
   }
 
   @property({ reflect: true })
   get host() {
-    console.log("thiss the host", this.location?.params.host);
     return this.location?.params.host || '';
   }
 
   @property()
   get event() {
-    return this.getFromModel("event") as EventDetail;
+    return this.getFromModel("event") as EventDetail || {} as EventDetail;
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -60,7 +57,7 @@ export class EventViewElement extends App.View {
       <link rel="stylesheet" href="/styles/reset.css" />
       <app-header> </app-header>
       <div class="page-content">
-        <event-item .using=${this.event as EventDetail}> </event-item>
+        <event-item .using=${this.event}> </event-item>
       </div>
     `;
   }
