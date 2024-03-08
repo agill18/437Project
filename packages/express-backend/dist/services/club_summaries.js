@@ -26,44 +26,24 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var __async = (__this, __arguments, generator) => {
-  return new Promise((resolve, reject) => {
-    var fulfilled = (value) => {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var rejected = (value) => {
-      try {
-        step(generator.throw(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-    step((generator = generator.apply(__this, __arguments)).next());
-  });
-};
-var clubs_exports = {};
-__export(clubs_exports, {
-  default: () => clubs_default
+var club_summaries_exports = {};
+__export(club_summaries_exports, {
+  default: () => club_summaries_default
 });
-module.exports = __toCommonJS(clubs_exports);
-var import_club = __toESM(require("../models/club"));
+module.exports = __toCommonJS(club_summaries_exports);
 var import_clubSummary = __toESM(require("../models/clubSummary"));
 function get(name) {
-  return import_club.default.find({ name }).then((list) => list[0]).catch((err) => {
-    throw `${name} Club Not Found`;
+  return import_clubSummary.default.find({ name }).then((list) => list[0]).catch((err) => {
+    throw `${name} Not Found`;
   });
 }
-function create(club) {
-  return __async(this, null, function* () {
-    const c = new import_club.default(club);
-    const newSummary = new import_clubSummary.default({ name: club.name, description: club.concise_description });
-    yield newSummary.save();
-    return yield c.save();
+function getAll() {
+  return import_clubSummary.default.find({}).sort({ name: 1 }).then((list) => list).catch((err) => {
+    throw `Unable to get club summaries`;
   });
 }
-var clubs_default = { get, create };
+function create(clubSummary) {
+  const newSummary = new import_clubSummary.default(clubSummary);
+  return newSummary.save();
+}
+var club_summaries_default = { get, getAll, create };

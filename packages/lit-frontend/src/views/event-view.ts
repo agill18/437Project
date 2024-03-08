@@ -55,7 +55,7 @@ export class EventViewElement extends App.View {
       <link rel="stylesheet" href="/styles/page.css" />
       <link rel="stylesheet" href="/styles/tokens.css" />
       <link rel="stylesheet" href="/styles/reset.css" />
-      <app-header> </app-header>
+      <app-header> <div> Cal Poly Clubs </div> </app-header>
       <div class="page-content">
         <event-item .using=${this.event}> </event-item>
       </div>

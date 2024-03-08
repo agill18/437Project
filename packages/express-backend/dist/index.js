@@ -25,6 +25,7 @@ var import_express = __toESM(require("express"));
 var import_cors = __toESM(require("cors"));
 var import_mongoConnect = require("./mongoConnect");
 var import_profiles = __toESM(require("./services/profiles"));
+var import_club_summaries = __toESM(require("./services/club_summaries"));
 var import_clubs = __toESM(require("./services/clubs"));
 var import_events = __toESM(require("./services/events"));
 var import_auth = require("./auth");
@@ -48,16 +49,16 @@ app.put("/api/profile/:email", (req, res) => {
   const newProfile = req.body;
   import_profiles.default.update(email, newProfile).then((profile) => res.json(profile)).catch((err) => res.status(404).end());
 });
-app.post("/api/clubs", (req, res) => {
+app.post("/api/clubSummaries", (req, res) => {
   const newClubSummary = req.body;
-  import_clubs.default.create(newClubSummary).then((clubSummary) => res.status(201).send(clubSummary)).catch((err) => res.status(500).send(err));
+  import_club_summaries.default.create(newClubSummary).then((clubSummary) => res.status(201).send(clubSummary)).catch((err) => res.status(500).send(err));
 });
-app.get("/api/clubs/:name", (req, res) => {
+app.get("/api/clubSummaries/:name", (req, res) => {
   const { name } = req.params;
-  import_clubs.default.get(name).then((clubSummary) => res.json(clubSummary)).catch((err) => res.status(404).end());
+  import_club_summaries.default.get(name).then((clubSummary) => res.json(clubSummary)).catch((err) => res.status(404).end());
 });
-app.get("/api/clubs", (req, res) => {
-  import_clubs.default.getAll().then((clubSummaries) => res.status(200).json(clubSummaries)).catch((err) => res.status(404).end());
+app.get("/api/clubSummaries", (req, res) => {
+  import_club_summaries.default.getAll().then((clubSummaries2) => res.status(200).json(clubSummaries2)).catch((err) => res.status(404).end());
 });
 app.post("/api/events", (req, res) => {
   const newEvent = req.body;
@@ -70,6 +71,14 @@ app.get("/api/events/:host/:_id", (req, res) => {
 app.get("/api/events/:host", (req, res) => {
   const { host } = req.params;
   import_events.default.getAll(host).then((events2) => res.status(200).json(events2)).catch((err) => res.status(404).end());
+});
+app.get("/api/clubs/:name", (req, res) => {
+  const { name } = req.params;
+  import_clubs.default.get(name).then((club) => res.status(200).json(club)).catch((err) => res.status(404).end());
+});
+app.post("/api/clubs", (req, res) => {
+  const newClub = req.body;
+  import_clubs.default.create(newClub).then((club) => res.status(201).send(club)).catch((err) => res.status(500).send(err));
 });
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

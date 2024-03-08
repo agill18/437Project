@@ -1,31 +1,22 @@
-// import { Schema, model } from "mongoose";
-// import { Club } from "ts-models";
+import { Schema, model } from "mongoose";
+import { Club } from "ts-models";
 
-// const clubSchema = new Schema<Club>(
-//   {
-//     name: { type: String, required: true, trim: true, unique: true },
-//     description: { type: String, required: true, trim: true },
-//     contact: { type: String, required: true, trim: true },
-//     contact: { type: String, required: true, trim: true },
+const clubSchema = new Schema<Club>(
+  {
+    name: { type: String, required: true, trim: true, unique: true },
+    detailed_description: { type: String, required: true, trim: true },
+    concise_description: { type: String, required: true, trim: true },
+    owner: { type: String, required: true, trim: true },
+    days: { type: String, trim: true, default: 'TBD' },
+    start_time: { type: String, trim: true, default: 'TBD' },
+    end_time: { type: String, trim: true, default: 'TBD' },
+    location: { type: String, trim: true, default: 'TBD' },
+    tags: { type: [String], required: false, trim: true },
 
-//   },
-//   { collection: "club_summaries" }
-// );
+  },
+  { collection: "club_directory" }
+);
 
-// const ClubSummaryModel = model<ClubSummary>("ClubSummary", clubSummarySchema);
+const ClubModel = model<Club>("Club", clubSchema);
 
-// export default ClubSummaryModel;
-
-// export interface Club {
-//   description: string, 
-//   contact: string,
-//   additionalInfo: AdditionalInfo
-// }
-
-// export interface AdditionalInfo {
-//   days: string, 
-//   start_time: string,
-//   end_time: string, 
-//   location: string,
-//   tags: string[]
-// }
+export default ClubModel;

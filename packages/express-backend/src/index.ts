@@ -2,8 +2,9 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 
 import { connect } from "./mongoConnect";
-import { Profile, ClubSummary, EventDetail } from "ts-models";
+import { Profile, ClubSummary, EventDetail, Club } from "ts-models";
 import profiles from "./services/profiles";
+import clubSummaries from "./services/club_summaries";
 import clubs from "./services/clubs";
 import events from "./services/events";
 import credentials from "./services/credentials";
@@ -70,10 +71,10 @@ app.put("/api/profile/:email", (req: Request, res: Response) => {
 
 // Add club summary
 // Body: clubSummary
-app.post("/api/clubs", (req: Request, res: Response) => {
+app.post("/api/clubSummaries", (req: Request, res: Response) => {
   const newClubSummary = req.body;
 
-  clubs
+  clubSummaries
     .create(newClubSummary)
     .then((clubSummary: ClubSummary) => res.status(201).send(clubSummary))
     .catch((err) => res.status(500).send(err));
@@ -81,10 +82,10 @@ app.post("/api/clubs", (req: Request, res: Response) => {
 
 // Get club summary
 // Request Params: name
-app.get("/api/clubs/:name", (req: Request, res: Response) => {
+app.get("/api/clubSummaries/:name", (req: Request, res: Response) => {
   const { name } = req.params;
 
-  clubs
+  clubSummaries
     .get(name)
     .then((clubSummary: ClubSummary) => res.json(clubSummary))
     .catch((err) => res.status(404).end());
@@ -92,8 +93,8 @@ app.get("/api/clubs/:name", (req: Request, res: Response) => {
 
 // Get all club summaries
 // Request Params: n/a
-app.get("/api/clubs", (req: Request, res: Response) => {
-  clubs
+app.get("/api/clubSummaries", (req: Request, res: Response) => {
+  clubSummaries
     .getAll()
     .then((clubSummaries: ClubSummary[]) => res.status(200).json(clubSummaries))
     .catch((err) => res.status(404).end());
@@ -130,6 +131,28 @@ app.get("/api/events/:host", (req: Request, res: Response) => {
     .getAll(host)
     .then((events: EventDetail[]) => res.status(200).json(events))
     .catch((err) => res.status(404).end());
+});
+
+// Get club
+// Request Params: n/a
+app.get("/api/clubs/:name", (req: Request, res: Response) => {
+  const { name } = req.params;
+
+  clubs
+    .get(name)
+    .then((club: Club) => res.status(200).json(club))
+    .catch((err) => res.status(404).end());
+});
+
+// Add club
+// Body: club
+app.post("/api/clubs", (req: Request, res: Response) => {
+  const newClub = req.body;
+
+  clubs
+    .create(newClub)
+    .then((club: Club) => res.status(201).send(club))
+    .catch((err) => res.status(500).send(err));
 });
 
 app.listen(port, () => {

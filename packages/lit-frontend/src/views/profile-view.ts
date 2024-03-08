@@ -72,7 +72,7 @@ export class ProfileViewElement extends App.View {
       <link rel="stylesheet" href="/styles/page.css" />
       <link rel="stylesheet" href="/styles/tokens.css" />
       <link rel="stylesheet" href="/styles/reset.css" />
-      <app-header> </app-header>
+      <app-header> <div> Cal Poly Clubs </div> </app-header>
       <div class="page-content">
         <user-profile-2 .using=${this.profile as Profile}> </user-profile-2>
         ${this.shouldRenderEditProfile() ? this.renderPersonalProfileView() : ''}

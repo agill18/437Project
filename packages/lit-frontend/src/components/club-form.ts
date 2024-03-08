@@ -1,58 +1,77 @@
 import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { EventDetail } from "ts-models";
+import { Club } from "ts-models";
 import * as App from "../app";
+import { USER_EMAIL_KEY } from "../rest";
 
-@customElement("event-form")
-export class EventFormElement extends App.View {
+@customElement("club-form")
+export class ClubFormElement extends App.View {
   @property( {attribute: true} )
   hostClub: string = "";
 
   render() {
     return html`
+      <link rel="stylesheet" href="/styles/page.css" />
+      <link rel="stylesheet" href="/styles/tokens.css" />
+      <link rel="stylesheet" href="/styles/reset.css" />
+      <link rel="stylesheet" href="/styles/club-info.css" />
       <form 
         id="addEvent"
         @submit=${this._handleSubmit}
       >
-        <div class="table-format">
-            <label>
-                <span> Name </span>
+          <div class="table-format">
+          <label>
+                <span> Club Name </span>
                 <input name="name" type="text" required/>
             </label>
             <label>
-                <span> Event Description </span>
-                <textarea name="description" rows="4" cols="55" type="text" required> </textarea>
+                <span>Detailed Description</span>
+                <textarea name="detailed_description" rows="4" cols="110" type="text" required> </textarea>
+            </label>
+          </div>
+        <div class="grid-container">
+          <h3> Overview </h3>
+          <h3> General Club Meetings </h3>
+        </div>
+        <div class="grid-container">
+        <div class="table-format">
+            <label>
+                <span> Tags </span>
+                <input name="tags" type="text" required default="enter comma seperated list">
             </label>
             <label>
-                <span> Location </span>
-                <input name="location" type="text" required/>
+                <span>Concise Description</span>
+                <textarea name="concise_description" rows="4" cols="80" type="text" required> </textarea>
             </label>
             <label>
-                <span> Date </span>
-                <input name="date" type="date" required/>
+              <span class="with-icon"> President/Owner 
+                <svg class="lock-icon">
+                    <use href="/icons/user-interface.svg#icon-lock" />
+                </svg>
+              </span>
+              <input class='disabled' name="owner" type="text" required disabled value=${localStorage.getItem(USER_EMAIL_KEY) || ""}>
+            </label>
+          </div> 
+          <div class="table-format">
+            <label>
+                <span> Day(s) </span>
+                <input name="days" type="text">
             </label>
             <label>
                 <span> Start Time </span>
-                <input name="start_time" type="time" required>
+                <input name="start_time" type="time">
             </label>
             <label>
                 <span> End Time </span>
-                <input name="end_time" type="time" required>
+                <input name="end_time" type="time">
             </label>
             <label>
-                <span> Event Contact </span>
-                <input name="event_contact" type="email" required>
+                <span> Location </span>
+                <input name="location" type="text">
             </label>
-            <label>
-                <span class="with-icon"> Host Organization 
-                    <svg class="lock-icon">
-                        <use href="/icons/user-interface.svg#icon-lock" />
-                    </svg>
-                </span>
-                <input class="disabled" name="host" type="text" disabled value=${this.hostClub}>
-            </label>
+          </div>
         </div>
-        <div class="action-button-container">
+      <div class="action-button-container">
             <button 
                 type="submit"
                 class="action-button confirm-button"> 
@@ -73,8 +92,12 @@ export class EventFormElement extends App.View {
     .table-format {
       display: grid;
       grid-template-columns: max-content auto;
-      gap: 1.85rem;
+      gap: 0.5rem;
       align-items: center;
+    }
+
+    .disabled {
+      opacity: 0.5;
     }
 
     input[type="date"] {
@@ -89,10 +112,28 @@ export class EventFormElement extends App.View {
         height: 6rem;
     }
 
+    .with-icon {
+      display: block;
+    }
+
+    svg.lock-icon {
+        position: absolute;  
+        display: inline-block;
+        margin-left: 0.35rem;
+        margin-top: 0.1rem;
+        width: 1rem;
+        height: 1.5rem;
+        fill: var(--color-text);
+    }
+
     label {
       display: contents;
       font-weight: var(--font-weight-light-bold);
       outline: none;
+    }
+
+    h3 {
+      margin-bottom: 1rem;
     }
 
     input, select, textarea {
@@ -169,6 +210,13 @@ export class EventFormElement extends App.View {
         background-color: var(--color-background-header);
         color: var(--color-text-heading)
     }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr;
+      column-gap: 1.5rem;
+    }
+    
     `;
 
    _handleSubmit(ev: Event) {
@@ -177,16 +225,21 @@ export class EventFormElement extends App.View {
     const target = ev.target as HTMLFormElement;
     const formdata = new FormData(target);
     // Since diabled fields don't automatically can't included 
-    formdata.append('host', this.hostClub);
+    formdata.append('owner', localStorage.getItem(USER_EMAIL_KEY) || "");
     const entries = Array.from(formdata.entries())
+      .map(([k, v]) => (v === "" ? [k] : [k, v]))
+      .map(([k, v]) =>
+        k === "tags"
+          ? [k, (v as string).split(",").map((s) => s.trim())]
+          : [k, v]
+      );
     const json = Object.fromEntries(entries);
 
     console.log("Submitting Form", json);
 
     this.dispatchMessage({
-        type: "CreateEvent",
-        event: json as unknown as EventDetail,
-        host: this.hostClub
+        type: "CreateClub",
+        club: json as unknown as Club
     });
     
     // Close the modal after dispatching the save action and clear all previous form data

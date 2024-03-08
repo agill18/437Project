@@ -6,6 +6,7 @@ import "../components/club-overview-card";
 import "../components/event-overview-card";
 import "../components/search-container";
 import "../components/event-form";
+import "../components/club-form";
 import "../components/event-items";
 import "../components/app-header";
 import "../components/custom-modal";
@@ -30,7 +31,7 @@ export class HomeViewElement extends App.View {
             <link rel="stylesheet" href="/styles/tokens.css" />
             <link rel="stylesheet" href="/styles/reset.css" />
             <link rel="stylesheet" href="/styles/club-info.css" />
-            <app-header> </app-header>
+            <app-header> <div> Cal Poly Clubs </div> </app-header>
             <div class="page-content">
                 <div> 
                     <div class="flex-container">
@@ -55,9 +56,9 @@ export class HomeViewElement extends App.View {
                         <div> 
                             <custom-modal customId="add-club">
                                 <span slot="button-name"> Add Club + </span>
-                                <div slot="title"> Create Event </div>
+                                <div slot="title"> Register Club </div>
                                 <div slot="content">
-                                    <event-form hostClub='General'> </event-form>
+                                    <club-form> </club-form>
                                 </div>
                             </custom-modal>
                         </div>

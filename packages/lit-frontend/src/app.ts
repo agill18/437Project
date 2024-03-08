@@ -36,6 +36,10 @@ export interface ProfileSaved extends MsgType<"ProfileSaved"> {
 export interface GetClubSummaries extends MsgType<"GetClubSummaries"> {
 }
 
+export interface CreateClub extends MsgType<"CreateClub"> {
+  club: Club;
+}
+
 export interface GetEvents extends MsgType<"GetEvents"> {
   host: string;
 }
@@ -62,7 +66,8 @@ export type Message =
   | GetEvents
   | CreateEvent 
   | EventSelected 
-  | ClubSelected;
+  | ClubSelected
+  | CreateClub;
 
 export class Main extends MVU.Main<Model, Message> implements MVU.App<Model, Message> {
   @provide({ context })

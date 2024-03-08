@@ -28,7 +28,7 @@ export class AppHeaderElement extends LitElement {
                 </svg>
             </a>
             <h1 class="center-title"> 
-                Cal Poly Clubs
+                <slot> Cal Poly Clubs </slot>
             </h1>
             <drop-down>
                 <svg class="header">

@@ -1,13 +1,13 @@
 import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { EventDetail } from "ts-models";
+import { Club } from "ts-models";
 import * as App from "../app";
 import "../components/app-header";
-import "../components/event-item";
+import "../components/club-item";
 
 
 type EventLocation = Location & {
-  params: { _id: string, host: string };
+  params: { name: string };
 };
 
 @customElement("club-view")
@@ -16,33 +16,21 @@ export class ClubViewElement extends App.View {
   location?: EventLocation;
 
   @property({ reflect: true })
-  get _id() {
-    return this.location?.params._id || '';
-  }
-
-  @property({ reflect: true })
-  get host() {
-    return this.location?.params.host || '';
+  get name() {
+    console.log("this is the name in club-view", this.location?.params.name)
+    return this.location?.params.name || '';
   }
 
   @property()
-  get event() {
-    return this.getFromModel("event") as EventDetail;
+  get club() {
+    return this.getFromModel("club") as Club;
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (name === "_id" && oldValue !== newValue && newValue) {
+    if (name === "name" && oldValue !== newValue && newValue) {
       this.dispatchMessage({
-        type: "EventSelected",
-        _id: newValue,
-        host: this.host
-      });
-    }
-    else if (name === "host" && oldValue !== newValue && newValue) {
-      this.dispatchMessage({
-        type: "EventSelected",
-        _id: this._id,
-        host: newValue
+        type: "ClubSelected",
+        name: newValue,
       });
     }
     super.attributeChangedCallback(name, oldValue, newValue);
@@ -54,10 +42,7 @@ export class ClubViewElement extends App.View {
       <link rel="stylesheet" href="/styles/page.css" />
       <link rel="stylesheet" href="/styles/tokens.css" />
       <link rel="stylesheet" href="/styles/reset.css" />
-      <app-header> </app-header>
-      <div class="page-content">
-        <event-item .using=${this.event as EventDetail}> </event-item>
-      </div>
+      <club-item .using=${this.club as Club}> </club-item>
     `;
   }
 

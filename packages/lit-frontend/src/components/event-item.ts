@@ -1,6 +1,6 @@
 import { css, html } from "lit";
 import {customElement, property } from "lit/decorators.js";
-import { isNotEmpty, formatDate } from "../views/util.ts"
+import { isNotEmpty, formatDate, getTime } from "../views/util.ts"
 import { EventDetail } from "ts-models";
 import * as App from "../app";
 import "./no-content"
@@ -37,7 +37,7 @@ render() {
                     </svg>
                     <div>
                         <div class="small-subheading"> Time </div>
-                        <div> ${this.event.start_time} - ${this.event.end_time} </div>
+                        <div> ${getTime(this.event.start_time, this.event.end_time)} </div>
                     </div>
                     <svg class="icon">
                         <use href="/icons/user-interface.svg#icon-location" />

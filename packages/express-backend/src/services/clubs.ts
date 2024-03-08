@@ -1,25 +1,23 @@
-import { ClubSummary } from "ts-models";
+import { Club } from "ts-models";
+import ClubModel from "../models/club";
 import ClubSummaryModel from "../models/clubSummary";
 
-function get(name: String): Promise<ClubSummary> {
-  return ClubSummaryModel.find({ name })
+function get(name: String): Promise<Club> {
+  return ClubModel.find({ name })
     .then((list) => list[0])
     .catch((err) => {
-      throw `${name} Not Found`;
+      throw `${name} Club Not Found`;
     });
 }
 
-function getAll(): Promise<ClubSummary[]> {
-  return ClubSummaryModel.find({ }).sort({ name: 1 })
-    .then((list) => list)
-    .catch((err) => {
-      throw `Unable to get club summaries`;
-    });
+async function create(club: Club): Promise<Club> {
+  const c = new ClubModel(club);
+
+  // create new clubSummary as well when a new club is created
+  const newSummary = new ClubSummaryModel({ name: club.name, description: club.concise_description});
+  await newSummary.save();
+
+  return await c.save();
 }
 
-function create(clubSummary: ClubSummary): Promise<ClubSummary> {
-  const newSummary = new ClubSummaryModel(clubSummary);
-  return newSummary.save();
-}
-
-export default { get, getAll, create };
+export default { get, create };

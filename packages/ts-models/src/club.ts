@@ -9,12 +9,12 @@ export interface ClubSummaries {
 
 export interface Club {
   name: string,
-  description: string, 
-  contact: string,
+  detailed_description: string, 
+  concise_description: string,
+  owner: string,
   days: string, 
   start_time: string,
   end_time: string, 
   location: string,
   tags: string[]
-  events: Event[];
 }
