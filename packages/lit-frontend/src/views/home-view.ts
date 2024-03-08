@@ -89,9 +89,9 @@ export class HomeViewElement extends App.View {
         if (name === "events" && oldValue !== newValue &&newValue) {
             console.log("attribute events changed")
             this.dispatchMessage({
-                    type: "GetEvents",
-                    host: "General"
-                });
+                type: "GetEvents",
+                host: "General"
+            });
         }
         super.attributeChangedCallback(name, oldValue, newValue);
     }

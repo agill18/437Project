@@ -20,4 +20,21 @@ async function create(club: Club): Promise<Club> {
   return await c.save();
 }
 
-export default { get, create };
+function update(name: String, club: Club): Promise<Club> {
+  return new Promise((resolve, reject) => {
+    ClubModel.findOneAndUpdate({ name }, club, {new: true,})
+    .then((club) => {
+      if (club) {
+        ClubSummaryModel.findOneAndUpdate({ name }, { name: club.name, description: club.concise_description}, { new: true, })
+        .then((clubSummary) => {
+            if (clubSummary) resolve(club);
+            else reject("Failed to update clubSummary");
+        });
+        resolve(club);
+      }
+      else reject("Failed to update profile");
+    });
+  });
+}
+
+export default { get, create, update };

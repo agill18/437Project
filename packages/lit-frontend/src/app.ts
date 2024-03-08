@@ -54,6 +54,11 @@ export interface EventSelected extends MsgType<"EventSelected"> {
   host: string;
 }
 
+export interface ClubSaved extends MsgType<"ClubSaved"> {
+  name: string;
+  club: Club;
+}
+
 export interface ClubSelected extends MsgType<"ClubSelected"> {
   name: string;
 }
@@ -67,7 +72,8 @@ export type Message =
   | CreateEvent 
   | EventSelected 
   | ClubSelected
-  | CreateClub;
+  | CreateClub 
+  | ClubSaved;
 
 export class Main extends MVU.Main<Model, Message> implements MVU.App<Model, Message> {
   @provide({ context })

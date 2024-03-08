@@ -90,11 +90,9 @@
     text-decoration: none;
     border-radius: 0.8rem;
     background-color: var(--color-accent-contrast);
-    ;
     overflow: auto;
     margin: 0.5rem;
     color: var(--color-text-heading);
-    ;
     margin-right: 1rem;
     margin-left: 0rem;
     padding: 0.5rem;
@@ -112,10 +110,8 @@
     opacity: 0.9;
     box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.45);
     border-color: var(--color-accent);
-    ;
     border-width: 0.5rem;
     color: var(--color-text-heading);
-    ;
 }
 
 .tag:hover {

@@ -1,6 +1,6 @@
 import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { Club } from "ts-models";
+import { Club, Events } from "ts-models";
 import * as App from "../app";
 import "../components/app-header";
 import "../components/club-item";
@@ -17,7 +17,6 @@ export class ClubViewElement extends App.View {
 
   @property({ reflect: true })
   get name() {
-    console.log("this is the name in club-view", this.location?.params.name)
     return this.location?.params.name || '';
   }
 
@@ -26,8 +25,17 @@ export class ClubViewElement extends App.View {
     return this.getFromModel("club") as Club;
   }
 
+  @property()
+  get events() {
+    return this.getFromModel("events") as Events;
+  }
+
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (name === "name" && oldValue !== newValue && newValue) {
+      this.dispatchMessage({
+          type: "GetEvents",
+          host: newValue
+      });
       this.dispatchMessage({
         type: "ClubSelected",
         name: newValue,
@@ -42,7 +50,7 @@ export class ClubViewElement extends App.View {
       <link rel="stylesheet" href="/styles/page.css" />
       <link rel="stylesheet" href="/styles/tokens.css" />
       <link rel="stylesheet" href="/styles/reset.css" />
-      <club-item .using=${this.club as Club}> </club-item>
+      <club-item .using=${this.club as Club} .usingEvents=${this.events}> </club-item>
     `;
   }
 

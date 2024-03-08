@@ -38,7 +38,7 @@ function get(host, _id) {
   });
 }
 function getAll(host) {
-  return import_event.default.find({}).sort({ date: 1 }).then((list) => list).catch(() => {
+  return import_event.default.find({ host }).sort({ date: 1 }).then((list) => list).catch(() => {
     throw `Unable to get events for ${host}`;
   });
 }

@@ -66,4 +66,20 @@ function create(club) {
     return yield c.save();
   });
 }
-var clubs_default = { get, create };
+function update(name, club) {
+  return new Promise((resolve, reject) => {
+    import_club.default.findOneAndUpdate({ name }, club, { new: true }).then((club2) => {
+      if (club2) {
+        import_clubSummary.default.findOneAndUpdate({ name }, { name: club2.name, description: club2.concise_description }, { new: true }).then((clubSummary) => {
+          if (clubSummary)
+            resolve(club2);
+          else
+            reject("Failed to update clubSummary");
+        });
+        resolve(club2);
+      } else
+        reject("Failed to update profile");
+    });
+  });
+}
+var clubs_default = { get, create, update };

@@ -47,7 +47,7 @@ app.post("/api/profiles", (req, res) => {
 app.put("/api/profile/:email", (req, res) => {
   const { email } = req.params;
   const newProfile = req.body;
-  import_profiles.default.update(email, newProfile).then((profile) => res.json(profile)).catch((err) => res.status(404).end());
+  import_profiles.default.update(email, newProfile).then((profile) => res.status(200).json(profile)).catch((err) => res.status(404).end());
 });
 app.post("/api/clubSummaries", (req, res) => {
   const newClubSummary = req.body;
@@ -82,4 +82,9 @@ app.post("/api/clubs", (req, res) => {
 });
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+});
+app.put("/api/clubs/:name", (req, res) => {
+  const { name } = req.params;
+  const newClub = req.body;
+  import_clubs.default.update(name, newClub).then((club) => res.status(200).json(club)).catch((err) => res.status(404).end());
 });

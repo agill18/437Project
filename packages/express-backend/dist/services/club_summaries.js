@@ -46,4 +46,16 @@ function create(clubSummary) {
   const newSummary = new import_clubSummary.default(clubSummary);
   return newSummary.save();
 }
-var club_summaries_default = { get, getAll, create };
+function update(name, clubSummary) {
+  return new Promise((resolve, reject) => {
+    import_clubSummary.default.findOneAndUpdate({ name }, clubSummary, {
+      new: true
+    }).then((clubSummary2) => {
+      if (clubSummary2)
+        resolve(clubSummary2);
+      else
+        reject("Failed to update clubSummary");
+    });
+  });
+}
+var club_summaries_default = { get, getAll, create, update };

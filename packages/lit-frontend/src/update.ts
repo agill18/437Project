@@ -192,6 +192,29 @@ dispatch.addMessage("CreateEvent", (msg: App.Message) => {
     })
 });
 
+dispatch.addMessage("ClubSaved", (msg: App.Message) => {
+  const { name, club } = msg as App.ClubSaved;
+
+  return new JSONRequest(club)
+    .put(`/clubs/${name}`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Club:", json);
+        return json as Club;
+      }
+      return undefined;
+    })
+    .then((club: Club | undefined) =>
+      club ? App.updateProps({ club }) : App.noUpdate
+    );
+});
+
 dispatch.addMessage("CreateClub", (msg: App.Message) => {
   console.log("Dispatched CreateClub");
 

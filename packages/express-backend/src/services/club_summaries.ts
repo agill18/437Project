@@ -22,4 +22,15 @@ function create(clubSummary: ClubSummary): Promise<ClubSummary> {
   return newSummary.save();
 }
 
-export default { get, getAll, create };
+function update(name: String, clubSummary: ClubSummary): Promise<ClubSummary> {
+  return new Promise((resolve, reject) => {
+    ClubSummaryModel.findOneAndUpdate({ name }, clubSummary, {
+      new: true,
+    }).then((clubSummary) => {
+      if (clubSummary) resolve(clubSummary);
+      else reject("Failed to update clubSummary");
+    });
+  });
+}
+
+export default { get, getAll, create, update };

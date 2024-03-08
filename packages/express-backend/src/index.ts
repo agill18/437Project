@@ -65,7 +65,7 @@ app.put("/api/profile/:email", (req: Request, res: Response) => {
 
   profiles
     .update(email, newProfile)
-    .then((profile: Profile) => res.json(profile))
+    .then((profile: Profile) => res.status(200).json(profile))
     .catch((err) => res.status(404).end());
 });
 
@@ -157,4 +157,17 @@ app.post("/api/clubs", (req: Request, res: Response) => {
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+});
+
+// Update club
+// Request Params: name
+// Body: club
+app.put("/api/clubs/:name", (req: Request, res: Response) => {
+  const { name } = req.params;
+  const newClub = req.body;
+
+  clubs
+    .update(name, newClub)
+    .then((club: Club) => res.status(200).json(club))
+    .catch((err) => res.status(404).end());
 });

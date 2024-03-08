@@ -1,17 +1,27 @@
 import { css, html } from "lit";
 import {customElement, property } from "lit/decorators.js";
 import { isNotEmpty, getTime } from "../views/util.ts"
-import { Club } from "ts-models";
+import { Club, Events } from "ts-models";
 import * as App from "../app.ts";
+import { USER_EMAIL_KEY } from "../rest";
+import { renderAllEvents } from "../views/util.ts"
 import "./no-content.ts"
+import "./club-edit.ts"
 
 @customElement("club-item")
 export class ClubItemElement extends App.View {
   @property({ attribute: false })
   using?: Club;
 
+  @property({ attribute: false })
+  usingEvents?: Events;
+
   get club() {
     return this.using as Club;
+  }
+
+  get events() {
+    return this.usingEvents as Events;
   }
 
 render() {
@@ -29,13 +39,16 @@ render() {
           </div>
           <div> </div>
           <div class="flex-item-small">
-            <div class="subheading"> Additional Info </div>
+            <div class="flex-container">
+              <div class="subheading"> Additional Info</div>
+              ${this.hasAdminPermission() ? this.renderEditClubOption() : html``}
+            </div>
             <div class="additional-info-containter">
                 <div class="info-subheading"> Meeting: </div>
                   <table class="meeting-table">
                     <tr>
                         <td> <div class="meeting-table-subheading"> Day(s): </div> </td>
-                        <td> <div class="info-entry"> Tuesdays </div> </td>
+                        <td> <div class="info-entry">${this.club.days}</div></td>
                     </tr>
                     <tr>
                         <td> <div class="meeting-table-subheading"> Time(s): </div> </td>
@@ -52,27 +65,23 @@ render() {
               </div>
           </div> 
         </div>
+        <!-- ${this.hasAdminPermission() ? this.renderEditClubOption() : html``} -->
         <dl>
             <dt class="subheading"> Contact Information </dt>
             <dd> E: ${this.club.owner} </dd>
-            <dt class="subheading"> Upcoming Events </dt>
-            <!-- <dd> 
+            <div class="flex-container">
+              <h2> Upcoming Events </h2>
+              <div> 
+                ${this.hasAdminPermission() ? this.renderAddEventOption() : html``}
+              </div>
+            </div>
+            <dd> 
                 <div class="event-listing">
-                    <event-overview-card linkHref="../events/event-archery.html">
-                        <span slot="name"> General Meeting </span>
-                        <span slot="date"> February 1, 2024 </span>
-                        <span slot="time"> 3:00 PM - 4:00 PM PST </span>
-                        <span slot="location"> Frank E. Pilling </span>
-                    </event-overview-card>
-                    <event-overview-card linkHref="../events/event-archery-2.html">
-                        <span slot="name"> Archery Session </span>
-                        <span slot="date"> February 26, 2024 </span>
-                        <span slot="time"> 6:30 PM - 8:30 PM PST </span>
-                        <span slot="location"> Central Coast Archery </span>
-                    </event-overview-card>
+                    ${renderAllEvents(this.events, 'General')}
                 </div>
-            </dd> -->
-            <dt class="subheading"> Club Membership </dt>
+            </dd>
+            <dt class="subheading"> Club Membership 
+            </dt>
             <!-- <dd>
                 <p class="small-subheading"> Officers 
                     <div class="profile-listing"> 
@@ -107,6 +116,36 @@ render() {
     ` : html`<no-content> </no-content>`;
   }
 
+  renderAddEventOption() {
+    return html`
+      <custom-modal customId="add-club">
+        <span slot="button-name"> Add Event + </span>
+        <div slot="title"> Add Event </div>
+        <div slot="content">
+            <event-form hostClub=${this.club.name}> </event-form>
+        </div>
+      </custom-modal>
+      `
+  }
+
+  renderEditClubOption() {
+    return html`
+      <div> 
+        <custom-modal customId="edit-club">
+          <span slot="button-name"> Edit Club Info </span>
+          <div slot="title"> Edit Club Info </div>
+          <div slot="content">
+              <club-edit .using=${this.club}> </club-edit>
+          </div>
+        </custom-modal>
+      </div>
+      `
+  }
+  
+  hasAdminPermission() {
+    return this.club.owner === localStorage.getItem(USER_EMAIL_KEY);
+  }
+
   renderTags(tags: string[]){
     return tags.map((tag) => {
       return html`
@@ -128,6 +167,24 @@ render() {
   static styles = css`
     :host {
       display: contents;
+    }
+
+    .small-subheading {
+        font-size: var(--size-type-small-heading);
+        font-weight: var(--font-weight-light-bold);
+        margin-bottom: 0rem;
+    }
+
+    .flex-container {
+      justify-content: space-between;
+      display: flex;
+    }
+
+    .event-listing {
+        display: flex;
+        flex-wrap: wrap;
+        overflow-x: scroll;
+        white-space: nowrap;
     }
   `;
 }
