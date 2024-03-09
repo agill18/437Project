@@ -63,8 +63,12 @@ export class UserProfile2EditElement extends UserProfile2Element {
     return this.profile? html`<form @submit=${this._handleSubmit}>
       <div class="table-format">
         <label>
-          <span> Name </span>
-          <input name="name" value=${this.profile.name} />
+          <span class="with-icon"> Name 
+            <svg class="lock-icon">
+                <use href="/icons/user-interface.svg#icon-lock" />
+            </svg>
+          </span>
+          <input class='disabled' disabled name="name" value=${this.profile.name || ""} />
         </label>
         <label>
           <span class="with-icon"> Email 
@@ -72,7 +76,7 @@ export class UserProfile2EditElement extends UserProfile2Element {
                 <use href="/icons/user-interface.svg#icon-lock" />
             </svg>
           </span>
-          <input class='disabled' name="email" disabled value=${this.profile.email} />
+          <input class='disabled' name="email" disabled value=${this.profile.email || ""} />
         </label>
         <label>
           <span> Pronouns </span>
@@ -90,8 +94,12 @@ export class UserProfile2EditElement extends UserProfile2Element {
           <input name="major" value=${ifDefined(this.profile.major)} />
         </label>
         <label>
-          <span> Clubs </span>
-            <textarea name="clubs" rows="3" cols="44" type="text">${ifDefined(this.profile.clubs?.join(", "))}</textarea>
+          <span class="with-icon"> Clubs 
+            <svg class="lock-icon">
+                <use href="/icons/user-interface.svg#icon-lock" />
+            </svg>
+          </span>
+            <textarea class='disabled' disabled name="clubs" rows="3" cols="44" type="text">${ifDefined(this.profile.clubs?.join(", "))}</textarea>
         </label>
       </div>
       <div class="action-button-container">
