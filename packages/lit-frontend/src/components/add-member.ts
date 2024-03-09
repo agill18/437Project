@@ -40,7 +40,7 @@ export class AddMemberElement extends App.View {
             </label>
             <label> 
               <span> Select User </span>
-              <select name="email">
+              <select name="email" required>
                 ${this.renderUserOptions(this.profiles)}
               </select>
             </label>
@@ -70,7 +70,7 @@ export class AddMemberElement extends App.View {
     if (profiles && Array.isArray(profiles)) {
       return profiles.map((profile) => {
         return html`
-          <option value=${profile.email}> ${profile.email} </option>
+          <option value=${profile.email || ""}> ${profile.email} </option>
         `
       });
     }

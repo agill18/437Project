@@ -15,6 +15,7 @@ export interface Model {
   members?: Member[];
   member?: Member;
   profiles?: Profile[];
+  myProfile?: Profile[];
 }
 
 export const context = createContext<Model>("ClubModel");
@@ -28,6 +29,10 @@ export interface UserLoggedIn extends MsgType<"UserLoggedIn"> {
 }
 
 export interface ProfileSelected extends MsgType<"ProfileSelected"> {
+  email: string;
+}
+
+export interface GetMyProfile extends MsgType<"GetMyProfile"> {
   email: string;
 }
 
@@ -56,6 +61,11 @@ export interface GetMembers extends MsgType<"GetMembers"> {
 
 export interface MemberSaved extends MsgType<"MemberSaved"> {
   member: Member;
+  club_name: string;
+}
+
+export interface MemberDeleted extends MsgType<"MemberDeleted"> {
+  email: String;
   club_name: string;
 }
 
@@ -91,7 +101,9 @@ export type Message =
   | ClubSaved 
   | GetMembers 
   | MemberSaved
-  | GetProfiles;
+  | GetProfiles
+  | MemberDeleted
+  | GetMyProfile;
 
 export class Main extends MVU.Main<Model, Message> implements MVU.App<Model, Message> {
   @provide({ context })

@@ -28,9 +28,8 @@ function create(profile: Profile): Promise<Profile> {
 
 function update(email: String, profile: Profile): Promise<Profile> {
   return new Promise((resolve, reject) => {
-    ProfileModel.findOneAndUpdate({ email }, profile, {
-      new: true,
-    }).then((profile) => {
+    ProfileModel.findOneAndUpdate({ email }, { $set: profile}, {new: true,})
+    .then((profile) => {
       if (profile) resolve(profile);
       else reject("Failed to update profile");
     });

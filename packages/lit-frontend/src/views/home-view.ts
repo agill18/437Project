@@ -93,6 +93,12 @@ export class HomeViewElement extends App.View {
                 host: "General"
             });
         }
+        if (name === "clubSummaries" && oldValue !== newValue &&newValue) {
+            console.log("attribute clubSummaries changed")
+            this.dispatchMessage({
+            type: "GetClubSummaries",
+        });
+        }
         super.attributeChangedCallback(name, oldValue, newValue);
     }
 

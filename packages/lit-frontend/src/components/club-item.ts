@@ -1,14 +1,13 @@
 import { css, html } from "lit";
 import {customElement, property } from "lit/decorators.js";
 import { isNotEmpty, getTime } from "../views/util.ts"
-import { Club, Events, Members, Profile } from "ts-models";
+import { Club, Events, Members, Profile, Member } from "ts-models";
 import * as App from "../app.ts";
 import { USER_EMAIL_KEY } from "../rest";
 import { renderAllEvents } from "../views/util.ts"
 import "./no-content.ts"
 import "./club-edit.ts"
 import "./add-member.ts"
-import "./pic-icon"
 
 @customElement("club-item")
 export class ClubItemElement extends App.View {
@@ -23,6 +22,9 @@ export class ClubItemElement extends App.View {
 
   @property({ attribute: false })
   usingProfiles?: Profile[];
+
+  @property({ attribute: false })
+  usingMyProfile?: Profile;
 
   get club() {
     return this.using as Club;
@@ -40,6 +42,10 @@ export class ClubItemElement extends App.View {
     return this.usingProfiles as Profile[];
   }
 
+  get myProfile() {
+    return this.usingMyProfile as Profile;
+  }
+
 render() {
     return this.club && isNotEmpty(this.club) ? html`
       <link rel="stylesheet" href="/styles/club-info.css" />
@@ -48,6 +54,7 @@ render() {
       <link rel="stylesheet" href="/styles/reset.css" />
       <app-header> <div> ${this.club.name} </div> </app-header>
       <div class="page-content">
+        ${this.renderJoinOptions(this.myProfile, this.club, this.members)}
         <div class="grid-container">
           <div class="flex-item-large">
             <div class="subheading"> About Us </div>
@@ -116,6 +123,54 @@ render() {
           </dl>
       </div>
     ` : html`<no-content> </no-content>`;
+  }
+
+  renderJoinOptions(profile: Profile, club: Club, members: Members) {
+    // President/owner doesn't have option to leave so no options to join or leave should be displayed
+    // if (profile && club.owner === profile.email) {
+    //   return html``;
+    // }
+    // If already a part of this club render unjoin button with join button disabled 
+    if (profile && profile.clubs && this.isMember(members, profile)) {
+      console.log("PART OF THIS CLUB", profile, club)
+      return html`
+        <div>
+          <button disabled> Join </button> 
+          <button @click=${this.handleUnjoin}> Unjoin </button> 
+        </div>
+      `;
+    } else {
+      console.log("NOT PART OF THIS CLUB")
+      return html`
+        <div>
+          <button @click=${this.handleJoin}> Join </button> 
+          <button disabled> Unjoin </button> 
+        </div>
+      `;
+    }
+  }
+
+  isMember(members: Members, profile: Profile) {
+    if (members && Array.isArray(members) && members.length !== 0) {
+          return members.some(member => member.email === profile.email);
+      }
+  }
+
+  handleJoin() {
+    const member: Member = {name: this.myProfile.name, club_name: this.club.name, email: this.myProfile.email || "", role: "Member"}
+    this.dispatchMessage({
+        type: "MemberSaved",
+        member: member as Member,
+        club_name: this.club.name
+    });
+  }
+
+  handleUnjoin() {
+    this.dispatchMessage({
+        type: "MemberDeleted",
+        email: this.myProfile.email || "",
+        club_name: this.club.name
+    });
   }
 
   renderAddEventOption() {

@@ -28,6 +28,46 @@ dispatch.addMessage("ProfileSaved", (msg: App.Message) => {
     );
 });
 
+dispatch.addMessage("MemberDeleted", (msg: App.Message) => {
+  const { email, club_name } = msg as App.MemberDeleted;
+
+  return new APIRequest()
+    .post(`/members/delete/${club_name}/${email}`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Member:", json);
+        return json as Member;
+      }
+      return undefined;
+    })
+    .then(() => {
+      return new JSONRequest(undefined)
+        .get(`/members/${club_name}`)
+        .then((response: Response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          return undefined;
+        })
+        .then((json: unknown) => {
+          if (json) {
+            console.log("Members:", json);
+            return json as Member[];
+          }
+          return undefined;
+        })
+        .then((members: Member[] | undefined) => 
+          members ? App.updateProps({ members }) : App.noUpdate
+        );
+    });
+});
+
 dispatch.addMessage("MemberSaved", (msg: App.Message) => {
   const { member, club_name } = msg as App.MemberSaved;
 
@@ -95,6 +135,28 @@ dispatch.addMessage("ProfileSelected", (msg: App.Message) => {
     })
     .then((profile: Profile | undefined) =>
       profile ? App.updateProps({ profile }) : App.noUpdate
+    );
+});
+
+dispatch.addMessage("GetMyProfile", (msg: App.Message) => {
+  const { email } = msg as App.GetMyProfile;
+
+  return new APIRequest()
+    .get(`/profile/${email}`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("My Profile:", json);
+        return json as Profile;
+      }
+    })
+    .then((myProfile: Profile | undefined) =>
+      myProfile ? App.updateProps({ myProfile }) : App.noUpdate
     );
 });
 

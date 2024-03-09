@@ -4,7 +4,7 @@ import { Club, Events, Members, Profile } from "ts-models";
 import * as App from "../app";
 import "../components/app-header";
 import "../components/club-item";
-
+import { USER_EMAIL_KEY } from "../rest"
 
 type EventLocation = Location & {
   params: { name: string };
@@ -36,6 +36,11 @@ export class ClubViewElement extends App.View {
   }
 
   @property()
+  get myProfile() {
+    return this.getFromModel("myProfile") as Profile;
+  }
+
+  @property()
   get members() {
     return this.getFromModel("members") as Members;
   }
@@ -57,6 +62,10 @@ export class ClubViewElement extends App.View {
       this.dispatchMessage({
         type: "GetProfiles",
       });
+      this.dispatchMessage({
+        type: "GetMyProfile",
+        email: localStorage.getItem(USER_EMAIL_KEY) || ""
+      });
     }
     super.attributeChangedCallback(name, oldValue, newValue);
   }
@@ -69,7 +78,7 @@ export class ClubViewElement extends App.View {
       <link rel="stylesheet" href="/styles/reset.css" />
       <club-item 
         .using=${this.club as Club} .usingEvents=${this.events} .usingMembers=${this.members}
-        .usingProfiles=${this.profiles}>
+        .usingProfiles=${this.profiles} .usingMyProfile=${this.myProfile}>
       </club-item>
     `;
   }

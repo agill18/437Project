@@ -52,6 +52,7 @@ __export(members_exports, {
 });
 module.exports = __toCommonJS(members_exports);
 var import_member = __toESM(require("../models/member"));
+var import_profiles = __toESM(require("./profiles"));
 function getAll(club_name) {
   return import_member.default.find({ club_name }).then((list) => list).catch((err) => {
     throw `${club_name} Not Found`;
@@ -60,18 +61,25 @@ function getAll(club_name) {
 function create(member) {
   return __async(this, null, function* () {
     yield deleteOne(member.email, member.club_name);
+    const memberClubs = (yield import_profiles.default.get(member.email)).clubs || [];
+    yield import_profiles.default.update(member.email, { clubs: [...memberClubs, member.club_name] });
     const p = new import_member.default(member);
     return p.save();
   });
 }
 function deleteOne(email, club_name) {
-  return new Promise((resolve, reject) => {
-    import_member.default.deleteOne({ email, club_name }).then((member) => {
-      if (member)
-        resolve();
-      else
-        reject("Failed to delete member");
-    }).catch(() => reject());
+  return __async(this, null, function* () {
+    let memberClubs = (yield import_profiles.default.get(email)).clubs || [];
+    memberClubs = memberClubs.filter((club) => club !== club_name);
+    yield import_profiles.default.update(email, { clubs: memberClubs });
+    return new Promise((resolve, reject) => {
+      import_member.default.deleteOne({ email, club_name }).then((member) => {
+        if (member)
+          resolve();
+        else
+          reject("Failed to delete member");
+      }).catch(() => reject());
+    });
   });
 }
 var members_default = { getAll, create, deleteOne };

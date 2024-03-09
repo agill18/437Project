@@ -98,6 +98,10 @@ app.post("/api/members", (req, res) => {
   const newMember = req.body;
   import_members.default.create(newMember).then((member) => res.status(201).send(member)).catch((err) => res.status(500).send(err));
 });
+app.post("/api/members/delete/:club_name/:email", (req, res) => {
+  const { email, club_name } = req.params;
+  import_members.default.deleteOne(email, club_name).then(() => res.status(201).send()).catch((err) => res.status(500).send(err));
+});
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

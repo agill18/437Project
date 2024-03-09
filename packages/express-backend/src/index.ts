@@ -197,6 +197,16 @@ app.post("/api/members", (req: Request, res: Response) => {
     .catch((err) => res.status(500).send(err));
 });
 
+// Delete member
+// Body: member
+app.post("/api/members/delete/:club_name/:email", (req: Request, res: Response) => {
+  const { email, club_name } = req.params;
+
+  members
+    .deleteOne(email, club_name)
+    .then(() => res.status(201).send())
+    .catch((err) => res.status(500).send(err));
+});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

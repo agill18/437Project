@@ -51,9 +51,7 @@ function create(profile) {
 }
 function update(email, profile) {
   return new Promise((resolve, reject) => {
-    import_profile.default.findOneAndUpdate({ email }, profile, {
-      new: true
-    }).then((profile2) => {
+    import_profile.default.findOneAndUpdate({ email }, { $set: profile }, { new: true }).then((profile2) => {
       if (profile2)
         resolve(profile2);
       else
