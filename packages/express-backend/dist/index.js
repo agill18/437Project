@@ -27,6 +27,7 @@ var import_mongoConnect = require("./mongoConnect");
 var import_profiles = __toESM(require("./services/profiles"));
 var import_club_summaries = __toESM(require("./services/club_summaries"));
 var import_clubs = __toESM(require("./services/clubs"));
+var import_members = __toESM(require("./services/members"));
 var import_events = __toESM(require("./services/events"));
 var import_auth = require("./auth");
 const app = (0, import_express.default)();
@@ -36,9 +37,13 @@ app.use(import_express.default.json());
 (0, import_mongoConnect.connect)("437Project");
 app.post("/login", import_auth.loginUser);
 app.post("/signup", import_auth.registerUser);
-app.get("/api/profile/:userId", (req, res) => {
-  const { userId } = req.params;
-  import_profiles.default.get(userId).then((profile) => res.status(200).json(profile)).catch((err) => res.status(404).end());
+app.get("/api/profile/:email", (req, res) => {
+  const { email } = req.params;
+  if (email !== "all") {
+    import_profiles.default.get(email).then((profile) => res.status(200).json(profile)).catch((err) => res.status(404).end());
+  } else {
+    import_profiles.default.getAll().then((profiles2) => res.status(200).json(profiles2)).catch((err) => res.status(404).end());
+  }
 });
 app.post("/api/profiles", (req, res) => {
   const newProfile = req.body;
@@ -80,11 +85,19 @@ app.post("/api/clubs", (req, res) => {
   const newClub = req.body;
   import_clubs.default.create(newClub).then((club) => res.status(201).send(club)).catch((err) => res.status(500).send(err));
 });
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
 app.put("/api/clubs/:name", (req, res) => {
   const { name } = req.params;
   const newClub = req.body;
   import_clubs.default.update(name, newClub).then((club) => res.status(200).json(club)).catch((err) => res.status(404).end());
+});
+app.get("/api/members/:club_name", (req, res) => {
+  const { club_name } = req.params;
+  import_members.default.getAll(club_name).then((members2) => res.status(200).json(members2)).catch((err) => res.status(404).end());
+});
+app.post("/api/members", (req, res) => {
+  const newMember = req.body;
+  import_members.default.create(newMember).then((member) => res.status(201).send(member)).catch((err) => res.status(500).send(err));
+});
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

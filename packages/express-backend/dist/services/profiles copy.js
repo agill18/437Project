@@ -26,11 +26,11 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var profiles_exports = {};
-__export(profiles_exports, {
-  default: () => profiles_default
+var profiles_copy_exports = {};
+__export(profiles_copy_exports, {
+  default: () => profiles_copy_default
 });
-module.exports = __toCommonJS(profiles_exports);
+module.exports = __toCommonJS(profiles_copy_exports);
 var import_profile = __toESM(require("../models/profile"));
 function index() {
   return import_profile.default.find();
@@ -38,11 +38,6 @@ function index() {
 function get(email) {
   return import_profile.default.find({ email }).then((list) => list[0]).catch((err) => {
     throw `${email} Not Found`;
-  });
-}
-function getAll() {
-  return import_profile.default.find({}).then((list) => list).catch((err) => {
-    throw `Profiles Not Found`;
   });
 }
 function create(profile) {
@@ -61,4 +56,4 @@ function update(email, profile) {
     });
   });
 }
-var profiles_default = { index, get, create, update, getAll };
+var profiles_copy_default = { index, get, create, update };

@@ -13,6 +13,14 @@ function get(email: String): Promise<Profile> {
     });
 }
 
+function getAll(): Promise<Profile[]> {
+  return ProfileModel.find({ })
+    .then((list) => list)
+    .catch((err) => {
+      throw `Profiles Not Found`;
+    });
+}
+
 function create(profile: Profile): Promise<Profile> {
   const p = new ProfileModel(profile);
   return p.save();
@@ -29,4 +37,4 @@ function update(email: String, profile: Profile): Promise<Profile> {
   });
 }
 
-export default { index, get, create, update };
+export default { index, get, create, update, getAll };

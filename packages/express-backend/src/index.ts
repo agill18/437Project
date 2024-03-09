@@ -2,10 +2,11 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 
 import { connect } from "./mongoConnect";
-import { Profile, ClubSummary, EventDetail, Club } from "ts-models";
+import { Profile, ClubSummary, EventDetail, Club, Member } from "ts-models";
 import profiles from "./services/profiles";
 import clubSummaries from "./services/club_summaries";
 import clubs from "./services/clubs";
+import members from "./services/members";
 import events from "./services/events";
 import credentials from "./services/credentials";
 import { loginUser, registerUser } from "./auth";
@@ -35,14 +36,20 @@ app.post("/signup", registerUser);
 
 
 // Get profile
-// Request Params: userId
-app.get("/api/profile/:userId", (req: Request, res: Response) => {
-  const { userId } = req.params;
-
-  profiles
-    .get(userId)
-    .then((profile: Profile) => res.status(200).json(profile))
-    .catch((err) => res.status(404).end());
+// Request Params: email
+app.get("/api/profile/:email", (req: Request, res: Response) => {
+  const { email } = req.params;
+  if (email !== "all") {
+    profiles
+      .get(email)
+      .then((profile: Profile) => res.status(200).json(profile))
+      .catch((err) => res.status(404).end());
+  } else {
+    profiles
+      .getAll()
+      .then((profiles: Profile[]) => res.status(200).json(profiles))
+      .catch((err) => res.status(404).end());
+  }
 });
 
 // Add profile
@@ -155,10 +162,6 @@ app.post("/api/clubs", (req: Request, res: Response) => {
     .catch((err) => res.status(500).send(err));
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-
 // Update club
 // Request Params: name
 // Body: club
@@ -170,4 +173,31 @@ app.put("/api/clubs/:name", (req: Request, res: Response) => {
     .update(name, newClub)
     .then((club: Club) => res.status(200).json(club))
     .catch((err) => res.status(404).end());
+});
+
+// Get members for club
+// Request Params: n/a
+app.get("/api/members/:club_name", (req: Request, res: Response) => {
+  const { club_name } = req.params;
+
+  members
+    .getAll(club_name)
+    .then((members: Member[]) => res.status(200).json(members))
+    .catch((err) => res.status(404).end());
+});
+
+// Add club
+// Body: club
+app.post("/api/members", (req: Request, res: Response) => {
+  const newMember = req.body;
+
+  members
+    .create(newMember)
+    .then((member: Member) => res.status(201).send(member))
+    .catch((err) => res.status(500).send(err));
+});
+
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

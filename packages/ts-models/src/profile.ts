@@ -6,3 +6,14 @@ export interface Profile {
   major?: string;
   clubs?: string[];
 }
+
+export interface Member {
+  name?: string; 
+  email: string;
+  club_name: string;
+  role: string;
+}
+
+export interface Members {
+  members: Member[];
+}

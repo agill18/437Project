@@ -26,39 +26,29 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var profiles_exports = {};
-__export(profiles_exports, {
-  default: () => profiles_default
+var members_exports = {};
+__export(members_exports, {
+  default: () => members_default
 });
-module.exports = __toCommonJS(profiles_exports);
-var import_profile = __toESM(require("../models/profile"));
-function index() {
-  return import_profile.default.find();
-}
-function get(email) {
-  return import_profile.default.find({ email }).then((list) => list[0]).catch((err) => {
-    throw `${email} Not Found`;
+module.exports = __toCommonJS(members_exports);
+var import_member = __toESM(require("../models/member"));
+function getAll(club_name) {
+  return import_member.default.find({ club_name }).then((list) => list).catch((err) => {
+    throw `${club_name} Not Found`;
   });
 }
-function getAll() {
-  return import_profile.default.find({}).then((list) => list).catch((err) => {
-    throw `Profiles Not Found`;
-  });
-}
-function create(profile) {
-  const p = new import_profile.default(profile);
+function create(member) {
+  const p = new import_member.default(member);
   return p.save();
 }
-function update(email, profile) {
+function deleteOne(email, club_name) {
   return new Promise((resolve, reject) => {
-    import_profile.default.findOneAndUpdate({ email }, profile, {
-      new: true
-    }).then((profile2) => {
-      if (profile2)
-        resolve(profile2);
+    import_member.default.deleteOne({ email, club_name }).then((member) => {
+      if (member)
+        resolve();
       else
-        reject("Failed to update profile");
-    });
+        reject("Failed to delete member");
+    }).catch(() => reject());
   });
 }
-var profiles_default = { index, get, create, update, getAll };
+var members_default = { getAll, create, deleteOne };

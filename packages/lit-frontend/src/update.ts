@@ -1,6 +1,6 @@
 import { JSONRequest, APIRequest } from "./rest";
 import * as App from "./app";
-import { Profile, ClubSummary, EventDetail, Club } from "ts-models";
+import { Profile, ClubSummary, EventDetail, Club, Member } from "ts-models";
 
 const dispatch = App.createDispatch();
 export default dispatch.update;
@@ -103,6 +103,30 @@ dispatch.addMessage("GetEvents", (msg: App.Message) => {
     })
     .then((events: EventDetail[] | undefined) => 
       events ? App.updateProps({ events }) : App.noUpdate
+    );
+});
+
+dispatch.addMessage("GetMembers", (msg: App.Message) => {
+  const { club_name } = msg as App.GetMembers;
+  console.log("Dispatched GetMembers");
+
+  return new JSONRequest(undefined)
+    .get(`/members/${club_name}`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Members:", json);
+        return json as Member[];
+      }
+      return undefined;
+    })
+    .then((members: Member[] | undefined) => 
+      members ? App.updateProps({ members }) : App.noUpdate
     );
 });
 
@@ -212,6 +236,29 @@ dispatch.addMessage("ClubSaved", (msg: App.Message) => {
     })
     .then((club: Club | undefined) =>
       club ? App.updateProps({ club }) : App.noUpdate
+    );
+});
+
+dispatch.addMessage("GetProfiles", (msg: App.Message) => {
+  const email = "all";
+
+  // "all" is passed into email if we want to fetch all profiles
+  return new APIRequest()
+    .get(`/profile/${email}`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Profiles:", json);
+        return json as Profile[];
+      }
+    })
+    .then((profiles: Profile[] | undefined) =>
+      profiles ? App.updateProps({ profiles }) : App.noUpdate
     );
 });
 

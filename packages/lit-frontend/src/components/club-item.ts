@@ -1,12 +1,14 @@
 import { css, html } from "lit";
 import {customElement, property } from "lit/decorators.js";
 import { isNotEmpty, getTime } from "../views/util.ts"
-import { Club, Events } from "ts-models";
+import { Club, Events, Members, Profile } from "ts-models";
 import * as App from "../app.ts";
 import { USER_EMAIL_KEY } from "../rest";
 import { renderAllEvents } from "../views/util.ts"
 import "./no-content.ts"
 import "./club-edit.ts"
+import "./add-member.ts"
+
 
 @customElement("club-item")
 export class ClubItemElement extends App.View {
@@ -16,12 +18,26 @@ export class ClubItemElement extends App.View {
   @property({ attribute: false })
   usingEvents?: Events;
 
+  @property({ attribute: false })
+  usingMembers?: Members;
+
+  @property({ attribute: false })
+  usingProfiles?: Profile[];
+
   get club() {
     return this.using as Club;
   }
 
   get events() {
     return this.usingEvents as Events;
+  }
+
+  get members() {
+    return this.usingMembers as Members;
+  }
+
+  get profiles() {
+    return this.usingProfiles as Profile[];
   }
 
 render() {
@@ -65,7 +81,6 @@ render() {
               </div>
           </div> 
         </div>
-        <!-- ${this.hasAdminPermission() ? this.renderEditClubOption() : html``} -->
         <dl>
             <dt class="subheading"> Contact Information </dt>
             <dd> E: ${this.club.owner} </dd>
@@ -80,37 +95,24 @@ render() {
                     ${renderAllEvents(this.events, 'General')}
                 </div>
             </dd>
-            <dt class="subheading"> Club Membership 
-            </dt>
-            <!-- <dd>
+            <div class="flex-container">
+              <h2> Club Membership </h2>
+              <div> 
+                ${this.hasAdminPermission() ? this.renderAddOfficiersOption() : html``}
+              </div>
+            </div>
+            <dd>
                 <p class="small-subheading"> Officers 
-                    <div class="profile-listing"> 
-                        <a href="../profiles/profile-Anna.html" class="officer-card"> 
-                                <img class="profile-pic" src="../../images/a.webp">
-                                <div class="role"> PRESIDENT </div>
-                                Anna Reed
-                        </a>
-                        <a href="../profiles/profile-Clara.html" class="officer-card">
-                            <img class="profile-pic" src="../../images/a.webp">
-                            <div class="role"> TREASURER </div>
-                            Clara Hallgarth
-                        </a>
-                    </div>
+                  <div class="profile-listing"> 
+                      ${this.renderAdmin(this.members)}
+                  </div>
                 </p>
-                <p class="small-subheading"> Members 
-                    <div class="member-count"> 2 total members </div>
-                    <div class="profile-listing">
-                        <a href="../profiles/profile-Anmol.html" class="member-card">
-                            <img class="small-profile-pic" src="../../images/a.webp">
-                            Anmol Gill
-                        </a>
-                        <a href="../profiles/profile-Annie.html" class="member-card">
-                            <img class="small-profile-pic" src="../../images/a.webp">
-                            Annie Wong
-                        </a>
-                    </div>
+                <p class="small-subheading"> Members (${this.getMemberCount(this.members)})
+                  <div class="profile-listing">
+                      ${this.renderMembers(this.members)}
+                  </div>
                 </p>
-            </dd> -->
+            </dd>
           </dl>
       </div>
     ` : html`<no-content> </no-content>`;
@@ -141,6 +143,20 @@ render() {
       </div>
       `
   }
+
+  renderAddOfficiersOption() {
+    return html`
+      <div> 
+        <custom-modal customId="edit-club">
+          <span slot="button-name"> Add Officers + </span>
+          <div slot="title"> Add Officer </div>
+          <div slot="content">
+              <add-member .using=${this.profiles}> </add-member>>
+          </div>
+        </custom-modal>
+      </div>
+      `
+  }
   
   hasAdminPermission() {
     return this.club.owner === localStorage.getItem(USER_EMAIL_KEY);
@@ -154,9 +170,56 @@ render() {
     })
   }
 
+  renderAdmin(members: Members) {
+    if (members && Array.isArray(members)) {
+        return members.map((member) => {
+            if (member.role !== "Member")
+             {
+              return html`
+                <a href="/app/profile/${member.email}" class="officer-card"> 
+                    <img class="profile-pic" src="../../images/a.webp">
+                    <div class="role"> ${member.role} </div>
+                    ${member.name}
+                </a>
+              `
+             }
+            return html``;
+        });
+    }
+  }
+
+  renderMembers(members: Members) {
+    if (members && Array.isArray(members)) {
+        return members.map((member) => {
+            if (member.role === "Member")
+             {
+              return html`
+                <a href="/app/profile/${member.email}" class="member-card">
+                    <img class="small-profile-pic" src="../../images/a.webp">
+                    ${member.name}
+                </a>
+              `
+             }
+            return html``;
+        });
+    }
+  }
+
+  getMemberCount(members: Members) {
+    let count = 0;
+    if (members && Array.isArray(members)) {
+        members.map((member) => {
+          if (member.role === "Member")
+            {
+              count += 1;
+            }
+        });
+    }
+    return count;
+  }
+
   renderTime(start_time: string, end_time: string) {
-      if (start_time === "TBD")
-      {
+      if (start_time === "TBD") {
         return "TBD"
       }
       else {
