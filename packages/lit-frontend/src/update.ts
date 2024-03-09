@@ -279,7 +279,7 @@ dispatch.addMessage("ClubSaved", (msg: App.Message) => {
     );
 });
 
-dispatch.addMessage("GetProfiles", (msg: App.Message) => {
+dispatch.addMessage("GetProfiles", () => {
   const email = "all";
 
   // "all" is passed into email if we want to fetch all profiles

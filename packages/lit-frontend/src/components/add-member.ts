@@ -2,7 +2,7 @@ import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Member, Profile } from "ts-models";
 import * as App from "../app";
-import { USER_EMAIL_KEY } from "../rest";
+// import { USER_EMAIL_KEY } from "../rest";
 
 @customElement("add-member")
 export class AddMemberElement extends App.View {
