@@ -1,6 +1,11 @@
 import { Club } from "ts-models";
 import ClubModel from "../models/club";
 import ClubSummaryModel from "../models/clubSummary";
+import MemberModel from "../models/member";
+import profiles from "./profiles";
+import members from "./members";
+
+
 
 function get(name: String): Promise<Club> {
   return ClubModel.find({ name })
@@ -16,6 +21,10 @@ async function create(club: Club): Promise<Club> {
   // create new clubSummary as well when a new club is created
   const newSummary = new ClubSummaryModel({ name: club.name, description: club.concise_description});
   await newSummary.save();
+
+  // set the creator of the club as the president
+  const ownerProfile = await profiles.get(club.owner);
+  await members.create({ name: ownerProfile.name, email: club.owner, club_name: club.name, role: "President" });
 
   return await c.save();
 }

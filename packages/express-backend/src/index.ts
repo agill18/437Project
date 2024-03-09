@@ -186,8 +186,8 @@ app.get("/api/members/:club_name", (req: Request, res: Response) => {
     .catch((err) => res.status(404).end());
 });
 
-// Add club
-// Body: club
+// Add member
+// Body: member
 app.post("/api/members", (req: Request, res: Response) => {
   const newMember = req.body;
 

@@ -53,11 +53,11 @@ function generateAccessToken(email) {
   });
 }
 function registerUser(req, res) {
-  const { email, password } = req.body;
-  if (!email || !password) {
+  const { email, password, name } = req.body;
+  if (!email || !password || !name) {
     res.status(400).send("Bad request: Invalid input data.");
   } else {
-    import_credentials.default.createCredential(email, password).then((creds) => generateAccessToken(creds.email)).then((token) => res.status(201).send({ token })).catch((error) => {
+    import_credentials.default.createCredential(email, password, name).then((creds) => generateAccessToken(creds.email)).then((token) => res.status(201).send({ token })).catch((error) => {
       if (error.name === "ValidationError") {
         for (let field in error.errors) {
           if (field === "email") {

@@ -92,7 +92,7 @@ render() {
             </div>
             <dd> 
                 <div class="event-listing">
-                    ${renderAllEvents(this.events, 'General')}
+                    ${renderAllEvents(this.events, this.club.name)}
                 </div>
             </dd>
             <div class="flex-container">
@@ -151,7 +151,7 @@ render() {
           <span slot="button-name"> Add Officers + </span>
           <div slot="title"> Add Officer </div>
           <div slot="content">
-              <add-member .using=${this.profiles}> </add-member>>
+              <add-member .using=${this.profiles} .usingClub=${this.club.name}> </add-member>
           </div>
         </custom-modal>
       </div>
@@ -248,6 +248,17 @@ render() {
         flex-wrap: wrap;
         overflow-x: scroll;
         white-space: nowrap;
+    }
+
+    ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        height: 0.4rem;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        cursor: pointer;
+        border-radius: 1rem;
+        background-color: var(--color-text);
     }
   `;
 }

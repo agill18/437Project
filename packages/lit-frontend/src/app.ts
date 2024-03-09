@@ -13,6 +13,7 @@ export interface Model {
   event?: EventDetail;
   club?: Club;
   members?: Member[];
+  member?: Member;
   profiles?: Profile[];
 }
 
@@ -53,6 +54,11 @@ export interface GetMembers extends MsgType<"GetMembers"> {
   club_name: string;
 }
 
+export interface MemberSaved extends MsgType<"MemberSaved"> {
+  member: Member;
+  club_name: string;
+}
+
 export interface CreateEvent extends MsgType<"CreateEvent"> {
   event: EventDetail;
   host: string;
@@ -84,6 +90,7 @@ export type Message =
   | CreateClub 
   | ClubSaved 
   | GetMembers 
+  | MemberSaved
   | GetProfiles;
 
 export class Main extends MVU.Main<Model, Message> implements MVU.App<Model, Message> {

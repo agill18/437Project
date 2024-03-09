@@ -4,9 +4,9 @@ import { Member } from "ts-models";
 const memberSchema = new Schema<Member>(
   {
     name: { type: String, trim: true },
-    email: { type: String, required: true, trim: true, unique: true },
-    club_name: { type: String, required: true, trim: true, default: '' },
-    role: { type: String, trim: true, default: 'member'},
+    email: { type: String, required: true, trim: true},
+    club_name: { type: String, required: true, trim: true},
+    role: { type: String, trim: true, default: 'Member'},
   },
   { collection: "club_members" }
 );

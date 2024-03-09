@@ -76,13 +76,13 @@ function verify(email, password) {
     }));
   });
 }
-function createCredential(email, password) {
+function createCredential(email, password, name) {
   return __async(this, null, function* () {
     const salt = yield import_bcryptjs.default.genSalt(10);
     const hashedPassword = yield import_bcryptjs.default.hash(password, salt);
     const credential = new import_credential.default({ email, hashedPassword });
     console.log("credential", credential);
-    const p = new import_profile.default({ email });
+    const p = new import_profile.default({ email, name });
     yield p.save();
     return yield credential.save();
   });

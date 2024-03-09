@@ -28,6 +28,46 @@ dispatch.addMessage("ProfileSaved", (msg: App.Message) => {
     );
 });
 
+dispatch.addMessage("MemberSaved", (msg: App.Message) => {
+  const { member, club_name } = msg as App.MemberSaved;
+
+  return new JSONRequest(member)
+    .post(`/members`)
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return undefined;
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Member:", json);
+        return json as Member;
+      }
+      return undefined;
+    })
+    .then(() => {
+      return new JSONRequest(undefined)
+        .get(`/members/${club_name}`)
+        .then((response: Response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          return undefined;
+        })
+        .then((json: unknown) => {
+          if (json) {
+            console.log("Members:", json);
+            return json as Member[];
+          }
+          return undefined;
+        })
+        .then((members: Member[] | undefined) => 
+          members ? App.updateProps({ members }) : App.noUpdate
+        );
+    });
+});
+
 dispatch.addMessage("UserLoggedIn", (msg: App.Message, model: App.Model) => {
     const { user } = msg as App.UserLoggedIn;
     console.log("Dispatched UserLoggedIn");

@@ -124,16 +124,26 @@ export class AuthContainer extends LitElement {
             <form id="signup" 
             @submit=${this.handleSignup}
             @change=${() => {this.errorMessage = ''; this.isSuccess = false;}}>
-                <label class="field-entry">
-                    <span class="field-title"> Cal Poly Email </span>
+                <label class="field-entry-2">
+                    <span class="field-titl-2"> Name </span>
+                    <input
+                        class="field-input"
+                        type="text"
+                        name="name"
+                        required
+                    />
+                </label>
+                <label class="field-entry-2">
+                    <span class="field-title-2"> Cal Poly Email </span>
                     <input
                         class="field-input"
                         type="email"
                         name="email"
+                        required
                     />
                 </label>
-                <label class="field-entry">
-                    <span class="field-title"> Password 
+                <label class="field-entry-2">
+                    <span class="field-title-2"> Password 
                         <svg class="password-icon" @click=${this.togglePassword}>
                             <use href=${this.getTogglePassIcon()} />
                         </svg>
@@ -141,7 +151,8 @@ export class AuthContainer extends LitElement {
                     <input
                         class="field-input"
                         type=${this.passwordVisible ? 'text' : 'password'}
-                        name="password"        
+                        name="password"  
+                        required      
                     />
                 </label>
                 ${this.errorMessage ? html`<render-error .isSuccess=${false}> ${this.errorMessage} </render-error>` : ''}
@@ -352,10 +363,23 @@ export class AuthContainer extends LitElement {
             box-sizing: border-box;
         }
 
-        .login-button, .signup-button {
+        .login-button {
             box-sizing: border-box;
             display: block;
             bottom: 2.7rem;
+            position: fixed;
+            width: 77.8%;
+            padding: 0.6rem;
+            border: none;
+            background-color: var(--color-background-header);
+            color: white;
+            font-weight: var(--font-weight-extra-bold);
+        }
+
+        .signup-button {
+            box-sizing: border-box;
+            display: block;
+            bottom: 1rem;
             position: fixed;
             width: 77.8%;
             padding: 0.6rem;
@@ -384,9 +408,23 @@ export class AuthContainer extends LitElement {
             align-items: flex-start;
         }
 
+        .field-entry-2 {
+            padding-bottom: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
         .field-title {
             display: block;
             padding-bottom: 0.3rem;
+            font-weight: var(--font-weight-light-bold);
+            font-size: var(--size-type-small-body);
+        }
+
+        .field-title-2 {
+            display: block;
+            padding-bottom: 0.1rem;
             font-weight: var(--font-weight-light-bold);
             font-size: var(--size-type-small-body);
         }

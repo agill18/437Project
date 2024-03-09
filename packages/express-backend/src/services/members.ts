@@ -9,7 +9,9 @@ function getAll(club_name: String): Promise<Member[]> {
     });
 }
 
-function create(member: Member): Promise<Member> {
+async function create(member: Member): Promise<Member> {
+  // Delete another entry in the members table for the same club if it exists
+  await deleteOne(member.email, member.club_name);
   const p = new MemberModel(member);
   return p.save();
 }

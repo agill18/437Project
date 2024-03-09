@@ -17,12 +17,12 @@ function generateAccessToken(email: string) {
 }
 
 export function registerUser(req: Request, res: Response) {
-  const { email, password } = req.body; 
-  if (!email || !password) {
+  const { email, password, name } = req.body; 
+  if (!email || !password || !name ) {
     res.status(400).send("Bad request: Invalid input data.");
   } else {
     credentials
-      .createCredential(email, password)
+      .createCredential(email, password, name)
       .then((creds) => generateAccessToken(creds.email))
       .then((token) => res.status(201).send({ token: token }))
       .catch((error: any) => {

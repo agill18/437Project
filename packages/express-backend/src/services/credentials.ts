@@ -28,13 +28,13 @@ function verify(email: string, password: string): Promise<string> {
         })
 }
 
-export async function createCredential(email: string, password: string,): Promise<Credential> {
+export async function createCredential(email: string, password: string, name: string): Promise<Credential> {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const credential = new credentialModel({ email, hashedPassword });
     console.log("credential", credential)
     // Create profile for all new users as well
-    const p = new ProfileModel({email});
+    const p = new ProfileModel({email, name});
     await p.save();
 
     return await credential.save();

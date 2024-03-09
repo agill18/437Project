@@ -19,7 +19,7 @@ export function renderClub(name: string, description: string) {
 }   
 
 export function renderAllEvents(events: Events, host: string) {
-    if (events && Array.isArray(events)) {
+    if (events && Array.isArray(events) && events.length !== 0) {
         return events.map((event) => {
             return renderEvent(event, host)
         });
@@ -27,6 +27,7 @@ export function renderAllEvents(events: Events, host: string) {
 }
 
 export function renderEvent(event: EventDetail, host: string) {
+    console.log("loggging event")
     const href: string = '/app/event/' + host + '/' + event._id;
     return html`
         <event-overview-card linkHref=${href}>

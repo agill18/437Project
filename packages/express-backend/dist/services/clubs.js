@@ -53,6 +53,8 @@ __export(clubs_exports, {
 module.exports = __toCommonJS(clubs_exports);
 var import_club = __toESM(require("../models/club"));
 var import_clubSummary = __toESM(require("../models/clubSummary"));
+var import_profiles = __toESM(require("./profiles"));
+var import_members = __toESM(require("./members"));
 function get(name) {
   return import_club.default.find({ name }).then((list) => list[0]).catch((err) => {
     throw `${name} Club Not Found`;
@@ -63,6 +65,8 @@ function create(club) {
     const c = new import_club.default(club);
     const newSummary = new import_clubSummary.default({ name: club.name, description: club.concise_description });
     yield newSummary.save();
+    const ownerProfile = yield import_profiles.default.get(club.owner);
+    yield import_members.default.create({ name: ownerProfile.name, email: club.owner, club_name: club.name, role: "President" });
     return yield c.save();
   });
 }

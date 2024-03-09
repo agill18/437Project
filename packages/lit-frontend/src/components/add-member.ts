@@ -1,6 +1,6 @@
 import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { Club, Profile } from "ts-models";
+import { Member, Profile } from "ts-models";
 import * as App from "../app";
 import { USER_EMAIL_KEY } from "../rest";
 
@@ -9,8 +9,14 @@ export class AddMemberElement extends App.View {
   @property({ attribute: false })
   using?: Profile[];
 
+  usingClub?: string;
+
   get profiles() {
     return this.using as Profile[];
+  }
+
+  get clubName() {
+    return this.usingClub || "";
   }
 
   render() {
@@ -19,63 +25,30 @@ export class AddMemberElement extends App.View {
       <link rel="stylesheet" href="/styles/tokens.css" />
       <link rel="stylesheet" href="/styles/reset.css" />
       <link rel="stylesheet" href="/styles/club-info.css" />
-      ${this.getEmails(this.profiles)}
       <form 
         id="addEvent"
         @submit=${this._handleSubmit}
       >
           <div class="table-format">
-          <label>
-                <span> Club Name </span>
-                <input name="name" type="text" required/>
-            </label>
             <label>
-                <span>Detailed Description</span>
-                <textarea name="detailed_description" rows="4" cols="110" type="text" required> </textarea>
+                <span class="with-icon"> Club Name
+                    <svg class="lock-icon">
+                        <use href="/icons/user-interface.svg#icon-lock" />
+                    </svg>
+                </span>
+                <input class="disabled" disabled name="club_name" value=${this.clubName} type="text" required/>
+            </label>
+            <label> 
+              <span> Select User </span>
+              <select name="email">
+                ${this.renderUserOptions(this.profiles)}
+              </select>
+            </label>
+            <label> 
+              <span> Role/Position </span>
+              <input name="role" type="text" required/>
             </label>
           </div>
-        <div class="grid-container">
-          <h3> Overview </h3>
-          <h3> General Club Meetings </h3>
-        </div>
-        <div class="grid-container">
-        <div class="table-format">
-            <label>
-                <span> Tags </span>
-                <input name="tags" type="text" required default="enter comma seperated list">
-            </label>
-            <label>
-                <span>Concise Description</span>
-                <textarea name="concise_description" rows="4" cols="80" type="text" required> </textarea>
-            </label>
-            <label>
-              <span class="with-icon"> President/Owner 
-                <svg class="lock-icon">
-                    <use href="/icons/user-interface.svg#icon-lock" />
-                </svg>
-              </span>
-              <input class='disabled' name="owner" type="text" required disabled value=${localStorage.getItem(USER_EMAIL_KEY) || ""}>
-            </label>
-          </div> 
-          <div class="table-format">
-            <label>
-                <span> Day(s) </span>
-                <input name="days" type="text">
-            </label>
-            <label>
-                <span> Start Time </span>
-                <input name="start_time" type="time">
-            </label>
-            <label>
-                <span> End Time </span>
-                <input name="end_time" type="time">
-            </label>
-            <label>
-                <span> Location </span>
-                <input name="location" type="text">
-            </label>
-          </div>
-        </div>
       <div class="action-button-container">
             <button 
                 type="submit"
@@ -93,22 +66,25 @@ export class AddMemberElement extends App.View {
     `;
   }
 
-  getEmails(profiles: Profile[]) {
-    console.log("made it in hereeeeee")
+  renderUserOptions(profiles: Profile[]) {
     if (profiles && Array.isArray(profiles)) {
       return profiles.map((profile) => {
         return html`
-          <div> ${profile.email} </div>
+          <option value=${profile.email}> ${profile.email} </option>
         `
       });
     }
+  }
+
+  getNameForEmail(email: string, profiles: Profile[]) {
+    return profiles.find(profile => profile.email === email)?.name;
   }
 
   static styles = css`
     .table-format {
       display: grid;
       grid-template-columns: max-content auto;
-      gap: 0.5rem;
+      gap: 2rem;
       align-items: center;
     }
 
@@ -184,7 +160,7 @@ export class AddMemberElement extends App.View {
     }
 
     select {
-        width: 104%;
+        width: 100%;
     }
 
     input:focus {
@@ -232,30 +208,26 @@ export class AddMemberElement extends App.View {
       grid-template-columns: 2fr 1.5fr;
       column-gap: 1.5rem;
     }
-    
-    `;
+  `;
 
    _handleSubmit(ev: Event) {
     ev.preventDefault(); // prevent browser from submitting form data itself
 
     const target = ev.target as HTMLFormElement;
-    const formdata = new FormData(target);
+    let formdata = new FormData(target);
     // Since diabled fields don't automatically can't included 
-    formdata.append('owner', localStorage.getItem(USER_EMAIL_KEY) || "");
-    const entries = Array.from(formdata.entries())
-      .map(([k, v]) => (v === "" ? [k] : [k, v]))
-      .map(([k, v]) =>
-        k === "tags"
-          ? [k, (v as string).split(",").map((s) => s.trim())]
-          : [k, v]
-      );
-    const json = Object.fromEntries(entries);
+    formdata.append('club_name', this.clubName);
+    let json = Object.fromEntries(formdata);
+    const email = json.email.toString();
+    formdata.append('name', this.getNameForEmail(email, this.profiles) as string);
+    json = Object.fromEntries(formdata);
 
-    console.log("Submitting Form", json);
+    console.log("Submitting Form", email, json);
 
     this.dispatchMessage({
-        type: "CreateClub",
-        club: json as unknown as Club
+        type: "MemberSaved",
+        member: json as unknown as Member,
+        club_name: this.clubName
     });
     
     // Close the modal after dispatching the save action and clear all previous form data
