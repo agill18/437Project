@@ -8,7 +8,7 @@ import { renderAllEvents } from "../views/util.ts"
 import "./no-content.ts"
 import "./club-edit.ts"
 import "./add-member.ts"
-
+import "./pic-icon"
 
 @customElement("club-item")
 export class ClubItemElement extends App.View {
@@ -177,7 +177,9 @@ render() {
              {
               return html`
                 <a href="/app/profile/${member.email}" class="officer-card"> 
-                    <img class="profile-pic" src="../../images/a.webp">
+                    <div class="profile-pic">
+                      <div class="circle">${this.getFirstLetter(member.name)}</div>
+                    </div>
                     <div class="role"> ${member.role} </div>
                     ${member.name}
                 </a>
@@ -195,8 +197,12 @@ render() {
              {
               return html`
                 <a href="/app/profile/${member.email}" class="member-card">
-                    <img class="small-profile-pic" src="../../images/a.webp">
+                  <div class="small-profile-pic">  
+                    <div class="small-circle">${this.getFirstLetter(member.name)}</div>
+                  </div>
+                  <div class="space">
                     ${member.name}
+                  </div>
                 </a>
               `
              }
@@ -227,9 +233,50 @@ render() {
       }
   }
 
+  getFirstLetter(name: string) {
+    return name.charAt(0);
+  }
+
   static styles = css`
     :host {
       display: contents;
+    }
+
+    .circle {
+      margin-top: 1rem;
+      border-radius: 20rem;
+      font-size: 2.8rem;
+      font-weight: var(--font-weight-extreme-bold);
+      background-color: var(--color-background-page);
+      padding-left: 1rem;
+      padding-right: 1rem;
+      color: var(--color-text);
+    }
+
+    .space {
+      margin-top: 0.2rem;
+    }
+
+    .small-circle {
+      border-radius: 20rem;
+      font-size: 1rem;
+      font-weight: var(--font-weight-light-bold);
+      background-color: var(--color-background-page);
+      padding-top: 0.2rem;
+      padding-bottom: 0.2rem;
+      padding-left: 0.6rem;
+      padding-right: 0.6rem;
+      color: var(--color-text);
+    }
+
+    .profile-pic {
+      display: flex;
+      justify-content: center;
+    }
+
+    .small-profile-pic {
+      vertical-align: center;
+      margin-right: 1.3rem;
     }
 
     .small-subheading {

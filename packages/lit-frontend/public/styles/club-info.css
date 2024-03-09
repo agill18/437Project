@@ -103,7 +103,7 @@
     font-weight: var(--font-weight-normal);
     vertical-align: center;
     display: flex;
-    align-items: center;
+    text-align: center;
 }
 
 .member-card:hover {
@@ -127,18 +127,13 @@
 }
 
 .profile-pic {
-    margin-top: 1rem;
-    border-radius: 50%;
-    width: 70px;
-    height: 60px;
+    display: flex;
+    justify-content: center;
 }
 
 .small-profile-pic {
     vertical-align: center;
     margin-right: 1.3rem;
-    border-radius: 50%;
-    width: 35px;
-    height: 30px;
 }
 
 .role {
