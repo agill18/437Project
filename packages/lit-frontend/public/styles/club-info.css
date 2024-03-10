@@ -74,6 +74,7 @@
     text-decoration: none;
     font-weight: var(--font-weight-normal);
     padding: 0.5rem;
+    position: relative;
 }
 
 .officer-card:hover {
@@ -102,6 +103,7 @@
     vertical-align: center;
     display: flex;
     text-align: center;
+    position: relative;
 }
 
 .member-card:hover {

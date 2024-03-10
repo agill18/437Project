@@ -54,7 +54,6 @@ render() {
       <link rel="stylesheet" href="/styles/reset.css" />
       <app-header> <div> ${this.club.name} </div> </app-header>
       <div class="page-content">
-        <!-- ${this.renderJoinOptions(this.myProfile, this.club, this.members)} -->
         <div class="grid-container">
           <div class="flex-item-large">
             <div class="subheading"> About Us </div>
@@ -230,17 +229,33 @@ render() {
              {
               return html`
                 <a href="/app/profile/${member.email}" class="officer-card"> 
+                    ${this.renderDeleteAdmin(member.email, this.club.owner)}
                     <div class="profile-pic">
                       <div class="circle">${this.getFirstLetter(member.name)}</div>
                     </div>
                     <div class="role"> ${member.role} </div>
                     ${member.name}
+                    <div>
+                  </div>
                 </a>
               `
              }
             return html``;
         });
     }
+  }
+
+  renderDeleteAdmin(email: string, ownerEmail: string) {
+    if (email !== ownerEmail && this.hasAdminPermission()) {
+      return html`
+        <button class="space trash" @click=${(e: Event) => this.deleteMember(e, email)}>
+          <svg class="trash-icon">
+            <use href="/icons/user-interface.svg#icon-trash" />
+          </svg>
+      </button>
+      `;
+    }
+    return html``;
   }
 
   renderMembers(members: Members) {
@@ -256,12 +271,25 @@ render() {
                   <div class="space">
                     ${member.name}
                   </div>
+                  <div>
+                    ${this.renderDeleteAdmin(member.email, this.club.owner)}
+                  </div>
                 </a>
               `
              }
             return html``;
         });
     }
+  }
+
+  deleteMember(event: Event, email: string) {
+    event.preventDefault(); // Prevent from navigating to the user profile
+    console.log("trash icoin clickedlkjadsklfjdsa");
+    this.dispatchMessage({
+        type: "MemberDeleted",
+        email: email || "",
+        club_name: this.club.name
+    });
   }
 
   getMemberCount(members: Members) {
@@ -297,6 +325,26 @@ render() {
 
     .right {
       float: right;
+    }
+
+    .trash-icon {
+        width: 1rem;
+        height: 1.5rem;
+        fill: var(--color-text-heading);
+    }
+
+    .trash-icon:hover {
+      fill: red;
+      weight: var(--font-weight-extreme-bold);
+    }
+
+    .trash {
+      background-color: transparent; /* Remove default background color */
+      color: black;
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      right: 0.8rem;
     }
 
     .active-button {

@@ -225,7 +225,7 @@ export class UserProfile2EditElement extends UserProfile2Element {
 
     this.dispatchMessage({
         type: "ProfileSaved",
-        email: this.profile?.email,
+        email: this.profile?.email || "",
         profile: json as Profile
     })
 
