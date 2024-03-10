@@ -54,7 +54,7 @@ render() {
       <link rel="stylesheet" href="/styles/reset.css" />
       <app-header> <div> ${this.club.name} </div> </app-header>
       <div class="page-content">
-        ${this.renderJoinOptions(this.myProfile, this.club, this.members)}
+        <!-- ${this.renderJoinOptions(this.myProfile, this.club, this.members)} -->
         <div class="grid-container">
           <div class="flex-item-large">
             <div class="subheading"> About Us </div>
@@ -64,7 +64,7 @@ render() {
           <div class="flex-item-small">
             <div class="flex-container">
               <div class="subheading"> Additional Info</div>
-              ${this.hasAdminPermission() ? this.renderEditClubOption() : html``}
+              ${this.hasAdminPermission() ? this.renderEditClubOption() : this.renderJoinOptions(this.myProfile, this.club, this.members)}
             </div>
             <div class="additional-info-containter">
                 <div class="info-subheading"> Meeting: </div>
@@ -127,24 +127,22 @@ render() {
 
   renderJoinOptions(profile: Profile, club: Club, members: Members) {
     // President/owner doesn't have option to leave so no options to join or leave should be displayed
-    // if (profile && club.owner === profile.email) {
-    //   return html``;
-    // }
+    if (profile && club.owner === profile.email) {
+      return html``;
+    }
     // If already a part of this club render unjoin button with join button disabled 
     if (profile && profile.clubs && this.isMember(members, profile)) {
-      console.log("PART OF THIS CLUB", profile, club)
       return html`
         <div>
-          <button disabled> Join </button> 
-          <button @click=${this.handleUnjoin}> Unjoin </button> 
+          <button class='disabled-button' disabled> Join </button> 
+          <button class='active-button' @click=${this.handleUnjoin}> Unjoin </button> 
         </div>
       `;
     } else {
-      console.log("NOT PART OF THIS CLUB")
       return html`
         <div>
-          <button @click=${this.handleJoin}> Join </button> 
-          <button disabled> Unjoin </button> 
+          <button class='active-button' @click=${this.handleJoin}> Join </button> 
+          <button class='disabled-button' disabled> Unjoin </button> 
         </div>
       `;
     }
@@ -295,6 +293,38 @@ render() {
   static styles = css`
     :host {
       display: contents;
+    }
+
+    .right {
+      float: right;
+    }
+
+    .active-button {
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      background-color: var(--color-text);
+      color: var(--color-text-heading);
+      font-weight: var(--font-weight-light-bold);
+      margin-right: 0.5rem;
+    }
+
+    .disabled-button {
+      opacity: 0.5;
+      padding: 0.5rem;
+      border: none;
+      background-color: var(--color-text);
+      color: var(--color-text-heading);
+      font-weight: var(--font-weight-light-bold);
+      margin-right: 0.5rem;
+    }
+
+    .active-button:hover {
+      opacity: 0.9;
+      box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.45);
+      border-color: var(--color-accent);
+      border-width: 0.5rem;
+      color: var(--color-text-heading);
     }
 
     .circle {
