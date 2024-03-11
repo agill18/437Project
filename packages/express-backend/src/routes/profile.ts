@@ -5,14 +5,21 @@ import profiles from "../services/profiles";
 const router = express.Router();
 
 // Get profile
-// Request Params: userId
-router.get("/:userId", (req: Request, res: Response) => {
-  const { userId } = req.params;
- 
-  profiles
-    .get(userId)
-    .then((profile: Profile) => res.json(profile))
-    .catch((err) => res.status(404).end());
+// Request Params: email
+router.get("/:email", (req: Request, res: Response) => {
+  console.log("got get request");
+  const { email } = req.params;
+  if (email !== "all") {
+    profiles
+      .get(email)
+      .then((profile: Profile) => res.status(200).json(profile))
+      .catch((err) => res.status(404).end());
+  } else {
+    profiles
+      .getAll()
+      .then((profiles: Profile[]) => res.status(200).json(profiles))
+      .catch((err) => res.status(404).end());
+  }
 });
 
 // Add profile
@@ -29,13 +36,13 @@ router.post("/", (req: Request, res: Response) => {
 // Update profile
 // Request Params: userId
 // Body: profile
-router.put("/:userId", (req: Request, res: Response) => {
-  const { userId } = req.params;
+router.put("/:email", (req: Request, res: Response) => {
+  const { email } = req.params;
   const newProfile = req.body;
 
   profiles
-    .update(userId, newProfile)
-    .then((profile: Profile) => res.json(profile))
+    .update(email, newProfile)
+    .then((profile: Profile) => res.status(200).json(profile))
     .catch((err) => res.status(404).end());
 });
 

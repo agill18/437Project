@@ -24,84 +24,16 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var import_express = __toESM(require("express"));
 var import_cors = __toESM(require("cors"));
 var import_mongoConnect = require("./mongoConnect");
-var import_profiles = __toESM(require("./services/profiles"));
-var import_club_summaries = __toESM(require("./services/club_summaries"));
-var import_clubs = __toESM(require("./services/clubs"));
-var import_members = __toESM(require("./services/members"));
-var import_events = __toESM(require("./services/events"));
 var import_auth = require("./auth");
+var import_api = __toESM(require("./routes/api"));
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
 app.use((0, import_cors.default)());
 app.use(import_express.default.json());
 (0, import_mongoConnect.connect)("437Project");
+app.use("/api", import_api.default);
 app.post("/login", import_auth.loginUser);
 app.post("/signup", import_auth.registerUser);
-app.get("/api/profile/:email", (req, res) => {
-  const { email } = req.params;
-  if (email !== "all") {
-    import_profiles.default.get(email).then((profile) => res.status(200).json(profile)).catch((err) => res.status(404).end());
-  } else {
-    import_profiles.default.getAll().then((profiles2) => res.status(200).json(profiles2)).catch((err) => res.status(404).end());
-  }
-});
-app.post("/api/profiles", (req, res) => {
-  const newProfile = req.body;
-  import_profiles.default.create(newProfile).then((profile) => res.status(201).send(profile)).catch((err) => res.status(500).send(err));
-});
-app.put("/api/profile/:email", (req, res) => {
-  const { email } = req.params;
-  const newProfile = req.body;
-  import_profiles.default.update(email, newProfile).then((profile) => res.status(200).json(profile)).catch((err) => res.status(404).end());
-});
-app.post("/api/clubSummaries", (req, res) => {
-  const newClubSummary = req.body;
-  import_club_summaries.default.create(newClubSummary).then((clubSummary) => res.status(201).send(clubSummary)).catch((err) => res.status(500).send(err));
-});
-app.get("/api/clubSummaries/:name", (req, res) => {
-  const { name } = req.params;
-  import_club_summaries.default.get(name).then((clubSummary) => res.json(clubSummary)).catch((err) => res.status(404).end());
-});
-app.get("/api/clubSummaries", (req, res) => {
-  import_club_summaries.default.getAll().then((clubSummaries2) => res.status(200).json(clubSummaries2)).catch((err) => res.status(404).end());
-});
-app.post("/api/events", (req, res) => {
-  const newEvent = req.body;
-  import_events.default.create(newEvent).then((event) => res.status(201).send(event)).catch((err) => res.status(500).send(err));
-});
-app.get("/api/events/:host/:_id", (req, res) => {
-  const { host, _id } = req.params;
-  import_events.default.get(host, _id).then((event) => res.status(200).json(event)).catch((err) => res.status(404).end());
-});
-app.get("/api/events/:host", (req, res) => {
-  const { host } = req.params;
-  import_events.default.getAll(host).then((events2) => res.status(200).json(events2)).catch((err) => res.status(404).end());
-});
-app.get("/api/clubs/:name", (req, res) => {
-  const { name } = req.params;
-  import_clubs.default.get(name).then((club) => res.status(200).json(club)).catch((err) => res.status(404).end());
-});
-app.post("/api/clubs", (req, res) => {
-  const newClub = req.body;
-  import_clubs.default.create(newClub).then((club) => res.status(201).send(club)).catch((err) => res.status(500).send(err));
-});
-app.put("/api/clubs/:name", (req, res) => {
-  const { name } = req.params;
-  const newClub = req.body;
-  import_clubs.default.update(name, newClub).then((club) => res.status(200).json(club)).catch((err) => res.status(404).end());
-});
-app.get("/api/members/:club_name", (req, res) => {
-  const { club_name } = req.params;
-  import_members.default.getAll(club_name).then((members2) => res.status(200).json(members2)).catch((err) => res.status(404).end());
-});
-app.post("/api/members", (req, res) => {
-  const newMember = req.body;
-  import_members.default.create(newMember).then((member) => res.status(201).send(member)).catch((err) => res.status(500).send(err));
-});
-app.post("/api/members/delete/:club_name/:email", (req, res) => {
-  const { email, club_name } = req.params;
-  import_members.default.deleteOne(email, club_name).then(() => res.status(201).send()).catch((err) => res.status(500).send(err));
-});
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

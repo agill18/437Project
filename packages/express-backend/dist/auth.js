@@ -42,7 +42,6 @@ function generateAccessToken(email) {
     import_jsonwebtoken.default.sign(
       payload,
       process.env.TOKEN_SECRET,
-      { expiresIn: "2s" },
       (error, token) => {
         if (error)
           reject(error);
@@ -93,6 +92,7 @@ function authenticateUser(req, res, next) {
       token,
       process.env.TOKEN_SECRET,
       (error, decoded) => {
+        console.log("in authenticate user");
         if (decoded) {
           console.log("Decoded token", decoded);
           next();

@@ -7,7 +7,7 @@ function generateAccessToken(email: string) {
     const payload = { email: email }
     
     return new Promise((resolve, reject) => {
-        jwt.sign(payload, process.env.TOKEN_SECRET!, { expiresIn: '2s' }, 
+        jwt.sign(payload, process.env.TOKEN_SECRET!, 
             (error: any, token: any) => {
                 if (error) reject(error);
                 else resolve(token);
@@ -61,11 +61,11 @@ export function loginUser(req: Request, res: Response) {
 export function authenticateUser(req: Request, res: Response, next: any) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-
   if (!token) {
     res.status(401).end();
   } else {
-    jwt.verify(token, process.env.TOKEN_SECRET!, (error, decoded) => {
+    jwt.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
+        console.log("in authenticate user");
         if (decoded) {
           console.log("Decoded token", decoded);
           next();

@@ -26,25 +26,24 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var club_exports = {};
-__export(club_exports, {
-  default: () => club_default
+var member_exports = {};
+__export(member_exports, {
+  default: () => member_default
 });
-module.exports = __toCommonJS(club_exports);
+module.exports = __toCommonJS(member_exports);
 var import_express = __toESM(require("express"));
-var import_clubs = __toESM(require("../services/clubs"));
+var import_members = __toESM(require("../services/members"));
 const router = import_express.default.Router();
-router.get("/:name", (req, res) => {
-  const { name } = req.params;
-  import_clubs.default.get(name).then((club) => res.status(200).json(club)).catch((err) => res.status(404).end());
+router.get("/:club_name", (req, res) => {
+  const { club_name } = req.params;
+  import_members.default.getAll(club_name).then((members2) => res.status(200).json(members2)).catch((err) => res.status(404).end());
 });
 router.post("/", (req, res) => {
-  const newClub = req.body;
-  import_clubs.default.create(newClub).then((club) => res.status(201).send(club)).catch((err) => res.status(500).send(err));
+  const newMember = req.body;
+  import_members.default.create(newMember).then((member) => res.status(201).send(member)).catch((err) => res.status(500).send(err));
 });
-router.put("/:name", (req, res) => {
-  const { name } = req.params;
-  const newClub = req.body;
-  import_clubs.default.update(name, newClub).then((club) => res.status(200).json(club)).catch((err) => res.status(404).end());
+router.post("/delete/:club_name/:email", (req, res) => {
+  const { email, club_name } = req.params;
+  import_members.default.deleteOne(email, club_name).then(() => res.status(201).send()).catch((err) => res.status(500).send(err));
 });
-var club_default = router;
+var member_default = router;
