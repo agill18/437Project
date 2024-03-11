@@ -7,11 +7,13 @@ import * as App from "../app";
 import "./no-content";
 
 
-const renderClub = (club: string) =>
+const renderClub = (club: Club) =>
   html`
-    <div class="tag">
-        ${club}
-    </div>
+    <a href="/app/club/${club}">
+      <div class="tag">
+            ${club}
+      </div>
+    </a>
   `;
 
 @customElement("user-profile-2")
