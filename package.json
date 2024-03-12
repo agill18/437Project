@@ -34,12 +34,6 @@
     "ts-models": "^1.0.0"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
-    "@11ty/eleventy-plugin-vite": "^4.0.0",
-    "@cre.ative/kram": "^1.6.0",
-    "@cre.ative/kram-11ty": "^1.6.4",
-    "@cre.ative/kram-typescript": "^1.6.0",
     "lit": "^3.1.2"
   }
 }
