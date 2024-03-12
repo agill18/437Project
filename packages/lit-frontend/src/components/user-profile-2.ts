@@ -7,7 +7,7 @@ import * as App from "../app";
 import "./no-content";
 
 
-const renderClub = (club: Club) =>
+const renderClub = (club: String) =>
   html`
     <a href="/app/club/${club}">
       <div class="tag">
