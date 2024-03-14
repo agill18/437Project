@@ -32,6 +32,7 @@ try {
   console.log(`Could not resolve ${frontend}:`, error.code);
   dist = path.resolve(cwd, "..", frontend, "dist");
   indexHtml = path.resolve(dist, "index.html");
+  console.log(`The index in catch block is`, indexHtml);
 }
 
 console.log(`Serving ${frontend} from`, dist);
@@ -60,12 +61,14 @@ app.use("/stats", (req, res) => {
 
 app.use("/app", (req, res) => {
   if (!indexHtml) {
+    console.log(`COULD NOT FIND INDEX HTML FROM FRONTEND/DIST`, indexHtml);
     res
       .status(404)
       .send(
         `Not found; ${frontend} not available, running in ${cwd}`
       );
   } else {
+    console.log(`Actually did FIND INDEX HTML FROM FRONTEND/DIST`, indexHtml);
     fs.readFile(indexHtml, { encoding: "utf8" }).then((html) =>
       res.send(html)
     );
