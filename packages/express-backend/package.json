@@ -32,6 +32,7 @@
     "lit-frontend": "^1.0.0",
     "mongoose": "^8.1.1",
     "mongoose-validator": "^2.1.0",
+    "node-fs": "^0.1.7",
     "ts-models": "^1.0.0"
   }
 }
