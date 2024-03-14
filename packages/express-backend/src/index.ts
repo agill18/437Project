@@ -11,6 +11,9 @@ import events from "./services/events";
 import credentials from "./services/credentials";
 import { loginUser, registerUser } from "./auth";
 import apiRouter from "./routes/api";
+import * as path from "path";
+import { PathLike } from "node:fs";
+import fs from "node:fs/promises";
 
 connect("437Project");
 

@@ -26,6 +26,8 @@ var import_cors = __toESM(require("cors"));
 var import_mongoConnect = require("./mongoConnect");
 var import_auth = require("./auth");
 var import_api = __toESM(require("./routes/api"));
+var path = __toESM(require("path"));
+var import_promises = __toESM(require("node:fs/promises"));
 (0, import_mongoConnect.connect)("437Project");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
@@ -65,7 +67,7 @@ app.use("/app", (req, res) => {
       `Not found; ${frontend} not available, running in ${cwd}`
     );
   } else {
-    fs.readFile(indexHtml, { encoding: "utf8" }).then(
+    import_promises.default.readFile(indexHtml, { encoding: "utf8" }).then(
       (html) => res.send(html)
     );
   }
