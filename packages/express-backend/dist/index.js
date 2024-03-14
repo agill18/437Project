@@ -40,9 +40,9 @@ try {
   dist = path.dirname(indexHtml.toString());
 } catch (error) {
   console.log(`Could not resolve ${frontend}:`, error.code);
-  dist = path.resolve(cwd, "..", frontend, "dist");
+  dist = path.resolve(cwd, "wwwroot/packages", frontend, "dist");
   indexHtml = path.resolve(dist, "index.html");
-  console.log(`The index in catch block is`, indexHtml);
+  console.log(`The index in catch block is`, indexHtml, process.cwd());
 }
 console.log(`Serving ${frontend} from`, dist);
 if (dist)
