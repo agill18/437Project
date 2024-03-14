@@ -26,14 +26,50 @@ var import_cors = __toESM(require("cors"));
 var import_mongoConnect = require("./mongoConnect");
 var import_auth = require("./auth");
 var import_api = __toESM(require("./routes/api"));
+(0, import_mongoConnect.connect)("437Project");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
-app.use((0, import_cors.default)());
+const frontend = "lit-frontend";
+let cwd = process.cwd();
+let dist;
+let indexHtml;
+try {
+  indexHtml = require.resolve(frontend);
+  dist = path.dirname(indexHtml.toString());
+} catch (error) {
+  console.log(`Could not resolve ${frontend}:`, error.code);
+  dist = path.resolve(cwd, "..", frontend, "dist");
+  indexHtml = path.resolve(dist, "index.html");
+}
+console.log(`Serving ${frontend} from`, dist);
+if (dist)
+  app.use(import_express.default.static(dist.toString()));
 app.use(import_express.default.json());
-(0, import_mongoConnect.connect)("437Project");
-app.use("/api", import_api.default);
+app.use((0, import_cors.default)());
+app.options("*", (0, import_cors.default)());
 app.post("/login", import_auth.loginUser);
 app.post("/signup", import_auth.registerUser);
+app.use("/api", import_api.default);
+app.use("/stats", (req, res) => {
+  res.send(
+    `<h1>App is Up!</h1>
+      <dl><dt>Working Directory</dt><dd>${cwd}</dd>
+      <dt>Frontend dist</dt><dd>${dist}</dd>
+      <dt>HTML served</dt><dd>${indexHtml}</dd></dl>
+    `
+  );
+});
+app.use("/app", (req, res) => {
+  if (!indexHtml) {
+    res.status(404).send(
+      `Not found; ${frontend} not available, running in ${cwd}`
+    );
+  } else {
+    fs.readFile(indexHtml, { encoding: "utf8" }).then(
+      (html) => res.send(html)
+    );
+  }
+});
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

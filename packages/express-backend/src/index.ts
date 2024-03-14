@@ -12,6 +12,8 @@ import credentials from "./services/credentials";
 import { loginUser, registerUser } from "./auth";
 import apiRouter from "./routes/api";
 
+connect("437Project");
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -33,10 +35,25 @@ console.log(`Serving ${frontend} from`, dist);
 
 if (dist) app.use(express.static(dist.toString()));
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+app.options("*", cors());
 
-app.use(express.static(dist));
+// Setting up the router for api endpoint calls;
+app.post("/login", loginUser);
+app.post("/signup", registerUser);
+
+app.use("/api", apiRouter);
+
+app.use("/stats", (req, res) => {
+  res.send(
+    `<h1>App is Up!</h1>
+      <dl><dt>Working Directory</dt><dd>${cwd}</dd>
+      <dt>Frontend dist</dt><dd>${dist}</dd>
+      <dt>HTML served</dt><dd>${indexHtml}</dd></dl>
+    `
+  );
+});
 
 app.use("/app", (req, res) => {
   if (!indexHtml) {
@@ -52,21 +69,6 @@ app.use("/app", (req, res) => {
   }
 });
 
-// Connecting to my database
-connect("437Project");
-
-// Setting up the router for api endpoint calls;
-app.use("/api", apiRouter);
-
-// Login to existing account
-// Request Params: N/A
-// Body: Credential
-app.post("/login", loginUser);
-
-// Register a new account
-// Request Params: N/A
-// Body: Credential
-app.post("/signup", registerUser);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
